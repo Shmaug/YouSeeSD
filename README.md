@@ -7,7 +7,7 @@
 
 ### How to setup the code style
 
-Import the `codestyle/Square.xml` into Android Studio at /Preferences > Code Style > Java > Scheme.
+Import the `codestyle/Square.xml` into Android Studio at `Preferences > Code Style > Java > Scheme`.
 
 ![CodeStyleGuide](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/codestyle/codestyle.png)
 
