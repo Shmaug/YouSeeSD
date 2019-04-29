@@ -12,3 +12,9 @@ Import the `codestyle/Square.xml` into Android Studio at `Preferences > Code Sty
 ![CodeStyleGuide](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/codestyle/codestyle.png)
 
 For more information, Square Java Code Styles is given at https://github.com/square/java-code-styles.
+
+### How to reformat code
+
+You can find the keymap in `Preferences > Keymap > Reformat code`.
+
+![FormatCodeGuide](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/codestyle/formatcode.png)
