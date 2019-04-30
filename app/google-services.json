@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "737746615005",
+    "firebase_url": "https://youseesd-9ab46.firebaseio.com",
+    "project_id": "youseesd-9ab46",
+    "storage_bucket": "youseesd-9ab46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737746615005:android:06c3a9c40d7e7b8a",
+        "android_client_info": {
+          "package_name": "com.beep.youseesd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737746615005-dab0d5eao5qfrg01kegqjgnul9dtp70a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlmoLNoqW_sLSkpXM_s1XdQspZPYgJ9cI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737746615005-dab0d5eao5qfrg01kegqjgnul9dtp70a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

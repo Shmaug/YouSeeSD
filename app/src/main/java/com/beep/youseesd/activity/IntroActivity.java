@@ -9,12 +9,15 @@ import android.widget.Button;
 
 import com.beep.youseesd.R;
 import com.beep.youseesd.util.WLog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class IntroActivity extends AppCompatActivity {
 
     private Button mGoTourButton;
     private Button mGoLoginButton;
     private Button mGoSignupButton;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -22,6 +25,10 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         WLog.i("intro launched");
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        WLog.i(currentUser != null ? currentUser.getEmail() : "currentUser is null");
 
         mGoTourButton = (Button) findViewById(R.id.go_tour);
         mGoTourButton.setOnClickListener(new View.OnClickListener() {
