@@ -4,6 +4,8 @@
 
 ## Usecase Diagram
 
+![UsecaseDiagram](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/screenshots/usecase_diagram.jpeg)
+
 ## Shared Documents
 
 > [Shared Team Folder](https://drive.google.com/drive/u/2/folders/1oPU8XP1Roqrq_Mw1K2Q1nAPO6X8Ggnh6)
