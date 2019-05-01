@@ -72,13 +72,13 @@ You can find the keymap in `Preferences > Keymap > Reformat code`.
 ## Contributers
 | Name | Role | Email |
 |------|------|-------|
+| Jaehoon Choi | Quality Assurance Lead | jac318@ucsd.edu |
 | Jason Tae Kwang Chung | Algorithm Specialist | tkc016@ucsd.edu |
-| Luke Deerinck | Business Analysit |	ldeerinc@ucsd.edu	|
 | Jimmy Dang | Senior System Analyst | jid086@ucsd.edu |
+| Luke Deerinck | Business Analysit |	ldeerinc@ucsd.edu	|
 | Yong Do | Database Specialist | yhdo@ucsd.edu|
 | Trevor Hedstrom | Software Development Lead |	tjhedstr@ucsd.edu	|
 | Jasmine Hoang |	User Interface Specialist | jah191@ucsd.edu	|
 | Michael Jaber	| Algorithm Specialist | mjjaber@ucsd.edu |
 | Lisa Luo | Software Architect | llluo@ucsd.edu |
 | Grant Rogers | Project Manager | grogers@ucsd.edu |
-| Jaehoon Choi | Quality Assurance Lead | jac318@ucsd.edu |
