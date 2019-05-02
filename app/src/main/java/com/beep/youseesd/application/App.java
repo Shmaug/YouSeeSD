@@ -3,6 +3,7 @@ package com.beep.youseesd.application;
 import android.app.Application;
 
 import com.beep.youseesd.util.WLog;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class App extends Application {
 
@@ -14,6 +15,7 @@ public class App extends Application {
         singleton = this;
 
         WLog.i("Our app just started!");
+        FirebaseAuth.getInstance().signOut();
     }
 
     public static App getInstance() {
