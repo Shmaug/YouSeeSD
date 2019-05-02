@@ -13,6 +13,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class AuthHandler {
 
     public static void signinAnonymously(Activity act) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            return;
+        }
+
         FirebaseAuth.getInstance().signInAnonymously()
                 .addOnCompleteListener(act, new OnCompleteListener<AuthResult>() {
                     @Override
