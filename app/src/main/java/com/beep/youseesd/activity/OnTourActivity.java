@@ -1,4 +1,4 @@
-package com.beep.youseesd;
+package com.beep.youseesd.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -11,13 +11,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 
+import com.beep.youseesd.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class OnTourActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final int PERMISSION_GRANTED_LOCATION = 0x01;
 
     private GoogleMap mMap;
@@ -29,7 +30,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
@@ -40,7 +41,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     mMap.setMyLocationEnabled(true);
                     PollPlaces();
-                } catch (SecurityException e){}
+                } catch (SecurityException e) {
+                }
             } else {
                 // user doesn't want us to use their location :(
             }
@@ -65,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void PollPlaces(){
+    public void PollPlaces() {
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         mCriteria = new Criteria();
 
@@ -76,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 final double currentLongitude = l.getLongitude();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 15));
             }
-        } catch (SecurityException e){}
+        } catch (SecurityException e) {
+        }
     }
 }

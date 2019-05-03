@@ -61,6 +61,10 @@ Import the `codestyle/Square.xml` into Android Studio at `Preferences > Code Sty
 
 ![CodeStyleGuide](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/codestyle/codestyle.png)
 
+Then, go to [`Project Settings > Android App > YouSeeSD`](https://console.firebase.google.com/u/0/project/youseesd-9ab46/settings/general/android:com.beep.youseesd), and add your fingerprint.
+
+![FingerprintFirebase](https://raw.githubusercontent.com/Shmaug/YouSeeSD/package-structure/screenshots/fingerprint_firebase.png)
+
 For more information, Square Java Code Styles is given at https://github.com/square/java-code-styles.
 
 ### How to reformat code
