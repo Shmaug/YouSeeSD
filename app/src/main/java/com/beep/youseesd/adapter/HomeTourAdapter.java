@@ -10,11 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
 import com.beep.youseesd.model.Tour;
+import com.beep.youseesd.util.WLog;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
-public class HomeTourAdapter extends RecyclerView.Adapter<HomeTourAdapter.HomeTourViewHolder> {
+public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int TOUR_VIEW = 0x01;
+    private static final int FOOTER_VIEW = 0x02;
 
     private List<Tour> mTours;
 
@@ -23,11 +27,39 @@ public class HomeTourAdapter extends RecyclerView.Adapter<HomeTourAdapter.HomeTo
         this.mTours = tours;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position >= mTours.size()) {
+            return FOOTER_VIEW;
+        }
+
+        return TOUR_VIEW;
+    }
+
     @NonNull
     @Override
-    public HomeTourViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tour, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        WLog.i("viewType: " + viewType);
+        if (viewType == FOOTER_VIEW) {
+            View footerView = inflater.inflate(R.layout.item_footer, parent, false);
+            return new FooterViewHolder(footerView);
+        }
+
+        View v = inflater.inflate(R.layout.item_tour, parent, false);
         return new HomeTourViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+        if (holder instanceof HomeTourViewHolder) {
+            HomeTourViewHolder h = (HomeTourViewHolder) holder;
+            h.titleView.setText(mTours.get(i).getTitle());
+        } else if (holder instanceof FooterViewHolder) {
+            FooterViewHolder h = (FooterViewHolder) holder;
+            WLog.i("footer holder called");
+
+        }
     }
 
     @Override
@@ -36,18 +68,19 @@ public class HomeTourAdapter extends RecyclerView.Adapter<HomeTourAdapter.HomeTo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeTourViewHolder holder, int i) {
-        holder.titleView.setText(mTours.get(i).getTitle());
-//        holder.personAge.setText(persons.get(i).age);
-//        holder.personPhoto.setImageResource(persons.get(i).photoId);
+    public int getItemCount() {
+        return mTours.size() + 1;
     }
 
-    @Override
-    public int getItemCount() {
-        return mTours.size();
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 
     static class HomeTourViewHolder extends RecyclerView.ViewHolder {
+
         private MaterialCardView cardView;
         private TextView titleView;
 
