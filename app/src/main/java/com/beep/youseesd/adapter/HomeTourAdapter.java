@@ -1,5 +1,6 @@
 package com.beep.youseesd.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,10 @@ import com.beep.youseesd.R;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.util.WLog;
 import com.google.android.material.card.MaterialCardView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.view.IconicsImageView;
+import com.mikepenz.iconics.view.IconicsTextView;
 
 import java.util.List;
 
@@ -83,10 +88,24 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         private MaterialCardView cardView;
         private TextView titleView;
+        private IconicsImageView imageView;
+        private IconicsTextView hashTextView1;
+        private IconicsTextView hashTextView2;
+        private IconicsImageView menuImageView;
 
         public HomeTourViewHolder(@NonNull View itemView) {
             super(itemView);
             titleView = (TextView) itemView.findViewById(R.id.card_tour_title);
+            imageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_img);
+            hashTextView1 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash1);
+            hashTextView1.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(Color.GRAY).sizeDp(12));
+
+            hashTextView2 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash2);
+            hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(Color.GRAY).sizeDp(12));
+            imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image).color(Color.GRAY).sizeDp(24));
+
+            menuImageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_menu);
+            menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_ellipsis_v).color(Color.LTGRAY).sizeDp(14));
         }
     }
 }

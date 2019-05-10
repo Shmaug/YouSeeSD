@@ -9,6 +9,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
     }
     buildTypes {
         // no proguard in cse110.
@@ -23,12 +27,22 @@ android {
 dependencies {
     testImplementation 'junit:junit:4.12'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     // android x
     implementation "androidx.appcompat:appcompat:1.1.0-alpha05"
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"
     implementation "com.google.android.material:material:1.1.0-alpha06"
 
+    // iconic
+    implementation "com.mikepenz:iconics-core:3.2.5"
+    implementation "com.mikepenz:iconics-views:3.2.5"
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.3.original@aar'
+    implementation 'com.mikepenz:material-design-iconic-typeface:2.2.0.5@aar'
+    implementation 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
+
+    // google maps API
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
     //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

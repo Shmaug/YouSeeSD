@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.beep.youseesd.R;
-import com.beep.youseesd.fragment.HomeFragment;
+import com.beep.youseesd.fragment.TourListFragment;
 import com.beep.youseesd.handler.AuthHandler;
 import com.beep.youseesd.util.WLog;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,8 +28,8 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
         setContentView(R.layout.activity_home);
         setupUI();
 
-        HomeFragment homeFragment = new HomeFragment();
-        updateFragment(homeFragment);
+        TourListFragment tourListFragment = new TourListFragment();
+        updateFragment(tourListFragment);
 
         WLog.i("home launched");
         WLog.i("check user session..");
@@ -55,6 +55,6 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
 
     @Override
     public void onComplete(@NonNull Task<AuthResult> task) {
-        FirebaseUser user = task.getResult().getUser();
+        FirebaseUser newUser = task.getResult().getUser();
     }
 }

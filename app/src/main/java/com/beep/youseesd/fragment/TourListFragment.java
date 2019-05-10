@@ -20,7 +20,7 @@ import com.beep.youseesd.model.Tour;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class TourListFragment extends Fragment {
 
     private RecyclerView tourListView;
     private LinearLayoutManager layoutManager;
