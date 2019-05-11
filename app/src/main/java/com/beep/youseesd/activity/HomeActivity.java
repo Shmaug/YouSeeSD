@@ -47,7 +47,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
         mCreateTourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), OnTourActivity.class);
+                Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
                 startActivity(intent);
             }
         });

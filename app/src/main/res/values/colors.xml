@@ -8,10 +8,25 @@
     <color name="secondaryDarkColor">#c8a415</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
-    <color name="white">#ffffff</color>
     <color name="light_gray">#FFCCCCCC</color>
     <color name="gray">#FF888888</color>
     <color name="dark_gray">#FF444444</color>
 
+    <color name="black">@android:color/black</color>
+    <color name="black_translucent_87">#DE000000</color>
+    <color name="black_translucent_54">#8A000000</color>
+    <color name="black_translucent_38">#61000000</color>
+    <color name="black_translucent_20">#33000000</color>
+    <color name="black_translucent_15">#26000000</color>
+    <color name="black_translucent_12">#1F000000</color>
+
+    <color name="white">@android:color/white</color>
+    <color name="white_translucent_70">#80ffffff</color>
+    <color name="white_translucent_50">#B3ffffff</color>
+    <color name="white_translucent_38">#61ffffff</color>
+    <color name="white_translucent_12">#1Fffffff</color>
+
+    <!-- Elements -->
+    <color name="divider">@color/black_translucent_12</color>
 
 </resources>

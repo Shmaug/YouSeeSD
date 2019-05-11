@@ -38,6 +38,10 @@
             android:name=".activity.OnTourActivity"
             android:label="@string/title_activity_maps" />
 
+        <activity
+            android:name=".activity.CreateTourActivity"
+            android:label="@string/title_activity_maps" />
+
     </application>
 
 </manifest>

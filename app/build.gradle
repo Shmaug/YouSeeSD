@@ -44,6 +44,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    // backdrop
+    implementation 'com.github.pedromassango:IBackdrop:3.0.0'
+
     // google maps API
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
