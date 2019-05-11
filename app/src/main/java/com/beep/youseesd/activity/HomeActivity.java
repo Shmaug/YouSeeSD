@@ -1,6 +1,7 @@
 package com.beep.youseesd.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,10 +18,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.view.IconicsTextView;
 
 public class HomeActivity extends BaseActivity implements OnCompleteListener<AuthResult> {
 
     private FloatingActionButton mCreateTourButton;
+    private IconicsTextView weatherTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
     }
 
     private void setupUI() {
+        weatherTextView = (IconicsTextView) findViewById(R.id.weather_text);
+        weatherTextView.setDrawableStart(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_sun1).color(Color.WHITE).paddingDp(3).sizeDp(24));
         mCreateTourButton = (FloatingActionButton) findViewById(R.id.fab);
         mCreateTourButton.setOnClickListener(new View.OnClickListener() {
             @Override
