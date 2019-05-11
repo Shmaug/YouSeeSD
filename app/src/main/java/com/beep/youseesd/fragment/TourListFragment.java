@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
+import com.beep.youseesd.activity.HomeActivity;
 import com.beep.youseesd.adapter.HomeTourAdapter;
 import com.beep.youseesd.model.Tour;
 
@@ -47,7 +48,7 @@ public class TourListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(view.getContext());
         tourListView.setLayoutManager(layoutManager);
 
-        adapter = new HomeTourAdapter(createTours());
+        adapter = new HomeTourAdapter((HomeActivity) getActivity(), createTours());
 
         tourListView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

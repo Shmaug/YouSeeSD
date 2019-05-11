@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.beep.youseesd.R;
 import com.beep.youseesd.fragment.TourListFragment;
@@ -30,13 +31,30 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
     private BottomAppBar appBar;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            // stack becomes empty means now we are back to the TourList.
+            getAppBar().setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+            getAppBar().setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE);
+            getWeatherTextView().setVisibility(View.VISIBLE);
+            getFAB().setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add_24dp));
+            mCreateTourButton.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
+                startActivity(intent);
+            });
+            return;
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setupUI();
 
         TourListFragment tourListFragment = new TourListFragment();
-        updateFragment(tourListFragment);
+        updateFragment(tourListFragment, null);
 
         WLog.i("home launched");
         WLog.i("check user session..");
@@ -61,7 +79,18 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
                 startActivity(intent);
             }
         });
+    }
 
+    public FloatingActionButton getFAB() {
+        return mCreateTourButton;
+    }
+
+    public IconicsTextView getWeatherTextView() {
+        return weatherTextView;
+    }
+
+    public BottomAppBar getAppBar() {
+        return appBar;
     }
 
     @Override

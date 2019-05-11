@@ -1,5 +1,6 @@
 package com.beep.youseesd.adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
+import com.beep.youseesd.activity.HomeActivity;
+import com.beep.youseesd.activity.OnTourActivity;
+import com.beep.youseesd.fragment.ConfirmOnTourFragment;
 import com.beep.youseesd.model.Tour;
-import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.card.MaterialCardView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -27,10 +31,12 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int FOOTER_VIEW = 0x02;
 
     private List<Tour> mTours;
+    private HomeActivity act;
 
-    public HomeTourAdapter(List<Tour> tours) {
+    public HomeTourAdapter(HomeActivity act, List<Tour> tours) {
         super();
         this.mTours = tours;
+        this.act = act;
     }
 
     @Override
@@ -46,7 +52,6 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        WLog.i("viewType: " + viewType);
         if (viewType == FOOTER_VIEW) {
             View footerView = inflater.inflate(R.layout.item_footer, parent, false);
             return new FooterViewHolder(footerView);
@@ -68,7 +73,23 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .into(h.imageView);
 
             h.cardView.setOnClickListener(v -> {
+                switch (act.getAppBar().getFabAlignmentMode()) {
+                    case BottomAppBar.FAB_ALIGNMENT_MODE_CENTER:
+                        act.getAppBar().setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+                        act.getAppBar().setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE);
+                        act.getWeatherTextView().setVisibility(View.GONE);
 
+                        act.getFAB().setImageDrawable(new IconicsDrawable(act).icon(FontAwesome.Icon.faw_play).color(Color.WHITE).sizeDp(24));
+                        act.updateFragment(new ConfirmOnTourFragment(), "ConfirmOnTour");
+                        act.getFAB().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), OnTourActivity.class);
+                                act.startActivity(intent);
+                            }
+                        });
+                        break;
+                }
             });
 
             h.menuImageView.setOnClickListener(v -> {
@@ -77,8 +98,6 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder h = (FooterViewHolder) holder;
-            WLog.i("footer holder called");
-
         }
     }
 

@@ -12,6 +12,9 @@ import com.beep.youseesd.R;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
+
+    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void attachBaseContext(Context newBase) {
 //        super.attachBaseContext(newBase);
@@ -21,11 +24,18 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
     }
 
-    protected void updateFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.mainframe, fragment);
-        transaction.commit();
+
+    public void updateFragment(Fragment fragment, String stackName) {
+
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.mainframe, fragment);
+        fragmentTransaction.commit();
+
+        if (stackName != null) {
+            fragmentTransaction.addToBackStack(stackName);
+        }
     }
 }
