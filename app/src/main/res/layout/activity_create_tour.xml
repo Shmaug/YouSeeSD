@@ -29,7 +29,7 @@
         <include
             layout="@layout/create_tour_back"
             android:layout_width="match_parent"
-            android:layout_height="150dp" />
+            android:layout_height="272dp" />
 
         <!--your foldable view (front view)-->
         <LinearLayout
@@ -43,9 +43,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="18dp"
                 android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
                 android:text="0 Locations Added"
                 android:textColor="@color/gray"
-                android:layout_marginBottom="15dp"
                 android:textSize="17sp" />
 
             <androidx.recyclerview.widget.RecyclerView
