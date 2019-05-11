@@ -111,7 +111,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public HomeTourViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = (MaterialCardView)  itemView.findViewById(R.id.card_tour);
+            cardView = (MaterialCardView) itemView.findViewById(R.id.card_tour);
 
             titleView = (TextView) itemView.findViewById(R.id.card_tour_title);
             subtitleView = (TextView) itemView.findViewById(R.id.card_tour_subtitle);
