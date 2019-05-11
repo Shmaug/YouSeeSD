@@ -52,10 +52,7 @@ public class ConfirmOnTourFragment extends Fragment {
         locations.add(new Location("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg"));
         locations.add(new Location("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg"));
         locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        locations.add(new Location("York Hall", "The largest lecture hall", "https://ucpa.ucsd.edu/images/image_library/York-Hall.jpg"));
         return locations;
     }
 }

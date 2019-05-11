@@ -73,10 +73,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/rounded_corner"
-                        android:textColor="@color/gray"
-                        app:iiv_all_color="@color/gray"
                         android:padding="5dp"
-                        android:text="Muir" />
+                        android:text="Muir"
+                        android:textColor="@color/gray"
+                        app:iiv_all_color="@color/gray" />
 
                     <com.mikepenz.iconics.view.IconicsTextView
                         android:id="@+id/card_tour_hash2"
@@ -84,9 +84,9 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_corner"
                         android:padding="5dp"
+                        android:text="Engineering"
                         android:textColor="@color/gray"
-                        app:iiv_all_color="@color/gray"
-                        android:text="Engineering" />
+                        app:iiv_all_color="@color/gray" />
                 </LinearLayout>
             </RelativeLayout>
 

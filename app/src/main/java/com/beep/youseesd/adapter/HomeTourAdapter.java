@@ -22,6 +22,7 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.iconics.view.IconicsTextView;
+import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 
 import java.util.List;
 
@@ -79,7 +80,8 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         act.getAppBar().setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE);
                         act.getWeatherTextView().setVisibility(View.GONE);
 
-                        act.getFAB().setImageDrawable(new IconicsDrawable(act).icon(FontAwesome.Icon.faw_play).color(Color.WHITE).sizeDp(24));
+                        act.getFAB().setImageDrawable(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_play).color(Color.WHITE).sizeDp(24));
+
                         act.updateFragment(new ConfirmOnTourFragment(), "ConfirmOnTour");
                         act.getFAB().setOnClickListener(new View.OnClickListener() {
                             @Override
