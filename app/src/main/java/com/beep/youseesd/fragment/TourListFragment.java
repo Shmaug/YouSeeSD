@@ -63,14 +63,14 @@ public class TourListFragment extends Fragment {
 
     private List<Tour> createTours() {
         List<Tour> tours = new ArrayList<>();
-        tours.add(new Tour("this is an item"));
-        tours.add(new Tour("MaterialCardView"));
-        tours.add(new Tour("This is another card"));
-        tours.add(new Tour("TEST CARDVIEW"));
-        tours.add(new Tour("more item"));
-        tours.add(new Tour("cse110"));
-        tours.add(new Tour("Gary"));
-        tours.add(new Tour("we just did quiz3"));
+        tours.add(new Tour("Good to Walk").subTitle("Muir is the first college founded at UCSD").imageUrl("https://lh5.googleusercontent.com/p/AF1QipOa9szj6hbfUFULO6IuTFzDua8-5FAIxkmjQkTu=s500-k-no"));
+        tours.add(new Tour("Congratulations!").subTitle("7 spots must be visited for engineering students").imageUrl("https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/Front-Entrance-at-Dusk-1.jpg"));
+        tours.add(new Tour("Bring your puppy!").subTitle("Get some fresh air at UCSD").imageUrl("https://ucpa.ucsd.edu/images/image_library/fallen-star-and-jsoe-building.jpg"));
+        tours.add(new Tour("Nice Spots for Subset").subTitle("Time to take a relax").imageUrl("https://ucpa.ucsd.edu/images/image_library/geisel.jpg"));
+        tours.add(new Tour("more item").imageUrl("http://i.imgur.com/DvpvklR.png"));
+        tours.add(new Tour("cse110").imageUrl("http://i.imgur.com/DvpvklR.png"));
+        tours.add(new Tour("Gary").imageUrl("http://i.imgur.com/DvpvklR.png"));
+        tours.add(new Tour("we just did quiz3").imageUrl("http://i.imgur.com/DvpvklR.png"));
         return tours;
     }
 }

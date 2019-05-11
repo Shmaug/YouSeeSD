@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.beep.youseesd.R;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.util.WLog;
+import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -60,6 +61,20 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof HomeTourViewHolder) {
             HomeTourViewHolder h = (HomeTourViewHolder) holder;
             h.titleView.setText(mTours.get(i).getTitle());
+            h.subtitleView.setText(mTours.get(i).getSubtitle());
+            Glide.with(h.imageView.getContext())
+                    .load(mTours.get(i).getImageUrl())
+                    .centerCrop()
+                    .into(h.imageView);
+
+            h.cardView.setOnClickListener(v -> {
+
+            });
+
+            h.menuImageView.setOnClickListener(v -> {
+
+            });
+
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder h = (FooterViewHolder) holder;
             WLog.i("footer holder called");
@@ -88,6 +103,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         private MaterialCardView cardView;
         private TextView titleView;
+        private TextView subtitleView;
         private IconicsImageView imageView;
         private IconicsTextView hashTextView1;
         private IconicsTextView hashTextView2;
@@ -95,17 +111,23 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public HomeTourViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = (MaterialCardView)  itemView.findViewById(R.id.card_tour);
+
             titleView = (TextView) itemView.findViewById(R.id.card_tour_title);
+            subtitleView = (TextView) itemView.findViewById(R.id.card_tour_subtitle);
+
             imageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_img);
+            imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image).color(Color.GRAY).sizeDp(24));
+
             hashTextView1 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash1);
-            hashTextView1.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(Color.GRAY).sizeDp(12));
+            hashTextView1.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView1.getResources().getColor(R.color.gray)).sizeDp(12));
 
             hashTextView2 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash2);
-            hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(Color.GRAY).sizeDp(12));
-            imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image).color(Color.GRAY).sizeDp(24));
+            hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView2.getResources().getColor(R.color.gray)).sizeDp(12));
 
             menuImageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_menu);
             menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_ellipsis_v).color(Color.LTGRAY).sizeDp(14));
+
         }
     }
 }

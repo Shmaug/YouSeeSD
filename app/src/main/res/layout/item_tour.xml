@@ -56,9 +56,7 @@
                 <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/card_tour_img"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/light_gray"
-                    app:iiv_color="@android:color/holo_red_dark" />
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:id="@+id/card_tour_info1_layout"
@@ -74,12 +72,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:background="@drawable/rounded_corner"
+                        android:textColor="@color/gray"
+                        app:iiv_all_color="@color/gray"
+                        android:padding="5dp"
                         android:text="Muir" />
 
                     <com.mikepenz.iconics.view.IconicsTextView
                         android:id="@+id/card_tour_hash2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corner"
+                        android:padding="5dp"
+                        android:textColor="@color/gray"
+                        app:iiv_all_color="@color/gray"
                         android:text="Engineering" />
                 </LinearLayout>
             </RelativeLayout>
