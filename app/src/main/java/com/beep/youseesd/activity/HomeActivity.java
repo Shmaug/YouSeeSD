@@ -14,6 +14,7 @@ import com.beep.youseesd.handler.AuthHandler;
 import com.beep.youseesd.util.WLog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +27,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
 
     private FloatingActionButton mCreateTourButton;
     private IconicsTextView weatherTextView;
+    private BottomAppBar appBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,8 +50,9 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
     }
 
     private void setupUI() {
+        appBar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
         weatherTextView = (IconicsTextView) findViewById(R.id.weather_text);
-        weatherTextView.setDrawableStart(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_sun1).color(Color.WHITE).paddingDp(3).sizeDp(24));
+        weatherTextView.setDrawableStart(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cloud).color(Color.WHITE).paddingDp(3).sizeDp(24));
         mCreateTourButton = (FloatingActionButton) findViewById(R.id.fab);
         mCreateTourButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +61,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
