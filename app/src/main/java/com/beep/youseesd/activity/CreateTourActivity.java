@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +16,8 @@ import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.CreateTourLocationAdapter;
 import com.beep.youseesd.model.Location;
 import com.google.android.material.chip.ChipGroup;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.pedromassango.ibackdrop.Backdrop;
 
 import java.util.ArrayList;
@@ -42,8 +43,12 @@ public class CreateTourActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_create_tour, menu);
+        menu.findItem(R.id.menu_create_tour_ok).setIcon(
+                new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_check)
+                        .actionBar().color(Color.WHITE)
+        );
+        return true;
     }
 
     @SuppressLint("SetTextI18n")
@@ -53,7 +58,9 @@ public class CreateTourActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_tour);
         toolbar = (Toolbar) findViewById(R.id.home_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle("");
+        toolbar.setTitle("Create Tour");
+        setSupportActionBar(toolbar);
+
         locationList = (RecyclerView) findViewById(R.id.list_location);
         backdrop = (Backdrop) findViewById(R.id.backdrop_view);
         locationsFrontTitle = (TextView) findViewById(R.id.locations_front_title);
@@ -66,8 +73,8 @@ public class CreateTourActivity extends AppCompatActivity {
         locationList.setAdapter(adapter);
 
         locationsFrontTitle.setText(locations.size() + " Locations Added");
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
-        locationList.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+//        locationList.addItemDecoration(dividerItemDecoration);
 
         collegeGroup = (ChipGroup) findViewById(R.id.college_group);
         majorGroup = (ChipGroup) findViewById(R.id.major_group);

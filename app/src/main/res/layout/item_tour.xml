@@ -71,7 +71,7 @@
                         android:id="@+id/card_tour_hash1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:background="@drawable/rounded_corner"
                         android:padding="5dp"
                         android:text="Muir"
@@ -95,9 +95,13 @@
                 android:layout_width="32dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_tour_img_wrapper"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:background="@color/white" />
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10dp"
+                android:paddingTop="25dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/bg_menu_btn" />
 
             <TextView
                 android:id="@+id/card_tour_eta"
@@ -106,7 +110,7 @@
                 android:layout_below="@id/card_tour_img_wrapper"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:text="1hour 30min" />
         </RelativeLayout>
     </LinearLayout>

@@ -3,11 +3,13 @@ package com.beep.youseesd.adapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
@@ -94,8 +96,14 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
-            h.menuImageView.setOnClickListener(v -> {
-
+            h.menuImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(act, v);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.menu_tour_card, popup.getMenu());
+                    popup.show();
+                }
             });
 
         } else if (holder instanceof FooterViewHolder) {
@@ -147,7 +155,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView2.getResources().getColor(R.color.gray)).sizeDp(12));
 
             menuImageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_menu);
-            menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_ellipsis_v).color(Color.LTGRAY).sizeDp(14));
+            menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_ellipsis_v).color(Color.GRAY).sizeDp(14));
 
         }
     }
