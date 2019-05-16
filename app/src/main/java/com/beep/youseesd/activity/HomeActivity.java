@@ -58,6 +58,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
 
         WLog.i("home launched");
         WLog.i("check user session..");
+
 //        handleUserLogin();
     }
 
