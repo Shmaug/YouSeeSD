@@ -1,22 +1,41 @@
 package com.beep.youseesd.activity;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.beep.youseesd.R;
+import com.mikepenz.iconics.context.IconicsContextWrapper;
 
 public abstract class BaseActivity extends FragmentActivity {
+
+    FragmentTransaction fragmentTransaction;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(newBase);
+        super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
     }
 
-    protected void updateFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.mainframe, fragment);
-        transaction.commit();
+
+    public void updateFragment(Fragment fragment, String stackName) {
+
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.mainframe, fragment);
+        fragmentTransaction.commit();
+
+        if (stackName != null) {
+            fragmentTransaction.addToBackStack(stackName);
+        }
     }
 }

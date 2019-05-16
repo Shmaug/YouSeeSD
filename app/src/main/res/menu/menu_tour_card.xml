@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/edit_tour"
+        android:title="@string/title_edit_tour"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/delete_tour"
+        android:title="@string/title_delete_tour"
+        app:showAsAction="always" />
+</menu>

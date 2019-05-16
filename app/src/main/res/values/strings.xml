@@ -8,5 +8,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="title_create_tour_okay">Create</string>
+    <string name="title_delete_tour">Delete</string>
+    <string name="title_edit_tour">Edit</string>
 </resources>
 

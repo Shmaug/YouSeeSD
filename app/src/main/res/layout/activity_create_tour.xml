@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    android:orientation="vertical">
+
+    <!--a toolbar to open/close action-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/home_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="right"
+        app:menu="@menu/menu_create_tour"
+        app:navigationIcon="@drawable/ic_drop_open" />
+
+    <!--The backdrop view-->
+    <com.pedromassango.ibackdrop.Backdrop
+        android:id="@+id/backdrop_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:animationDuration="75"
+        app:closeIcon="@drawable/ic_drop_close"
+        app:openIcon="@drawable/ic_drop_open"
+        app:removeTopRightRadius="false"
+        app:toolbar="@id/home_toolbar">
+
+        <!--your back view-->
+        <include
+            layout="@layout/create_tour_back"
+            android:layout_width="match_parent"
+            android:layout_height="272dp" />
+
+        <!--your foldable view (front view)-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/locations_front_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="15dp"
+                android:text="0 Locations Added"
+                android:textColor="@color/gray"
+                android:textSize="17sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/light_gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_location"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context=".activity.CreateTourActivity"
+                tools:listitem="@layout/item_location" />
+
+        </LinearLayout>
+
+    </com.pedromassango.ibackdrop.Backdrop>
+
+</LinearLayout>
