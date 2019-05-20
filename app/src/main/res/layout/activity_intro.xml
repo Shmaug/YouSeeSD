@@ -28,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/intro_ghost_view"
+        android:layout_marginBottom="30dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
         android:text="@string/intro_title_text"
@@ -40,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/intro_ghost_view"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="-15dp"
         android:text="@string/intro_subtitle_text"
         android:textColor="@color/white"
         android:textSize="22sp" />
