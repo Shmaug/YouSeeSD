@@ -5,18 +5,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beep.youseesd.R;
+import com.beep.youseesd.handler.AuthHandler;
 import com.beep.youseesd.util.ImageUtil;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.iconics.view.IconicsButton;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends AppCompatActivity implements OnCompleteListener<AuthResult> {
 
     private CarouselView mCarouselView;
     private IconicsImageView mLogoImageView;
@@ -37,9 +43,7 @@ public class IntroActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+                AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this);
             }
         });
         mLogoImageView = (IconicsImageView) findViewById(R.id.intro_logo_image);
@@ -64,5 +68,15 @@ public class IntroActivity extends AppCompatActivity {
                 imageView.setColorFilter(ImageUtil.changeBitmapContrastBrightness(0.5f, 0.7f));
             }
         });
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<AuthResult> task) {
+        FirebaseUser newUser = task.getResult().getUser();
+        if (newUser.getUid() != null && !newUser.getUid().isEmpty()) {
+            Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

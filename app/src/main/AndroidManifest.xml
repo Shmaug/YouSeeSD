@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".activity.IntroActivity"
+            android:name=".activity.HomeActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".activity.IntroActivity"
             android:label="@string/title_activity_maps" />
 
         <activity

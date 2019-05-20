@@ -28,9 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/intro_ghost_view"
-        android:layout_marginBottom="30dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/intro_title_text"
         android:textColor="@color/white"
         android:textSize="38sp" />
@@ -62,6 +62,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="YouSeeSD"
             android:textColor="@color/white"
             android:textSize="18sp" />
