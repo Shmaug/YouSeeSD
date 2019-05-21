@@ -1,11 +1,15 @@
 package com.beep.youseesd.model;
 
+import java.util.ArrayList;
+
 public class Tour {
     private long createdTime;
     private boolean isPausing;
     private String title;
     private String imageUrl;
     private String subtitle;
+    // used for determining which Tour will be chosen, most likely hardcoded
+    private ArrayList<Double> theme;
 
     public Tour() {
 
@@ -39,5 +43,9 @@ public class Tour {
 
     public String getTitle() {
         return title;
+    }
+
+    public ArrayList<Double> getTheme() {
+        return theme;
     }
 }
