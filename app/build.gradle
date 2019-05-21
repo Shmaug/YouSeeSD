@@ -41,7 +41,6 @@ dependencies {
     implementation 'com.mikepenz:meteocons-typeface:1.1.0.5@aar'
     implementation 'com.mikepenz:material-design-iconic-typeface:2.2.0.5@aar'
 
-
     // image loader
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
@@ -56,6 +55,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-database:17.0.0'
+
+    // OpenWeatherMap API
+    implementation 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:2.0.2'
 
     //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

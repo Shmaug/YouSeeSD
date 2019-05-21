@@ -29,6 +29,9 @@ import com.pedromassango.ibackdrop.Backdrop;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The screen for the "Create Tour" part of our app
+ */
 public class CreateTourActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -43,6 +46,9 @@ public class CreateTourActivity extends AppCompatActivity {
 
     private ChipGroup collegeGroup, majorGroup;
 
+    /**
+     * Closes the backdrop when the back button is pressed
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -97,6 +103,9 @@ public class CreateTourActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates a list of Locations
+     */
     private void createLocations() {
         List<Location> locations = new ArrayList<>();
 

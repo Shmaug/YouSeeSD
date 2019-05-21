@@ -27,7 +27,12 @@ public abstract class BaseActivity extends FragmentActivity {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
     }
 
-
+    /**
+     * Puts a new fragment on the screen.
+     *
+     * @param fragment
+     * @param stackName if valid, will put this screen on the stack
+     */
     public void updateFragment(Fragment fragment, String stackName) {
 
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
