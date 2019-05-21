@@ -48,6 +48,13 @@ dependencies {
     // backdrop
     implementation 'com.github.pedromassango:IBackdrop:3.0.0'
 
+    // intro
+    implementation 'com.synnapps:carouselview:0.1.5'
+
+    // image filters
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
     // google maps API
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
