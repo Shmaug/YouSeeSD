@@ -7,4 +7,5 @@
     <dimen name="foreground_radius">16dp</dimen>
     <dimen name="menu_radius">8dp</dimen>
     <dimen name="big_gap">32dp</dimen>
+    <dimen name="bottom_sheet_collapsed_height">80dp</dimen>
 </resources>
