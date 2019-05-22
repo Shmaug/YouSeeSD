@@ -207,7 +207,7 @@ tramp
 .\#*
 
 # Org-mode
-.org-id-locations
+.org-id-tourLocations
 *_archive
 
 # flymake-mode

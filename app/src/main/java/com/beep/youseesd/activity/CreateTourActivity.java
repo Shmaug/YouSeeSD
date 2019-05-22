@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.CreateTourLocationAdapter;
-import com.beep.youseesd.model.Location;
+import com.beep.youseesd.model.TourLocation;
 import com.google.android.material.chip.ChipGroup;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
@@ -68,11 +68,11 @@ public class CreateTourActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         locationList.setLayoutManager(layoutManager);
 
-        List<Location> locations = createLocations();
-        adapter = new CreateTourLocationAdapter(locations);
+        List<TourLocation> tourLocations = createLocations();
+        adapter = new CreateTourLocationAdapter(tourLocations);
         locationList.setAdapter(adapter);
 
-        locationsFrontTitle.setText(locations.size() + " Locations Added");
+        locationsFrontTitle.setText(tourLocations.size() + " Locations Added");
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
 //        locationList.addItemDecoration(dividerItemDecoration);
 
@@ -87,16 +87,16 @@ public class CreateTourActivity extends AppCompatActivity {
         }
     }
 
-    private List<Location> createLocations() {
-        List<Location> locations = new ArrayList<>();
-        locations.add(new Location("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg"));
-        locations.add(new Location("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg"));
-        locations.add(new Location("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        return locations;
+    private List<TourLocation> createLocations() {
+        List<TourLocation> tourLocations = new ArrayList<>();
+        tourLocations.add(new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg"));
+        tourLocations.add(new TourLocation("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg"));
+        tourLocations.add(new TourLocation("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg"));
+        tourLocations.add(new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        tourLocations.add(new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        tourLocations.add(new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        tourLocations.add(new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        tourLocations.add(new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        return tourLocations;
     }
 }
