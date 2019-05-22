@@ -9,8 +9,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -19,13 +17,6 @@ import com.beep.youseesd.R;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.model.TourLocation;
 import com.beep.youseesd.model.TourStop;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,7 +39,7 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
     private Location mCurrentLocation;
     private String mLocationProvider;
 
-    private void LoadDefaultTour() {
+    private void loadDefaultTour() {
         TourLocation geisel = new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg");
         TourLocation MedicalEducation = new TourLocation("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg");
         TourLocation radyManagement = new TourLocation("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg");
@@ -78,7 +69,7 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        LoadDefaultTour();
+        loadDefaultTour();
     }
 
     @Override
@@ -98,7 +89,7 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
             if (f) {
                 try {
                     mMap.setMyLocationEnabled(true);
-                    BeginTour();
+                    beginTour();
                 } catch (SecurityException e) {
                 }
             } else {
@@ -119,15 +110,15 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            BeginTour();
+            beginTour();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GRANTED_LOCATION);
         }
 
-        DrawTour();
+        drawTour();
     }
 
-    public void BeginTour() {
+    public void beginTour() {
         mTourProgress = 0f;
 
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -142,11 +133,11 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
-    public void DrawTour(){
+    public void drawTour() {
         PolylineOptions route = new PolylineOptions();
         route.clickable(false);
 
-        for (int i = 0; i < mTour.getNumStops(); i++){
+        for (int i = 0; i < mTour.getNumStops(); i++) {
             route.add(mTour.getStop(i).getCoords());
         }
 
@@ -156,15 +147,15 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 
         // get the distance between the last and next stops
-        Location l = mTour.getStop((int)mTourProgress).toLocation();
-        Location n = mTour.getStop((int)mTourProgress + 1).toLocation();
+        Location l = mTour.getStop((int) mTourProgress).toLocation();
+        Location n = mTour.getStop((int) mTourProgress + 1).toLocation();
         float distance = l.distanceTo(n);
 
         // calculate tour progress by progress towards next stop
-        mTourProgress = (int)mTourProgress + location.distanceTo(l) / distance;
+//        mTourProgress = (int) mTourProgress + location.distanceTo(l) / distance;
     }
 
     @Override
