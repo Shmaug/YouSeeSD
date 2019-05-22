@@ -3,12 +3,17 @@ package com.beep.youseesd.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -23,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class OnTourActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
     private static final int PERMISSION_GRANTED_LOCATION = 0x01;
@@ -38,6 +44,10 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
 
     private Location mCurrentLocation;
     private String mLocationProvider;
+
+    private LinearLayout llBottomSheet;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private Toolbar mToolbar;
 
     private void loadDefaultTour() {
         TourLocation geisel = new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg");
@@ -61,15 +71,45 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
         });
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        mToolbar = (Toolbar) findViewById(R.id.tour_toolbar);
+        mToolbar.setTitleTextColor(Color.WHITE);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         loadDefaultTour();
+
+        llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+
+        // get the bottom sheet view
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        mMap.getUiSettings().setAllGesturesEnabled(false);
+                        break;
+
+                    default:
+                        mMap.getUiSettings().setAllGesturesEnabled(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
     }
 
     @Override
