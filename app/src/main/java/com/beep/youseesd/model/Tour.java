@@ -1,18 +1,20 @@
 package com.beep.youseesd.model;
 
-import java.util.ArrayList;
-
 public class Tour {
-    private long createdTime;
+    //private long createdTime;
     private boolean isPausing;
     private String title;
     private String imageUrl;
     private String subtitle;
     // used for determining which Tour will be chosen, most likely hardcoded
-    private ArrayList<Double> theme;
+    private double[] theme;
 
-    public Tour() {
-
+    public Tour(String title, String imageUrl, String subtitle, double[] theme) {
+        this.isPausing = false;
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.subtitle = subtitle;
+        this.theme = theme;
     }
 
     public Tour imageUrl(String url) {
@@ -45,7 +47,23 @@ public class Tour {
         return title;
     }
 
-    public ArrayList<Double> getTheme() {
+    public void togglePause() {
+        this.isPausing = !this.isPausing;
+    }
+
+    public double[] getTheme() {
         return theme;
+    }
+
+    public double getVariance(double[] userInputVector) {
+        double variance = 0.0;
+
+        // We assume that the userInputVector will have the same size as theme
+        for(int i = 0; i < theme.length; i++) {
+            double diff = theme[i] - userInputVector[i];
+            variance += (diff * diff);
+        }
+
+        return variance;
     }
 }
