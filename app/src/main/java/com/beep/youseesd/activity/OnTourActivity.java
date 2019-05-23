@@ -56,6 +56,7 @@ import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -87,6 +88,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     private RecyclerView mLocationManagerListView;
     private LinearLayoutManager layoutManager;
     private TourLocationManageAdapter mAdapter;
+
+    List<Marker> mMarkers;
 
     private void loadDefaultTour() {
         TourLocation geisel = new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg");
@@ -145,6 +148,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mMarkers = new ArrayList<>();
         loadDefaultTour();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.tour_drawer_layout);
@@ -319,10 +323,14 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 //        mMap.addPolyline(addPolyline(getDirectionResult(origin, destination)));
 
         for (TourStop t : mTour.getStops()) {
-            mMap.addMarker(new MarkerOptions().position(t.getCoords())
+            MarkerOptions markerOptions = new MarkerOptions().position(t.getCoords())
                     .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
                             .color(getResources().getColor(R.color.secondaryColor))
-                            .sizeDp(42))));
+                            .sizeDp(42)));
+
+//            mMarkers.add(m);
+            Marker addedMarker = mMap.addMarker(markerOptions);
+            mMarkers.add(addedMarker);
         }
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -333,6 +341,19 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
                 return true;
             }
         });
+    }
+
+
+    public void updateLocationPinMarkerVisited(boolean visited, int i) {
+        Marker m = mMarkers.get(i);
+        LatLng loc = m.getPosition();
+
+        MarkerOptions opt = new MarkerOptions().position(loc)
+                .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
+                        .color(getResources().getColor(visited ? R.color.primaryColor : R.color.secondaryColor))
+                        .sizeDp(42)));
+
+        mMarkers.set(i, mMap.addMarker(opt));
     }
 
     private void updateBottomSheetCollapsed(TourStop stop) {

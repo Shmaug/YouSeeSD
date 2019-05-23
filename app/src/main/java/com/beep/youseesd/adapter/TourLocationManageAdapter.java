@@ -68,6 +68,7 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
                         t.visitedTimestamp = 0;
                     }
                     notifyDataSetChanged();
+                    mActivity.updateLocationPinMarkerVisited(t.isVisited(), i);
                 }
             });
 
