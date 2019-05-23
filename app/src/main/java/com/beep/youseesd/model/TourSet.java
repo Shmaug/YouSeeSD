@@ -9,8 +9,9 @@ public class TourSet {
     public TourSet() {
         setOfTours = new ArrayList<>();
         // populate setOfTours with dummy data
-        setOfTours.add(new Tour("Dummy Title 1", "dummy imageUrl 1", "dummy subtitle 1", new double[] {0.5, 2.7}));
-        setOfTours.add(new Tour("Dummy Title 2", "dummy imageUrl 2", "dummy subtitle 2", new double[] {5.5, 3.3}));
+        setOfTours.add(new Tour("Dummy Title 1", "dummy.imageUrl.1", "dummy subtitle 1", new double[] {0.5, 9.7}));
+        setOfTours.add(new Tour("Dummy Title 2", "dummy.imageUrl.2", "dummy subtitle 2", new double[] {5.5, 3.3}));
+        setOfTours.add(new Tour("Dummy Title 3", "dummy.imageUrl.3", "dummy subtitle 3", new double[] {6.2, 0.5}));
     }
 
     public Tour findBestFitTour(double[] userInputVector) {

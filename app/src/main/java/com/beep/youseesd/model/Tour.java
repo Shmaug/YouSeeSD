@@ -1,20 +1,23 @@
 package com.beep.youseesd.model;
 
+import java.util.ArrayList;
+
 public class Tour {
-    //private long createdTime;
-    private boolean isPausing;
     private String title;
     private String imageUrl;
     private String subtitle;
+    // user to check if the location was visited during the tour
+    private boolean visited;
     // used for determining which Tour will be chosen, most likely hardcoded
-    private double[] theme;
+    private double[] tourTheme;
+    private ArrayList<Location> locations;
 
-    public Tour(String title, String imageUrl, String subtitle, double[] theme) {
-        this.isPausing = false;
+    public Tour(String title, String imageUrl, String subtitle, double[] tourTheme) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.subtitle = subtitle;
-        this.theme = theme;
+        this.tourTheme = tourTheme;
+        this.locations = new ArrayList<>();
     }
 
     public Tour imageUrl(String url) {
@@ -47,20 +50,20 @@ public class Tour {
         return title;
     }
 
-    public void togglePause() {
-        this.isPausing = !this.isPausing;
+    public void toggleVisited() {
+        this.visited = !this.visited;
     }
 
-    public double[] getTheme() {
-        return theme;
+    public double[] getTourTheme() {
+        return tourTheme;
     }
 
     public double getVariance(double[] userInputVector) {
         double variance = 0.0;
 
         // We assume that the userInputVector will have the same size as theme
-        for(int i = 0; i < theme.length; i++) {
-            double diff = theme[i] - userInputVector[i];
+        for(int i = 0; i < tourTheme.length; i++) {
+            double diff = tourTheme[i] - userInputVector[i];
             variance += (diff * diff);
         }
 

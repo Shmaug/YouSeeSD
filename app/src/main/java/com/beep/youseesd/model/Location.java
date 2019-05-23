@@ -4,6 +4,9 @@ public class Location {
     public String title;
     public String subtitle;
     public String imageUrl;
+    // I wish I knew how the locations work, this might be totally useless
+    public double lattitude;
+    public double longtitude;
 
     public Location() {
         this.title = "";
@@ -40,4 +43,5 @@ public class Location {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 }
