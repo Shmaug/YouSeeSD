@@ -72,6 +72,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private TextView mBottomTitle;
     private TextView mBottomSubtitle;
+    private LinearLayout mBottomSheetHeaderLayout;
 
     private RecyclerView mLocationManagerListView;
     private LinearLayoutManager layoutManager;
@@ -138,8 +139,19 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.tour_drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.tour_side_nav_layout);
+        mBottomSheetHeaderLayout = (LinearLayout) findViewById(R.id.tour_bottom_sheet_header_layout);
+        mBottomSheetHeaderLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
 
-        mLocationManagerListView = (RecyclerView)  findViewById(R.id.tour_location_manage_list);
+        mLocationManagerListView = (RecyclerView) findViewById(R.id.tour_location_manage_list);
         layoutManager = new LinearLayoutManager(this);
         mLocationManagerListView.setLayoutManager(layoutManager);
         mAdapter = new TourLocationManageAdapter(this, mTour.getStops());
@@ -281,7 +293,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
 
         // get the distance between the last and next stops
         Location l = mTour.getStop((int) mTourProgress).toLocation();
