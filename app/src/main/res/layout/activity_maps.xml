@@ -2,6 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tour_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,7 +22,7 @@
                 android:layout_height="56dp"
                 android:background="@color/primaryColor"
                 android:elevation="34dp"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+                app:menu="@menu/menu_tour" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -37,28 +38,58 @@
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/white"
             android:elevation="34dp"
             android:orientation="vertical"
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/bottom_sheet_collapsed_height"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/tour_bottom_sheet_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bottom_sheet_collapsed_height"
-                android:background="@color/white"
                 android:elevation="34dp"
-                android:gravity="center"
-                android:text="sheet peek"
-                android:textColor="@android:color/white" />
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="12dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="12dp">
 
-            <TextView
+                <TextView
+                    android:id="@+id/tour_bottom_sheet_header_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="sheet peek"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tour_bottom_sheet_header_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sheet peek"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="sheet content"
-                android:textColor="@android:color/white" />
+                android:background="@color/secondaryColor"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="sheet content"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -68,13 +99,33 @@
         android:id="@+id/tour_side_nav_layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end" >
+        android:layout_gravity="end">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/secondaryColor"
-            android:text="navigation drawer content" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Tour Locations"
+                android:textColor="@color/gray"
+                android:textSize="22sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tour_location_manage_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context=".activity.OnTourActivity"
+                tools:listitem="@layout/item_tour_location" />
+        </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
 

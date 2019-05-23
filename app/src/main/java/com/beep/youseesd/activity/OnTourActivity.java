@@ -3,34 +3,53 @@ package com.beep.youseesd.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
+import com.beep.youseesd.adapter.TourLocationManageAdapter;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.model.TourLocation;
 import com.beep.youseesd.model.TourStop;
+import com.beep.youseesd.util.WLog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 
-public class OnTourActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     private static final int PERMISSION_GRANTED_LOCATION = 0x01;
     private static final long INTERVAL = 2000;
     private static final long FASTEST_INTERVAL = 1000;
@@ -48,6 +67,15 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
     private LinearLayout llBottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
     private Toolbar mToolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
+
+    private TextView mBottomTitle;
+    private TextView mBottomSubtitle;
+
+    private RecyclerView mLocationManagerListView;
+    private LinearLayoutManager layoutManager;
+    private TourLocationManageAdapter mAdapter;
 
     private void loadDefaultTour() {
         TourLocation geisel = new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg");
@@ -59,18 +87,39 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
 
         mTour = new Tour("Default Tour", new TourStop[]{
                 new TourStop(32.877974, -117.237469, centerHall),
-                new TourStop(32.878154, -117.237549, null),
-                new TourStop(32.879332, -117.237566, null),
+//                new TourStop(32.878154, -117.237549, null),
+//                new TourStop(32.879332, -117.237566, null),
                 new TourStop(32.879777, -117.236958, priceCenterWest),
-                new TourStop(32.880323, -117.236296, null),
-                new TourStop(32.880364, -117.236587, null),
-                new TourStop(32.880327, -117.237036, null),
+//                new TourStop(32.880323, -117.236296, null),
+//                new TourStop(32.880364, -117.236587, null),
+//                new TourStop(32.880327, -117.237036, null),
                 new TourStop(32.880275, -117.237557, geisel),
-                new TourStop(32.880227, -117.237991, null),
+//                new TourStop(32.880227, -117.237991, null),
                 new TourStop(32.880197, -117.239942, peterson),
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_show_locations:
+                WLog.i("menu item clicked");
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_tour, menu);
+        menu.findItem(R.id.menu_show_locations).setIcon(
+                new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_view_list_alt)
+                        .actionBar().color(Color.WHITE)
+        );
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +128,25 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
 
         mToolbar = (Toolbar) findViewById(R.id.tour_toolbar);
         mToolbar.setTitleTextColor(Color.WHITE);
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         loadDefaultTour();
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.tour_drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.tour_side_nav_layout);
+
+        mLocationManagerListView = (RecyclerView)  findViewById(R.id.tour_location_manage_list);
+        layoutManager = new LinearLayoutManager(this);
+        mLocationManagerListView.setLayoutManager(layoutManager);
+        mAdapter = new TourLocationManageAdapter(this, mTour.getStops());
+        mLocationManagerListView.setAdapter(mAdapter);
+
+        mBottomTitle = (TextView) findViewById(R.id.tour_bottom_sheet_header_title);
+        mBottomSubtitle = (TextView) findViewById(R.id.tour_bottom_sheet_header_subtitle);
 
         llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
@@ -175,6 +238,7 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
 
     public void drawTour() {
         PolylineOptions route = new PolylineOptions();
+        route.color(getResources().getColor(R.color.primaryColor));
         route.clickable(false);
 
         for (int i = 0; i < mTour.getNumStops(); i++) {
@@ -182,6 +246,36 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
         }
 
         mMap.addPolyline(route);
+
+        for (TourStop t : mTour.getStops()) {
+            mMap.addMarker(new MarkerOptions().position(t.getCoords())
+                    .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
+                            .color(getResources().getColor(R.color.secondaryColor))
+                            .sizeDp(42))));
+        }
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                int id = Integer.parseInt(marker.getId().substring(1));
+                updateBottomSheetCollapsed(mTour.getStop(id));
+                return true;
+            }
+        });
+    }
+
+    private void updateBottomSheetCollapsed(TourStop stop) {
+        mBottomTitle.setText(stop.getTourLocation().title);
+        mBottomSubtitle.setText(stop.getTourLocation().subtitle);
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Override

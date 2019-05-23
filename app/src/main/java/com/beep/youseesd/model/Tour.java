@@ -15,6 +15,7 @@ public class Tour implements Parcelable {
         setTitle(title);
         this.route = route;
     }
+
     protected Tour(Parcel in) {
         createdTime = in.readLong();
         isPausing = in.readByte() != 0;
@@ -81,6 +82,15 @@ public class Tour implements Parcelable {
         return title;
     }
 
-    public TourStop getStop(int index){ return route[index]; }
-    public int getNumStops() { return route.length; }
+    public TourStop getStop(int index) {
+        return route[index];
+    }
+
+    public TourStop[] getStops() {
+        return route;
+    }
+
+    public int getNumStops() {
+        return route.length;
+    }
 }
