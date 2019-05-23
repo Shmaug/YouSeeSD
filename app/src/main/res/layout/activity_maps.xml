@@ -10,18 +10,20 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tour_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:background="@color/primaryColor"
-                android:elevation="34dp"
+                android:elevation="12dp"
                 app:menu="@menu/menu_tour" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -39,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:elevation="34dp"
+            android:elevation="12dp"
             android:orientation="vertical"
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/bottom_sheet_collapsed_height"
@@ -49,7 +51,6 @@
                 android:id="@+id/tour_bottom_sheet_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bottom_sheet_collapsed_height"
-                android:elevation="34dp"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
@@ -74,7 +75,6 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,6 +104,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:orientation="vertical">
 
             <TextView
@@ -113,15 +114,17 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:minHeight="56dp"
                 android:text="Tour Locations"
                 android:textColor="@color/gray"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tour_location_manage_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
+                android:elevation="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:context=".activity.OnTourActivity"
                 tools:listitem="@layout/item_tour_location" />

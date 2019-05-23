@@ -46,8 +46,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+
+import org.joda.time.DateTime;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     private static final int PERMISSION_GRANTED_LOCATION = 0x01;
@@ -138,6 +148,20 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         loadDefaultTour();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.tour_drawer_layout);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                // to update the visited time in real-time.
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        });
+
         mNavigationView = (NavigationView) findViewById(R.id.tour_side_nav_layout);
         mBottomSheetHeaderLayout = (LinearLayout) findViewById(R.id.tour_bottom_sheet_header_layout);
         mBottomSheetHeaderLayout.setOnClickListener(new View.OnClickListener() {
@@ -248,16 +272,51 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setApiKey(getString(R.string.google_maps_key))
+                .setConnectTimeout(5, TimeUnit.SECONDS)
+                .setReadTimeout(5, TimeUnit.SECONDS)
+                .setWriteTimeout(5, TimeUnit.SECONDS);
+    }
+
+    private DirectionsResult getDirectionResult(com.google.maps.model.LatLng origin, com.google.maps.model.LatLng destination) {
+        try {
+            DateTime now = new DateTime();
+            DirectionsResult result = DirectionsApi.newRequest(getGeoContext())
+                    .mode(TravelMode.WALKING)
+                    .origin(origin)
+                    .destination(destination)
+                    .departureTime(now)
+                    .await();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private PolylineOptions addPolyline(DirectionsResult results) {
+        List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+        PolylineOptions out = new PolylineOptions().addAll(decodedPath);
+        return out;
+    }
+
     public void drawTour() {
         PolylineOptions route = new PolylineOptions();
         route.color(getResources().getColor(R.color.primaryColor));
         route.clickable(false);
 
-        for (int i = 0; i < mTour.getNumStops(); i++) {
-            route.add(mTour.getStop(i).getCoords());
-        }
+//        for (int i = 0; i < mTour.getNumStops(); i++) {
+//            route.add(mTour.getStop(i).getCoords());
+//        }
+//        mMap.addPolyline(route);
 
-        mMap.addPolyline(route);
+        com.google.maps.model.LatLng origin = new com.google.maps.model.LatLng(mTour.getStop(0).getCoords().latitude, mTour.getStop(0).getCoords().longitude);
+        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(mTour.getStop(1).getCoords().latitude, mTour.getStop(1).getCoords().longitude);
+        WLog.i("origin: " + origin + ", destination: " + destination);
+//        mMap.addPolyline(addPolyline(getDirectionResult(origin, destination)));
 
         for (TourStop t : mTour.getStops()) {
             mMap.addMarker(new MarkerOptions().position(t.getCoords())
