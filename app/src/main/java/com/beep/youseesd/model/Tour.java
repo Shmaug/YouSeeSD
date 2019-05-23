@@ -1,23 +1,21 @@
 package com.beep.youseesd.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Tour {
     private String title;
     private String imageUrl;
     private String subtitle;
-    // user to check if the location was visited during the tour
-    private boolean visited;
     // used for determining which Tour will be chosen, most likely hardcoded
     private double[] tourTheme;
-    private ArrayList<Location> locations;
+    private HashSet<Location> locations;
 
     public Tour(String title, String imageUrl, String subtitle, double[] tourTheme) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.subtitle = subtitle;
         this.tourTheme = tourTheme;
-        this.locations = new ArrayList<>();
+        this.locations = new HashSet<Location>();
     }
 
     public Tour imageUrl(String url) {
@@ -50,14 +48,20 @@ public class Tour {
         return title;
     }
 
-    public void toggleVisited() {
-        this.visited = !this.visited;
-    }
-
     public double[] getTourTheme() {
         return tourTheme;
     }
 
+    public HashSet<Location> getLocations() {
+        return locations;
+    }
+
+    // this method will only be used if algorithm #2 is selected
+    public void addLocation(Location l) {
+        locations.add(l);
+    }
+
+    // this method will only be used if algorithm #1 is selected
     public double getVariance(double[] userInputVector) {
         double variance = 0.0;
 
