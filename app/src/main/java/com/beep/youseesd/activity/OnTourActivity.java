@@ -164,7 +164,7 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
         float distance = l.distanceTo(n);
 
         // calculate tour progress by progress towards next stop
-        mTourProgress = (int)mTourProgress + location.distanceTo(l) / distance;
+        //mTourProgress = (int)mTourProgress + location.distanceTo(l) / distance;
     }
 
     @Override
