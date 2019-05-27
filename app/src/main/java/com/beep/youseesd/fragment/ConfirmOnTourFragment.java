@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.ConfirmLocationAdapter;
-import com.beep.youseesd.model.Location;
+import com.beep.youseesd.model.TourLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +46,13 @@ public class ConfirmOnTourFragment extends Fragment {
         confirmTourListView.setAdapter(adapter);
     }
 
-    private List<Location> createLocations() {
-        List<Location> locations = new ArrayList<>();
-        locations.add(new Location("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg"));
-        locations.add(new Location("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg"));
-        locations.add(new Location("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg"));
-        locations.add(new Location("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
-        locations.add(new Location("York Hall", "The largest lecture hall", "https://ucpa.ucsd.edu/images/image_library/York-Hall.jpg"));
-        return locations;
+    private List<TourLocation> createLocations() {
+        List<TourLocation> tourLocations = new ArrayList<>();
+        tourLocations.add(new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg"));
+        tourLocations.add(new TourLocation("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg"));
+        tourLocations.add(new TourLocation("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg"));
+        tourLocations.add(new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"));
+        tourLocations.add(new TourLocation("York Hall", "The largest lecture hall", "https://ucpa.ucsd.edu/images/image_library/York-Hall.jpg"));
+        return tourLocations;
     }
 }

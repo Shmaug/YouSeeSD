@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
-import com.beep.youseesd.model.Location;
+import com.beep.youseesd.model.TourLocation;
 import com.bumptech.glide.Glide;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -22,10 +22,10 @@ public class CreateTourLocationAdapter extends RecyclerView.Adapter<RecyclerView
 
     private static final int LOCATION_VIEW = 0x01;
 
-    private List<Location> locations;
+    private List<TourLocation> tourLocations;
 
-    public CreateTourLocationAdapter(List<Location> locations) {
-        this.locations = locations;
+    public CreateTourLocationAdapter(List<TourLocation> tourLocations) {
+        this.tourLocations = tourLocations;
     }
 
     @NonNull
@@ -41,10 +41,10 @@ public class CreateTourLocationAdapter extends RecyclerView.Adapter<RecyclerView
         if (holder instanceof LocationViewHolder) {
             LocationViewHolder h = (LocationViewHolder) holder;
 
-            h.title.setText(locations.get(i).title);
-            h.subtitle.setText(locations.get(i).subtitle);
+            h.title.setText(tourLocations.get(i).title);
+            h.subtitle.setText(tourLocations.get(i).subtitle);
             Glide.with(h.imageView.getContext())
-                    .load(locations.get(i).imageUrl)
+                    .load(tourLocations.get(i).imageUrl)
                     .centerCrop()
                     .into(h.imageView);
         }
@@ -52,7 +52,7 @@ public class CreateTourLocationAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return locations.size();
+        return tourLocations.size();
     }
 
     static class LocationViewHolder extends RecyclerView.ViewHolder {

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beep.youseesd.R;
-import com.beep.youseesd.model.Location;
+import com.beep.youseesd.model.TourLocation;
 import com.bumptech.glide.Glide;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -25,17 +25,17 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int LOCATION_VIEW = 0x02;
     private static final int FOOTER_VIEW = 0x03;
 
-    private List<Location> locations;
+    private List<TourLocation> tourLocations;
 
-    public ConfirmLocationAdapter(List<Location> locations) {
-        this.locations = locations;
+    public ConfirmLocationAdapter(List<TourLocation> tourLocations) {
+        this.tourLocations = tourLocations;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return TRANSPARENT_HEADER_VIEW;
-        } else if (position >= locations.size()) {
+        } else if (position >= tourLocations.size()) {
             return FOOTER_VIEW;
         }
 
@@ -62,10 +62,10 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         if (holder instanceof LocationViewHolder) {
             LocationViewHolder h = (LocationViewHolder) holder;
-            h.title.setText(locations.get(i).title);
-            h.subtitle.setText(locations.get(i).subtitle);
+            h.title.setText(tourLocations.get(i).title);
+            h.subtitle.setText(tourLocations.get(i).subtitle);
             Glide.with(h.imageView.getContext())
-                    .load(locations.get(i).imageUrl)
+                    .load(tourLocations.get(i).imageUrl)
                     .centerCrop()
                     .into(h.imageView);
         } else if (holder instanceof HeaderViewHolder) {
@@ -84,7 +84,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return locations.size() + 1;
+        return tourLocations.size() + 1;
     }
 
     static class LocationViewHolder extends RecyclerView.ViewHolder {
