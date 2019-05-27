@@ -228,8 +228,8 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onLocationChanged(Location location) {
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-        //updateLocation(location);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
+        updateLocation(location);
     }
 
     @Override
@@ -252,6 +252,6 @@ public class OnTourActivity extends FragmentActivity implements OnMapReadyCallba
         Location l = new Location(mLocationProvider);
         l.setLatitude(latLng.latitude);
         l.setLongitude(latLng.longitude);
-        updateLocation(l);
+        //updateLocation(l);
     }
 }
