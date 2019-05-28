@@ -9,6 +9,8 @@ public class Tour {
     // used for determining which Tour will be chosen, most likely hardcoded
     private double[] tourTheme;
     private HashSet<Location> locations;
+    // used to store the feedback results
+    private int feedback;
 
     public Tour(String title, String imageUrl, String subtitle, double[] tourTheme) {
         this.title = title;
@@ -56,9 +58,9 @@ public class Tour {
         return locations;
     }
 
-    // this method will only be used if algorithm #2 is selected
-    public void addLocation(Location l) {
-        locations.add(l);
+    public void incrementLike(int feedback) {
+        // feedback must be 1 or -1
+        this.feedback += feedback;
     }
 
     // this method will only be used if algorithm #1 is selected
