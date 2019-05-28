@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/intro_carousel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:autoPlay="false"
+        app:fillColor="#FFFFFFFF"
+        app:indicatorGravity="start|bottom"
+        app:indicatorMarginHorizontal="16dp"
+        app:indicatorMarginVertical="125dp"
+        app:pageColor="@color/white_translucent_70"
+        app:radius="4dp"
+        app:strokeWidth="0dp" />
+
+    <View
+        android:id="@+id/intro_ghost_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/intro_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/intro_ghost_view"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/intro_title_text"
+        android:textColor="@color/white"
+        android:textSize="38sp" />
+
+    <TextView
+        android:id="@+id/intro_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/intro_ghost_view"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="-15dp"
+        android:text="@string/intro_subtitle_text"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/intro_logo_image"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="YouSeeSD"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <com.mikepenz.iconics.view.IconicsButton
+        android:id="@+id/intro_join_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/rounded_corner"
+        android:padding="10dp"
+        android:text="Explore UCSD just by one click"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/login_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/intro_join_btn"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/intro_login_guide_text"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/intro_ucsd_logo_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ucsd_logo" />
+
+</RelativeLayout>
