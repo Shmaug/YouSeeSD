@@ -48,6 +48,13 @@ dependencies {
     // backdrop
     implementation 'com.github.pedromassango:IBackdrop:3.0.0'
 
+    // intro
+    implementation 'com.synnapps:carouselview:0.1.5'
+
+    // image filters
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
     // google maps API
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.maps:google-maps-services:0.1.20'
@@ -55,12 +62,18 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
 
+    // firebase API
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
+
+    // OpenWeatherMap API
+    implementation 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:2.0.2'
+
     //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-auth:16.2.1'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'androidx.fragment:fragment:1.0.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
