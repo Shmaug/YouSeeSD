@@ -55,14 +55,15 @@
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/intro_logo_image"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:visibility="gone"
             android:text="YouSeeSD"
             android:textColor="@color/white"
             android:textSize="18sp" />
