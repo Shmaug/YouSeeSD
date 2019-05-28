@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.beep.youseesd.R;
 import com.beep.youseesd.fragment.TourListFragment;
-import com.beep.youseesd.handler.AuthHandler;
 import com.beep.youseesd.util.WLog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -97,7 +96,6 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
   }
 
   private void handleUserLogin() {
-    AuthHandler.signinAnonymously(this, this);
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     WLog.i(currentUser != null ? "uid: " + currentUser.getUid() : "currentUser is null");
     if (currentUser == null) {
