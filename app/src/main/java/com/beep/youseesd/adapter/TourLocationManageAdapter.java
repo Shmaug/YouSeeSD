@@ -13,6 +13,7 @@ import com.beep.youseesd.R;
 import com.beep.youseesd.activity.OnTourActivity;
 import com.beep.youseesd.model.TourLocation;
 import com.beep.youseesd.model.TourStop;
+import com.google.android.material.button.MaterialButton;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
@@ -25,6 +26,7 @@ import java.util.List;
 public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TOUR_LOCATION_VIEW = 0x01;
+    private static final int TOUR_END_FOOTER_VIEW = 0x02;
 
     private OnTourActivity mActivity;
     private List<TourStop> mStops;
@@ -39,6 +41,10 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemViewType(int position) {
+        if (position == mStops.size()) {
+            return TOUR_END_FOOTER_VIEW;
+        }
+
         return TOUR_LOCATION_VIEW;
     }
 
@@ -50,6 +56,9 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
             case TOUR_LOCATION_VIEW:
                 View v = inflater.inflate(R.layout.item_tour_location, parent, false);
                 return new TourLocationManageViewHolder(v);
+            case TOUR_END_FOOTER_VIEW:
+                View footerView = inflater.inflate(R.layout.item_tour_end_footer, parent, false);
+                return new EndTourFooterViewHolder(footerView);
         }
         return null;
     }
@@ -69,6 +78,7 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
                     }
                     notifyDataSetChanged();
                     mActivity.updateLocationPinMarkerVisited(t.isVisited(), i);
+                    mActivity.updateBottomSheetCollapsed(mStops.get(i));
                 }
             });
 
@@ -92,12 +102,15 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
                         .color(mActivity.getResources().getColor(R.color.light_gray))
                         .sizeDp(16));
             }
+        } else if (holder instanceof EndTourFooterViewHolder) {
+            EndTourFooterViewHolder h = (EndTourFooterViewHolder) holder;
+            h.mEndTourButton.setOnClickListener(mActivity);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mStops.size();
+        return mStops.size() + 1;
     }
 
     static class TourLocationManageViewHolder extends RecyclerView.ViewHolder {
@@ -114,6 +127,16 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
             mTitleView = (TextView) itemView.findViewById(R.id.item_tour_location_title);
             mSubtitleView = (TextView) itemView.findViewById(R.id.item_tour_location_subtitle);
             mCheckImageView = (IconicsImageView) itemView.findViewById(R.id.item_tour_location_checkview);
+        }
+    }
+
+    static class EndTourFooterViewHolder extends RecyclerView.ViewHolder {
+
+        private View mEndTourButton;
+
+        EndTourFooterViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mEndTourButton = (MaterialButton) itemView.findViewById(R.id.item_end_tour_btn);
         }
     }
 }

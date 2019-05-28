@@ -51,6 +51,7 @@ dependencies {
     // google maps API
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.maps:google-maps-services:0.1.20'
+    //noinspection GradleDynamicVersion
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
 

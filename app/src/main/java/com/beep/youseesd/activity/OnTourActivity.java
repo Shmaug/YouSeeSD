@@ -2,6 +2,7 @@ package com.beep.youseesd.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,6 +17,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.model.TourLocation;
 import com.beep.youseesd.model.TourStop;
 import com.beep.youseesd.util.WLog;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,6 +48,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
@@ -52,15 +57,17 @@ import com.google.maps.android.PolyUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
     private static final int PERMISSION_GRANTED_LOCATION = 0x01;
     private static final long INTERVAL = 2000;
     private static final long FASTEST_INTERVAL = 1000;
@@ -83,12 +90,18 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private TextView mBottomTitle;
     private TextView mBottomSubtitle;
-    private LinearLayout mBottomSheetHeaderLayout;
+    private ViewGroup mBottomSheetHeaderLayout;
+    private IconicsImageView mBottomImageView;
+
+    private MaterialButton mMarkVisitedButton;
+    private TextView mVisitText;
+    private LinearLayout mTagContentLayout;
 
     private RecyclerView mLocationManagerListView;
     private LinearLayoutManager layoutManager;
     private TourLocationManageAdapter mAdapter;
 
+    private int mSelectedTour = -1;
     List<Marker> mMarkers;
 
     private void loadDefaultTour() {
@@ -166,8 +179,15 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
+        mTagContentLayout = (LinearLayout) findViewById(R.id.tour_bottom_tags_layout);
+
+
+        mBottomImageView = (IconicsImageView) findViewById(R.id.tour_bottom_image);
+        mMarkVisitedButton = (MaterialButton) findViewById(R.id.tour_visit_mark_btn);
+        mVisitText = (TextView) findViewById(R.id.tour_bottom_visit_text);
+        mMarkVisitedButton.setOnClickListener(this);
         mNavigationView = (NavigationView) findViewById(R.id.tour_side_nav_layout);
-        mBottomSheetHeaderLayout = (LinearLayout) findViewById(R.id.tour_bottom_sheet_header_layout);
+        mBottomSheetHeaderLayout = (ViewGroup) findViewById(R.id.tour_bottom_sheet_header_layout);
         mBottomSheetHeaderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,6 +219,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
                 switch (newState) {
                     case BottomSheetBehavior.STATE_EXPANDED:
                         mMap.getUiSettings().setAllGesturesEnabled(false);
+                        showPlaceDetails(mSelectedTour);
                         break;
 
                     default:
@@ -212,7 +233,17 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
             }
         });
+    }
 
+    private void showPlaceDetails(int id) {
+        if (id < 0) {
+            return;
+        }
+
+        Glide.with(this)
+                .load(mTour.getStop(id).getTourLocation().imageUrl)
+                .centerCrop()
+                .into(mBottomImageView);
     }
 
     @Override
@@ -336,8 +367,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                int id = Integer.parseInt(marker.getId().substring(1));
-                updateBottomSheetCollapsed(mTour.getStop(id));
+                mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+                updateBottomSheetCollapsed(mTour.getStop(mSelectedTour));
                 return true;
             }
         });
@@ -356,9 +387,12 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         mMarkers.set(i, mMap.addMarker(opt));
     }
 
-    private void updateBottomSheetCollapsed(TourStop stop) {
+    public void updateBottomSheetCollapsed(TourStop stop) {
         mBottomTitle.setText(stop.getTourLocation().title);
         mBottomSubtitle.setText(stop.getTourLocation().subtitle);
+        mMarkVisitedButton.setTextColor(getResources().getColor(stop.getTourLocation().isVisited() ? R.color.light_gray : R.color.primaryColor));
+        mMarkVisitedButton.setText(stop.getTourLocation().isVisited() ? "MARK UNVISITED" : "MARK VISITED");
+        mVisitText.setText(stop.getTourLocation().isVisited() ? "Visited " + (Calendar.getInstance().getTimeInMillis() - stop.getTourLocation().visitedTimestamp) + " mins ago" : "0.7 miles away");
     }
 
     private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
@@ -397,5 +431,47 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tour_visit_mark_btn:
+            case R.id.item_tour_location_layout:
+                if (mSelectedTour < 0) {
+                    break;
+                }
+
+                TourLocation t = mTour.getStop(mSelectedTour).getTourLocation();
+                if (!t.isVisited()) {
+                    t.visitedTimestamp = Calendar.getInstance().getTimeInMillis();
+                } else {
+                    t.visitedTimestamp = 0;
+                }
+
+                mAdapter.notifyDataSetChanged();
+                updateLocationPinMarkerVisited(t.isVisited(), mSelectedTour);
+                updateBottomSheetCollapsed(mTour.getStop(mSelectedTour));
+                break;
+
+            case R.id.item_end_tour_btn:
+                endTour();
+                break;
+        }
+    }
+
+    public void endTour() {
+        WLog.i("end tour clicked.");
+        new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?").setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).setPositiveButton("Yes, I am done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        }).create().show();
     }
 }
