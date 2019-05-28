@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.beep.youseesd.R;
 import com.beep.youseesd.handler.AuthHandler;
 import com.beep.youseesd.util.ImageUtil;
+import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -77,6 +76,8 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
             Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            WLog.i(newUser == null ? "newUser is null" : "newUser: " + newUser.getUid());
         }
     }
 }
