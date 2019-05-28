@@ -14,9 +14,9 @@ import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.mikepenz.iconics.view.IconicsButton;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -26,7 +26,7 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
     private CarouselView mCarouselView;
     private IconicsImageView mLogoImageView;
     private ImageView mUCSDLogoImageView;
-    private IconicsButton mRegisterButton;
+    private MaterialButton mRegisterButton;
 
     private static final String IMAGE_LINKS[] = {
             "https://ucpa.ucsd.edu/images/image_library/geisel-dusk.jpg",
@@ -38,7 +38,7 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        mRegisterButton = (IconicsButton) findViewById(R.id.intro_join_btn);
+        mRegisterButton = (MaterialButton) findViewById(R.id.intro_join_btn);
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,8 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
     @Override
     public void onComplete(@NonNull Task<AuthResult> task) {
         FirebaseUser newUser = task.getResult().getUser();
-        if (newUser.getUid() != null && !newUser.getUid().isEmpty()) {
+        WLog.i("newUserId: " + newUser.getUid());
+        if (!newUser.getUid().isEmpty()) {
             Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();

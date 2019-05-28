@@ -68,7 +68,7 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <com.mikepenz.iconics.view.IconicsButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/intro_join_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,10 +77,11 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="55dp"
-        android:background="@drawable/rounded_corner"
-        android:padding="10dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        style="@style/LoginButton"
         android:text="Explore UCSD just by one click"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/login_guide"
