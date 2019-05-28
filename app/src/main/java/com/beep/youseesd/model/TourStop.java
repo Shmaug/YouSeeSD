@@ -10,20 +10,29 @@ public class TourStop implements Parcelable {
     private TourLocation tourLocation;
     private LatLng coords;
 
-    public TourStop(double latitude, double longitude, TourLocation tourLocation){
+    public TourStop(double latitude, double longitude, TourLocation tourLocation) {
         coords = new LatLng(latitude, longitude);
         this.tourLocation = tourLocation;
     }
-    public TourStop(LatLng coords, TourLocation tourLocation){
+
+    public TourStop(LatLng coords, TourLocation tourLocation) {
         this.coords = coords;
         this.tourLocation = tourLocation;
     }
+
+    public TourLocation getTourLocation() {
+        return tourLocation;
+    }
+
     protected TourStop(Parcel in) {
         coords = new LatLng(in.readDouble(), in.readDouble());
         tourLocation = in.readParcelable(TourLocation.class.getClassLoader());
     }
 
-    public LatLng getCoords() { return coords; }
+    public LatLng getCoords() {
+        return coords;
+    }
+
     public Location toLocation() {
         Location l = new Location("");
         l.setLatitude(coords.latitude);

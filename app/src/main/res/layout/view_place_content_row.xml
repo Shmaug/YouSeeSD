@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/view_place_tag"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginRight="32dp"
+        app:iiv_color="@color/primaryColor"
+        app:iiv_icon="faw_hashtag" />
+
+    <TextView
+        android:id="@+id/view_place_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tag1, tag2, tag3, tag4"
+        android:textColor="@color/black" />
+
+</LinearLayout>

@@ -9,6 +9,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="EndTourButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/material_red</item>
+    </style>
+
     <style name="LoginButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="backgroundTint">@color/white</item>

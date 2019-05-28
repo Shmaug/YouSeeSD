@@ -4,19 +4,27 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TourLocation implements Parcelable {
+
     public String title;
     public String subtitle;
     public String imageUrl;
+    public long visitedTimestamp;
 
     public TourLocation(String title, String subtitle, String imageUrl) {
         this.title = title;
         this.subtitle = subtitle;
         this.imageUrl = imageUrl;
+        this.visitedTimestamp = 0;
     }
+
     public TourLocation(Parcel in) {
         title = in.readString();
         subtitle = in.readString();
         imageUrl = in.readString();
+    }
+
+    public boolean isVisited() {
+        return visitedTimestamp > 0;
     }
 
     // parcelable
