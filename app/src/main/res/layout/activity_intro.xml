@@ -80,19 +80,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
         style="@style/LoginButton"
-        android:text="Explore UCSD just by one click"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/login_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/intro_join_btn"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/intro_login_guide_text"
-        android:textColor="@color/white"
+        android:text="@string/intro_join_btn_text"
         android:textSize="16sp" />
 
     <ImageView
