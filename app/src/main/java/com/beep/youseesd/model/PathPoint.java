@@ -8,7 +8,7 @@ public class PathPoint {
     private double latitude;
     private double longitude;
     private ArrayList<PathPoint> neighbors;
-    private static final double walkSpeed = 1.5; // value is temporary and must be changed
+    private static final double WALK_SPEED = 1.5; // value is temporary and must be changed
 
     public PathPoint() {
         latitude = 0.0;
