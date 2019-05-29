@@ -50,7 +50,7 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
     mLogoImageView = (IconicsImageView) findViewById(R.id.intro_logo_image);
     Glide.with(this)
         .load(getResources()
-            .getDrawable(R.drawable.ic_launcher))
+            .getDrawable(R.drawable.intro_logo))
         .into(mLogoImageView);
 
     //display UCSD school logo image bottom
