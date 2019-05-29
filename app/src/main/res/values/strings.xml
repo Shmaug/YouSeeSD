@@ -11,8 +11,8 @@
     <string name="title_create_tour_okay">Create</string>
     <string name="title_delete_tour">Delete</string>
     <string name="title_edit_tour">Edit</string>
-    <string name="intro_title_text">Explore UC San Diego \nin just one click</string>
-    <string name="intro_subtitle_text">no reservations \nno wasted time \njust UCSD</string>
-    <string name="intro_join_btn_text">Get Started</string>
+    <string name="intro_title_text">A branding text\nmust go\nhere.</string>
+    <string name="intro_subtitle_text">A sub title text must gohere.\nI hope it at least\nhas three lines.</string>
+    <string name="intro_login_guide_text">No email is required.</string>
 </resources>
 

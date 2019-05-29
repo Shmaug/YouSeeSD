@@ -29,9 +29,9 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
   private MaterialButton mRegisterButton;
 
   private static final String[] IMAGE_LINKS = {
-      "https://ucpa.ucsd.edu/images/image_library/triton-fountain-at-price-center.jpg",
+      "https://ucpa.ucsd.edu/images/image_library/geisel-dusk.jpg",
       "https://ucpa.ucsd.edu/images/image_library/Mayer-Hall-at-Revelle-College.jpg",
-      "https://ucpa.ucsd.edu/images/image_library/wellsfargohall.jpg"
+      "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"
   };
 
   @Override
@@ -45,15 +45,12 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
         AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this);
       }
     });
-
-    //display YouSeeSD logo image top-left
     mLogoImageView = (IconicsImageView) findViewById(R.id.intro_logo_image);
     Glide.with(this)
         .load(getResources()
             .getDrawable(R.drawable.intro_logo))
         .into(mLogoImageView);
 
-    //display UCSD school logo image bottom
     mUCSDLogoImageView = (ImageView) findViewById(R.id.intro_ucsd_logo_image);
     Glide.with(this).load(R.drawable.ucsd_logo).override(250, 50).into(mUCSDLogoImageView);
 
