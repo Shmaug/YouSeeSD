@@ -9,8 +9,6 @@ public class Tour {
     // used for determining which Tour will be chosen, most likely hardcoded
     private double[] tourTheme;
     private HashSet<Location> locations;
-    // used to store the feedback results
-    private int feedback;
 
     public Tour(String title, String imageUrl, String subtitle, double[] tourTheme) {
         this.title = title;
@@ -58,12 +56,8 @@ public class Tour {
         return locations;
     }
 
-    public void incrementLike(int feedback) {
-        // feedback must be 1 or -1
-        this.feedback += feedback;
-    }
-
     // this method will only be used if algorithm #1 is selected
+    /*
     public double getVariance(double[] userInputVector) {
         double variance = 0.0;
 
@@ -75,4 +69,5 @@ public class Tour {
 
         return variance;
     }
+    */
 }

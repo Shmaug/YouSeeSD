@@ -17,7 +17,12 @@ public class TourSet {
         userTours.add(bestFitTour);
     }
 
+    public Tour recommendTour(ArrayList<Theme> userInputThemes) {
+        return null;
+    }
+
     // algorithm #1: Use vectors of doubles to find the best fit
+    /*
     public Tour findBestFitTour(ArrayList<Theme> userInputVector) {
         if(userInputVector == null) {return null;}
 
@@ -40,5 +45,6 @@ public class TourSet {
         //userTours.add(setOfTours.get(minIndex));
         return setOfTours.get(minIndex);
     }
+    */
 
 }
