@@ -1,6 +1,8 @@
 package com.beep.youseesd.model;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PathPoint {
     private double latitude;
@@ -27,7 +29,7 @@ public class PathPoint {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-    public void setNeighbors(ArrayList<PathPoint> neighbors) {
+    public void setNeighborList(ArrayList<PathPoint> neighbors) {
         this.neighbors = neighbors;
     }
     public void addNeighbor(PathPoint neighbor) {
@@ -41,7 +43,7 @@ public class PathPoint {
     public double getLongitude() {
         return this.longitude;
     }
-    public ArrayList<PathPoint> getNeighbors() {
+    public ArrayList<PathPoint> getNeighborList() {
         return this.neighbors;
     }
 
@@ -55,5 +57,21 @@ public class PathPoint {
         // returns the estimated travel time in minutes
         double distance = this.getDistance(from);
         return (int) Math.round(distance / walkSpeed);
+    }
+
+    public PathPoint findNearestPathPoint(ArrayList<PathPoint> list) {
+        // arbitrary large distance
+        double shortestDistance = 9999999.9;
+        PathPoint nearestPathPoint = null;
+
+        // iterate only once
+        for(PathPoint p : list) {
+            if(this.getDistance(p) < shortestDistance) {
+                shortestDistance = this.getDistance(p);
+                nearestPathPoint = p;
+            }
+        }
+
+        return nearestPathPoint;
     }
 }

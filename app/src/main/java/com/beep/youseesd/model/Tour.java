@@ -1,58 +1,46 @@
 package com.beep.youseesd.model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class Tour {
     private String title;
     private String imageUrl;
     private String subtitle;
     // used for determining which Tour will be chosen, most likely hardcoded
-    private double[] tourTheme;
-    private HashSet<Location> locations;
+    private ArrayList<Theme> themes;
+    private ArrayList<Location> locations;
+    private ArrayList<PathPoint> path;
 
-    public Tour(String title, String imageUrl, String subtitle, double[] tourTheme) {
+    public Tour(String title, String imageUrl, String subtitle, ArrayList<Theme> themes, ArrayList<Location> locations, ArrayList<PathPoint> path) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.subtitle = subtitle;
-        this.tourTheme = tourTheme;
-        this.locations = new HashSet<Location>();
-    }
-
-    public Tour imageUrl(String url) {
-        this.imageUrl = url;
-        return this;
-    }
-
-    public Tour subTitle(String subtitle) {
-        this.subtitle = subtitle;
-        return this;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public Tour(String title) {
-        setTitle(title);
+        this.themes = themes == null ? new ArrayList<>() : themes;
+        this.locations = locations == null ? new ArrayList<>() : locations;
+        this.path = path == null ? new ArrayList<>() : path;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public double[] getTourTheme() {
-        return tourTheme;
+    public String getSubtitle() {
+        return subtitle;
     }
 
-    public HashSet<Location> getLocations() {
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public ArrayList<Theme> getThemeList() {
+        return themes;
+    }
+
+    public ArrayList<Location> getLocationList() {
         return locations;
     }
 
