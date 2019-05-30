@@ -3,59 +3,33 @@ package com.beep.youseesd.model;
 import java.util.ArrayList;
 
 public class Tour {
-    private String title;
-    private String imageUrl;
-    private String subtitle;
-    // used for determining which Tour will be chosen, most likely hardcoded
-    private ArrayList<Theme> themes;
-    private ArrayList<Location> locations;
-    private ArrayList<PathPoint> path;
+    public int tourId; // could be String type
+    public String title;
+    public String subtitle;
+    public String imageUrl;
+    public double [] themeVector;
+    public ArrayList<Location> locations;
+    private static final int NUM_THEMES = 13;
+    private static final int THEME_MAX_VALUE = 10;
 
-    public Tour(String title, String imageUrl, String subtitle, ArrayList<Theme> themes, ArrayList<Location> locations, ArrayList<PathPoint> path) {
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.subtitle = subtitle;
-        this.themes = themes == null ? new ArrayList<>() : themes;
-        this.locations = locations == null ? new ArrayList<>() : locations;
-        this.path = path == null ? new ArrayList<>() : path;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public ArrayList<Theme> getThemeList() {
-        return themes;
-    }
-
-    public ArrayList<Location> getLocationList() {
-        return locations;
+    public Tour() {
+        this.tourId = 0;
+        this.title = null;
+        this.subtitle = null;
+        this.imageUrl = null;
+        this.themeVector = new double[NUM_THEMES];
+        this.locations = new ArrayList<>();
     }
 
     // this method will only be used if algorithm #1 is selected
-    /*
-    public double getVariance(double[] userInputVector) {
-        double variance = 0.0;
+    public double getDifference(ArrayList<Theme> userInputThemes) {
+        double difference = 0.0;
 
-        // We assume that the userInputVector will have the same size as theme
-        for(int i = 0; i < tourTheme.length; i++) {
-            double diff = tourTheme[i] - userInputVector[i];
-            variance += (diff * diff);
+        for(Theme t : userInputThemes) {
+            difference += Math.abs(THEME_MAX_VALUE - this.themeVector[t.themeId]);
         }
 
-        return variance;
+        return difference;
     }
-    */
 }
+
