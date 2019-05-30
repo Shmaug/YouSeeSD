@@ -18,8 +18,4 @@ public class TourSet {
   public void addTour(Tour bestFitTour) {
     userTours.add(bestFitTour);
   }
-
-  public Tour recommendTour(List<Theme> userInputThemes) {
-    return null;
-  }
 }
