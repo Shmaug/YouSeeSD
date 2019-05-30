@@ -2,21 +2,21 @@ package com.beep.youseesd.adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.beep.youseesd.R;
 import com.beep.youseesd.activity.HomeActivity;
 import com.beep.youseesd.activity.OnTourActivity;
 import com.beep.youseesd.fragment.ConfirmOnTourFragment;
 import com.beep.youseesd.model.Tour;
+import com.beep.youseesd.util.DatabaseUtil;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.card.MaterialCardView;
@@ -25,7 +25,6 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.iconics.view.IconicsTextView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
-
 import java.util.List;
 
 public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -73,6 +72,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
     if (holder instanceof HomeTourViewHolder) {
       HomeTourViewHolder h = (HomeTourViewHolder) holder;
+      Tour t = mTours.get(i);
       h.titleView.setText(mTours.get(i).title);
       h.subtitleView.setText(mTours.get(i).subtitle);
       Glide.with(h.imageView.getContext())
@@ -89,7 +89,11 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             act.getFAB().setImageDrawable(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_play).color(Color.WHITE).sizeDp(24));
 
-            act.updateFragment(new ConfirmOnTourFragment(), "ConfirmOnTour");
+            ConfirmOnTourFragment fragment = new ConfirmOnTourFragment();
+            Bundle b = new Bundle();
+            b.putString(DatabaseUtil.TOUR_ID, t.tourId);
+            fragment.setArguments(b);
+            act.updateFragment(fragment, "ConfirmOnTour");
             act.getFAB().setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {

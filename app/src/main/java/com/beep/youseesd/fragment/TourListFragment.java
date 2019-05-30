@@ -42,11 +42,6 @@ public class TourListFragment extends Fragment {
   }
 
   @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-  }
-
-  @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
@@ -62,6 +57,7 @@ public class TourListFragment extends Fragment {
     adapter = new HomeTourAdapter((HomeActivity) getActivity(), new ArrayList<>());
     layoutManager = new LinearLayoutManager(view.getContext());
     tourListView.setLayoutManager(layoutManager);
+//    loadTours("jDbXXUNhVuSHE3y8tEbNNVZfzpJ3");
     loadTours(App.getUser().getUid());
   }
 
@@ -71,7 +67,9 @@ public class TourListFragment extends Fragment {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         List<Tour> tours = new ArrayList<>();
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+          String dsid = ds.getKey();
           Tour t = ds.getValue(Tour.class);
+          t.tourId = dsid;
           tours.add(t);
         }
 
