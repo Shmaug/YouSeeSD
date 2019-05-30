@@ -1,20 +1,25 @@
 package com.beep.youseesd.model;
 
-// theme = tags = hashtags(#)
+import java.util.ArrayList;
+import java.util.List;
+
 public class Theme {
-    private boolean includedInTour;
-    private double[] tagTheme;
 
-    public Theme(double [] tagTheme) {
-        this.tagTheme = tagTheme;
-        includedInTour = false;
-    }
+  public String themeId;
+  public String themeName;
+  public List<Location> locations;
+  public List<PathPoint> pathPoints;
+  public List<ChipTag> chipTags;
 
-    public void toggleInclusion() {
-        this.includedInTour = !this.includedInTour;
-    }
+  public Theme(String themeId, String themeName) {
+    this();
+    this.themeId = themeId;
+    this.themeName = themeName;
+  }
 
-    public double[] getTagTheme() {
-        return tagTheme;
-    }
+  public Theme() {
+    this.locations = new ArrayList<>();
+    this.pathPoints = new ArrayList<>();
+    this.chipTags = new ArrayList<>();
+  }
 }
