@@ -79,6 +79,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           .load(mTours.get(i).imageUrl)
           .centerCrop()
           .into(h.imageView);
+      h.tourTravelTimeView.setText(mTours.get(i).estimatedTime + " mins");
 
       h.cardView.setOnClickListener(v -> {
         switch (act.getAppBar().getFabAlignmentMode()) {
@@ -145,7 +146,9 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private IconicsImageView imageView;
     private IconicsTextView hashTextView1;
     private IconicsTextView hashTextView2;
+    private IconicsTextView hashTextView3;
     private IconicsImageView menuImageView;
+    private IconicsTextView tourTravelTimeView;
 
     public HomeTourViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -153,19 +156,23 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
       titleView = (TextView) itemView.findViewById(R.id.card_tour_title);
       subtitleView = (TextView) itemView.findViewById(R.id.card_tour_subtitle);
+      tourTravelTimeView = (IconicsTextView) itemView.findViewById(R.id.card_tour_eta);
+      tourTravelTimeView.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_clock).sizeDp(20).paddingDp(4).color(itemView.getContext().getColor(R.color.gray)));
 
       imageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_img);
       imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image).color(Color.GRAY).sizeDp(24));
 
       hashTextView1 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash1);
-      hashTextView1.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView1.getResources().getColor(R.color.gray)).sizeDp(12));
+      hashTextView1.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView1.getResources().getColor(R.color.dark_gray)).sizeDp(12));
 
       hashTextView2 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash2);
-      hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView2.getResources().getColor(R.color.gray)).sizeDp(12));
+      hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView2.getResources().getColor(R.color.dark_gray)).sizeDp(12));
+
+      hashTextView2 = (IconicsTextView) itemView.findViewById(R.id.card_tour_hash3);
+      hashTextView2.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag).color(hashTextView2.getResources().getColor(R.color.dark_gray)).sizeDp(12));
 
       menuImageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_menu);
-      menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_ellipsis_v).color(Color.GRAY).sizeDp(14));
-
+      menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(MaterialDesignIconic.Icon.gmi_more_vert).color(itemView.getContext().getColor(R.color.light_gray)).sizeDp(14));
     }
   }
 }

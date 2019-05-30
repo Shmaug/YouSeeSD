@@ -52,12 +52,11 @@
                     android:id="@+id/card_tour_menu"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_menu_btn"/>
+                    android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
-        <TextView
+        <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/card_tour_eta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,6 +64,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="20dp"
+                android:gravity="start|center_vertical"
                 android:textSize="12dp"
                 android:text="1hour 30min"/>
 
@@ -123,9 +123,9 @@
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/rounded_corner"
                     android:padding="5dp"
-                    android:text="Muir"
-                    android:textColor="@color/gray"
-                    app:iiv_all_color="@color/gray"/>
+                    android:text="markets"
+                    android:textColor="@color/dark_gray"
+                    app:iiv_all_color="@color/dark_gray"/>
 
             <com.mikepenz.iconics.view.IconicsTextView
                     android:id="@+id/card_tour_hash2"
@@ -133,9 +133,19 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corner"
                     android:padding="5dp"
-                    android:text="Engineering"
-                    android:textColor="@color/gray"
-                    app:iiv_all_color="@color/gray"/>
+                    android:text="engineering"
+                    android:textColor="@color/dark_gray"
+                    app:iiv_all_color="@color/dark_gray"/>
+
+            <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/card_tour_hash3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="5dp"
+                    android:text="warren"
+                    android:textColor="@color/dark_gray"
+                    app:iiv_all_color="@color/dark_gray"/>
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
