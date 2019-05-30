@@ -29,9 +29,9 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
   private MaterialButton mRegisterButton;
 
   private static final String[] IMAGE_LINKS = {
-      "https://ucpa.ucsd.edu/images/image_library/geisel-dusk.jpg",
+      "https://ucpa.ucsd.edu/images/image_library/triton-fountain-at-price-center.jpg",
       "https://ucpa.ucsd.edu/images/image_library/Mayer-Hall-at-Revelle-College.jpg",
-      "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg"
+      "https://ucpa.ucsd.edu/images/image_library/wellsfargohall.jpg"
   };
 
   @Override
