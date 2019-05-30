@@ -4,22 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Theme {
-
-  public String themeId;
+  //must be int type, ranging from 0 ~ (Tour.NUM_THEMES - 1)
+  public int themeId;
   public String themeName;
-  public List<Location> locations;
-  public List<PathPoint> pathPoints;
-  public List<ChipTag> chipTags;
-
-  public Theme(String themeId, String themeName) {
-    this();
-    this.themeId = themeId;
-    this.themeName = themeName;
-  }
 
   public Theme() {
-    this.locations = new ArrayList<>();
-    this.pathPoints = new ArrayList<>();
-    this.chipTags = new ArrayList<>();
+    this.themeId = 0;
+    this.themeName = null;
   }
 }

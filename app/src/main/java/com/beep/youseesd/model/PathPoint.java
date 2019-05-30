@@ -1,6 +1,7 @@
 package com.beep.youseesd.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PathPoint {
 
@@ -9,7 +10,7 @@ public class PathPoint {
 
   public double latitude;
   public double longitude;
-  public ArrayList<PathPoint> neighbors;
+  public List<PathPoint> neighbors;
 
   public PathPoint() {
     latitude = 0d;
@@ -49,7 +50,7 @@ public class PathPoint {
     return this.longitude;
   }
 
-  public ArrayList<PathPoint> getNeighborList() {
+  public List<PathPoint> getNeighborList() {
     return this.neighbors;
   }
 
