@@ -99,6 +99,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
               @Override
               public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), OnTourActivity.class);
+                intent.putExtra(DatabaseUtil.TOUR_ID, t.tourId);
                 act.startActivity(intent);
               }
             });

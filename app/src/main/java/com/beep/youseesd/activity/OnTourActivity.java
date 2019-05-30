@@ -31,9 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.TourLocationManageAdapter;
 import com.beep.youseesd.model.Tour;
-import com.beep.youseesd.model.TourLocation;
-import com.beep.youseesd.model.TourStop;
+import com.beep.youseesd.util.DatabaseUtil;
 import com.beep.youseesd.util.WLog;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,6 +48,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
@@ -57,12 +61,12 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.joda.time.DateTime;
 
 public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
+
   private static final int PERMISSION_GRANTED_LOCATION = 0x01;
   private static final long INTERVAL = 2000;
   private static final long FASTEST_INTERVAL = 1000;
@@ -91,35 +95,24 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   private MaterialButton mMarkVisitedButton;
   private TextView mVisitText;
   private LinearLayout mTagContentLayout;
+  private TextView mBottomPlaceDescription;
 
   private RecyclerView mLocationManagerListView;
   private LinearLayoutManager layoutManager;
   private TourLocationManageAdapter mAdapter;
 
+  private LinearLayout mBottomPlaceDetailHashLayout;
+  private LinearLayout mBottomPlaceDetailBuiltinLayout;
+  private LinearLayout mBottomPlaceDetailSeatsLayout;
+  private LinearLayout mBottomPlaceDetailCoursesLayout;
+
+  private TextView mBottomPlaceHashTextView;
+  private TextView mBottomPlaceBuiltinTextView;
+  private TextView mBottomPlaceSeatsTextView;
+  private TextView mBottomPlaceCoursesTextView;
+
   private int mSelectedTour = -1;
   List<Marker> mMarkers;
-
-  private void loadDefaultTour() {
-    TourLocation geisel = new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg");
-    TourLocation MedicalEducation = new TourLocation("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg");
-    TourLocation radyManagement = new TourLocation("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg");
-    TourLocation priceCenterWest = new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg");
-    TourLocation centerHall = new TourLocation("Center Hall", "Big lecture hall", "https://act.ucsd.edu/m/assets/min/img.php?img=https://saber.ucsd.edu/m/campustours/Images/2-centerHall.jpg");
-    TourLocation peterson = new TourLocation("Petersno Hall", "Big lecture hall", "http://ucsdguardian.org/wp-content/uploads/2014/02/ucsd010.jpg");
-
-//        mTour = new Tour("Default Tour", new TourStop[]{
-//                new TourStop(32.877974, -117.237469, centerHall),
-////                new TourStop(32.878154, -117.237549, null),
-////                new TourStop(32.879332, -117.237566, null),
-//                new TourStop(32.879777, -117.236958, priceCenterWest),
-////                new TourStop(32.880323, -117.236296, null),
-////                new TourStop(32.880364, -117.236587, null),
-////                new TourStop(32.880327, -117.237036, null),
-//                new TourStop(32.880275, -117.237557, geisel),
-////                new TourStop(32.880227, -117.237991, null),
-//                new TourStop(32.880197, -117.239942, peterson),
-//        });
-  }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
@@ -157,8 +150,6 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mapFragment.getMapAsync(this);
 
     mMarkers = new ArrayList<>();
-    loadDefaultTour();
-
     mDrawerLayout = (DrawerLayout) findViewById(R.id.tour_drawer_layout);
     mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
       @Override
@@ -174,12 +165,22 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       }
     });
 
+    mBottomPlaceDetailHashLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_hash_layout);
+    mBottomPlaceDetailBuiltinLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_builtin_layout);
+    mBottomPlaceDetailCoursesLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_courses_layout);
+    mBottomPlaceDetailSeatsLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_seats_layout);
+    mBottomPlaceBuiltinTextView = (TextView) findViewById(R.id.tour_bottom_builtin_year);
+    mBottomPlaceSeatsTextView = (TextView) findViewById(R.id.tour_bottom_tags_seats);
+    mBottomPlaceCoursesTextView = (TextView) findViewById(R.id.tour_bottom_classes);
+    mBottomPlaceHashTextView = (TextView) findViewById(R.id.tour_bottom_tags);
+
     mTagContentLayout = (LinearLayout) findViewById(R.id.tour_bottom_tags_layout);
     mBottomImageView = (IconicsImageView) findViewById(R.id.tour_bottom_image);
     mMarkVisitedButton = (MaterialButton) findViewById(R.id.tour_visit_mark_btn);
     mVisitText = (TextView) findViewById(R.id.tour_bottom_visit_text);
     mMarkVisitedButton.setOnClickListener(this);
     mNavigationView = (NavigationView) findViewById(R.id.tour_side_nav_layout);
+    mBottomPlaceDescription = (TextView) findViewById(R.id.tour_bottom_description);
     mBottomSheetHeaderLayout = (ViewGroup) findViewById(R.id.tour_bottom_sheet_header_layout);
     mBottomSheetHeaderLayout.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -195,8 +196,6 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mLocationManagerListView = (RecyclerView) findViewById(R.id.tour_location_manage_list);
     layoutManager = new LinearLayoutManager(this);
     mLocationManagerListView.setLayoutManager(layoutManager);
-//        mAdapter = new TourLocationManageAdapter(this, mTour.getStops());
-    mLocationManagerListView.setAdapter(mAdapter);
 
     mBottomTitle = (TextView) findViewById(R.id.tour_bottom_sheet_header_title);
     mBottomSubtitle = (TextView) findViewById(R.id.tour_bottom_sheet_header_subtitle);
@@ -228,15 +227,87 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     });
   }
 
+  private void loadLocations(String uid, String tourId) {
+    DatabaseReference tourRef = DatabaseUtil.getSingleTourDatabase(uid, tourId);
+    tourRef.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Tour t = dataSnapshot.getValue(Tour.class);
+        if (t == null) {
+          return;
+        }
+
+        mTour = t;
+        mAdapter = new TourLocationManageAdapter(OnTourActivity.this, mTour);
+        mLocationManagerListView.setAdapter(mAdapter);
+        drawPathPoints(t);
+        addPlacePinsOnMap(t);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  private void addPlacePinsOnMap(Tour t) {
+    for (com.beep.youseesd.model.Location l : t.locations) {
+      MarkerOptions markerOptions = new MarkerOptions().position(l.generateLatLng())
+          .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
+              .color(getResources().getColor(R.color.secondaryColor))
+              .sizeDp(42)));
+
+      Marker addedMarker = mMap.addMarker(markerOptions);
+      mMarkers.add(addedMarker);
+    }
+  }
+
+  private void drawPathPoints(Tour t) {
+//    PolylineOptions route = new PolylineOptions();
+//    route.color(getResources().getColor(R.color.secondaryColor));
+//    route.clickable(false);
+//
+//    for (com.beep.youseesd.model.Location l : t.locations) {
+//      LatLng coords = new LatLng(l.latitude, l.longitude);
+//      route.add(coords);
+//      mMap.addPolyline(route);
+//    }
+  }
+
+  @Override
+  public void onBackPressed() {
+    if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+      bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+      return;
+    }
+
+    super.onBackPressed();
+  }
+
   private void showPlaceDetails(int id) {
     if (id < 0) {
       return;
     }
 
-//        Glide.with(this)
-//                .load(mTour.getStop(id).getTourLocation().imageUrl)
-//                .centerCrop()
-//                .into(mBottomImageView);
+    com.beep.youseesd.model.Location l = mTour.locations.get(id);
+
+    Glide.with(this)
+        .load(l.imageUrl)
+        .centerCrop()
+        .into(mBottomImageView);
+
+    mBottomPlaceDescription.setText(l.subtitle);
+
+    mBottomPlaceDetailSeatsLayout.setVisibility(l.seats != null && !l.seats.isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailHashLayout.setVisibility(l.tags != null && !l.tags.isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailBuiltinLayout.setVisibility(l.builtin != null && !l.builtin.isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailCoursesLayout.setVisibility(l.courses != null && !l.courses.isEmpty() ? View.VISIBLE : View.GONE);
+
+    mBottomPlaceSeatsTextView.setText(l.seats);
+    mBottomPlaceSeatsTextView.setText(l.tags);
+    mBottomPlaceSeatsTextView.setText(l.builtin);
+    mBottomPlaceSeatsTextView.setText(l.courses);
   }
 
   @Override
@@ -282,7 +353,20 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GRANTED_LOCATION);
     }
 
-    drawTour();
+//    drawTour();
+
+    final String tourId = getIntent().getStringExtra(DatabaseUtil.TOUR_ID);
+    String uid = "jDbXXUNhVuSHE3y8tEbNNVZfzpJ3";
+    loadLocations(uid, tourId);
+
+    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+      @Override
+      public boolean onMarkerClick(Marker marker) {
+        mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+        updateBottomSheetCollapsed(mTour.locations.get(mSelectedTour));
+        return true;
+      }
+    });
   }
 
   public void beginTour() {
@@ -336,16 +420,15 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     route.color(getResources().getColor(R.color.primaryColor));
     route.clickable(false);
 
-//        for (int i = 0; i < mTour.getNumStops(); i++) {
-//            route.add(mTour.getStop(i).getCoords());
-//        }
-//        mMap.addPolyline(route);
+//    for (int i = 0; i < mTour.getNumStops(); i++) {
+//      route.add(mTour.getStop(i).getCoords());
+//    }
+//    mMap.addPolyline(route);
 
 //        com.google.maps.model.LatLng origin = new com.google.maps.model.LatLng(mTour.getStop(0).getCoords().latitude, mTour.getStop(0).getCoords().longitude);
 //        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(mTour.getStop(1).getCoords().latitude, mTour.getStop(1).getCoords().longitude);
 //        WLog.i("origin: " + origin + ", destination: " + destination);
 //        mMap.addPolyline(addPolyline(getDirectionResult(origin, destination)));
-
 //        for (TourStop t : mTour.getStops()) {
 //            MarkerOptions markerOptions = new MarkerOptions().position(t.getCoords())
 //                    .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
@@ -357,16 +440,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 //            mMarkers.add(addedMarker);
 //        }
 
-    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-      @Override
-      public boolean onMarkerClick(Marker marker) {
-        mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-//                updateBottomSheetCollapsed(mTour.getStop(mSelectedTour));
-        return true;
-      }
-    });
   }
-
 
   public void updateLocationPinMarkerVisited(boolean visited, int i) {
     Marker m = mMarkers.get(i);
@@ -380,12 +454,12 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mMarkers.set(i, mMap.addMarker(opt));
   }
 
-  public void updateBottomSheetCollapsed(TourStop stop) {
-    mBottomTitle.setText(stop.getTourLocation().title);
-    mBottomSubtitle.setText(stop.getTourLocation().subtitle);
-    mMarkVisitedButton.setTextColor(getResources().getColor(stop.getTourLocation().isVisited() ? R.color.light_gray : R.color.primaryColor));
-    mMarkVisitedButton.setText(stop.getTourLocation().isVisited() ? "MARK UNVISITED" : "MARK VISITED");
-    mVisitText.setText(stop.getTourLocation().isVisited() ? "Visited " + (Calendar.getInstance().getTimeInMillis() - stop.getTourLocation().visitedTimestamp) + " mins ago" : "0.7 miles away");
+  public void updateBottomSheetCollapsed(com.beep.youseesd.model.Location l) {
+    mBottomTitle.setText(l.title);
+    mBottomSubtitle.setText(l.subtitle);
+    mMarkVisitedButton.setTextColor(getResources().getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
+    mMarkVisitedButton.setText(l.isVisited() ? "MARK UNVISITED" : "MARK VISITED");
+    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
   }
 
   private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
@@ -434,17 +508,16 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         if (mSelectedTour < 0) {
           break;
         }
+        com.beep.youseesd.model.Location t = mTour.locations.get(mSelectedTour);
+        if (!t.isVisited()) {
+          t.setVisited();
+        } else {
+          t.setUnvisited();
+        }
 
-//                TourLocation t = mTour.getStop(mSelectedTour).getTourLocation();
-//                if (!t.isVisited()) {
-//                    t.visitedTimestamp = Calendar.getInstance().getTimeInMillis();
-//                } else {
-//                    t.visitedTimestamp = 0;
-//                }
-//
-//                mAdapter.notifyDataSetChanged();
-//                updateLocationPinMarkerVisited(t.isVisited(), mSelectedTour);
-//                updateBottomSheetCollapsed(mTour.getStop(mSelectedTour));
+        mAdapter.notifyDataSetChanged();
+        updateLocationPinMarkerVisited(t.isVisited(), mSelectedTour);
+        updateBottomSheetCollapsed(mTour.locations.get(mSelectedTour));
         break;
 
       case R.id.item_end_tour_btn:
