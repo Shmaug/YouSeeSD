@@ -64,7 +64,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return new FooterViewHolder(footerView);
     }
 
-    View v = inflater.inflate(R.layout.item_tour, parent, false);
+    View v = inflater.inflate(R.layout.item_tour2, parent, false);
     return new HomeTourViewHolder(v);
   }
 
