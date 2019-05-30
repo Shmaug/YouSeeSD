@@ -56,7 +56,7 @@ public class PathPoint {
     public int getTravelTime(PathPoint from) {
         // returns the estimated travel time in minutes
         double distance = this.getDistance(from);
-        return (int) Math.round(distance / walkSpeed);
+        return (int) Math.round(distance / WALK_SPEED);
     }
 
     public PathPoint findNearestPathPoint(ArrayList<PathPoint> list) {

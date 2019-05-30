@@ -1,16 +1,20 @@
 package com.beep.youseesd.model;
 
 public class Location {
-    public String locationId;
-    public String title;
-    public String subtitle;
-    public String imageUrl;
+    private String locationId;
+    private String title;
+    private String subtitle;
+    private String imageUrl;
+    private double longitude;
+    private double latitude;
 
-    public Location(String locationId, String title, String subtitle, String imageUrl) {
+    public Location(String locationId, String title, String subtitle, String imageUrl, double longitude, double latitude) {
         this.locationId = locationId;
         this.title = title;
         this.subtitle = subtitle;
         this.imageUrl = imageUrl;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     // getters
@@ -22,6 +26,12 @@ public class Location {
     }
     public String getImageUrl() {
         return this.imageUrl;
+    }
+    public double getLongitude() {
+        return this.longitude;
+    }
+    public double getLatitude() {
+        return this.latitude;
     }
 
     // setters
