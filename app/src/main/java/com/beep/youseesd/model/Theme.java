@@ -1,15 +1,22 @@
 package com.beep.youseesd.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import androidx.annotation.NonNull;
 
 public class Theme {
   //must be int type, ranging from 0 ~ (Tour.NUM_THEMES - 1)
   public int themeId;
   public String themeName;
 
-  public Theme() {
-    this.themeId = 0;
-    this.themeName = null;
+  public Theme(String themeName, Integer themeId) {
+    this.themeId = themeId;
+    this.themeName = themeName;
+  }
+
+  @SuppressLint("DefaultLocale")
+  @NonNull
+  @Override
+  public String toString() {
+    return String.format("%s(%d)", themeName, themeId);
   }
 }

@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="2dp">
+            android:paddingBottom="1dp">
 
         <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/create_toolbar"
@@ -28,258 +28,106 @@
             android:layout_height="match_parent"
             android:paddingTop="56dp">
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="16dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.ChipGroup"
+                android:padding="16dp">
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
-
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="Must Go"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
-
-                <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/college_group"
-                        android:layout_width="match_parent"
-                        style="@style/Widget.MaterialComponents.ChipGroup"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Price Center"/>
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Geisel Library"/>
-
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/light_gray"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_warren"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
+                    android:text="Warren"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Warren"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
-
-                <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/major_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mathematics"/>
-
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/light_gray"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_erc"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
+                    android:text="ERC"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="John Muir"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
-
-                <com.google.android.material.chip.ChipGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mathematics"/>
-
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/light_gray"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_sixth"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
+                    android:text="Sixth"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="ERC"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
-
-                <com.google.android.material.chip.ChipGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mathematics"/>
-
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/light_gray"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_marshall"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
+                    android:text="Marshall"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Sixth"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
-
-                <com.google.android.material.chip.ChipGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mathematics"/>
-
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/light_gray"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_muir"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
+                    android:text="Muir"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Thurgood Marshall"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
-
-                <com.google.android.material.chip.ChipGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mathematics"/>
-
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.7dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/light_gray"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_revelle"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:orientation="vertical">
+                    android:text="Revelle"/>
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Revelle"
-                        android:textColor="@color/black_translucent_87"
-                        android:textSize="18sp"/>
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_fitness"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Humanities"/>
 
-                <com.google.android.material.chip.ChipGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_social"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Popular"/>
 
-                    <com.google.android.material.chip.Chip
-                            style="@style/TagChipStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Mathematics"/>
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_engineering"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Natural Sciences"/>
 
-                </com.google.android.material.chip.ChipGroup>
-            </LinearLayout>
-        </LinearLayout>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_food_living"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Social"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_humanities"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Engineering"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_popular"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fitness"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_natural_sciences"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Food and Living"/>
+
+        </com.google.android.material.chip.ChipGroup>
     </ScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

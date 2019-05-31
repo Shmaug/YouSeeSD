@@ -1,5 +1,6 @@
 package com.beep.youseesd.util;
 
+import com.beep.youseesd.model.Tour;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,5 +19,12 @@ public class DatabaseUtil {
 
   public static DatabaseReference getSingleTourDatabase(String uid, String tourId) {
     return getTourDatabase(uid).child(tourId);
+  }
+
+  public static void createTour(String uid, Tour t, DatabaseReference.CompletionListener listener) {
+    DatabaseReference ref = getTourDatabase(uid);
+    String tourId = ref.push().getKey();
+    t.tourId = tourId;
+    ref.child(tourId).setValue(t, listener);
   }
 }
