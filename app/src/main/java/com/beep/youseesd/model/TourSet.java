@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class TourSet {
 
+  // A Theme map that has a size of Tour.NUM_THEMES (=13 for now)
   public static final Map<String, Integer> THEME_MAP;
 
   public static final String TAG_WARREN = "warren";
@@ -45,15 +46,17 @@ public class TourSet {
 
   public TourSet() {
     allTours = new ArrayList<>();
+    // Create tour constructing methods below and populate allTours
     allTours.add(createTour1());
   }
 
   private Tour createTour1() {
-    Tour t = new Tour();
-    t.title = "This is tour1";
-    t.subtitle = "this is the summary!";
-    t.imageUrl = "https://ucpa.ucsd.edu/images/image_library/triton-fountain-at-price-center.jpg";
-    return t;
+    Tour t1 = new Tour();
+    t1.title = "This is tour1";
+    t1.subtitle = "this is the summary!";
+    t1.imageUrl = "https://ucpa.ucsd.edu/images/image_library/triton-fountain-at-price-center.jpg";
+
+    return t1;
   }
 
   // algorithm #1: Use vectors of doubles to find the best fit

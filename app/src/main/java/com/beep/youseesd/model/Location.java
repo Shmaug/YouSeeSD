@@ -9,9 +9,10 @@ public class Location {
   public String title;
   public String subtitle;
   public String imageUrl;
-  public String description;
   public double longitude;
   public double latitude;
+  // Used for the locations' info.s during the tour
+  public String description;
   public String seats;
   public String builtin;
   public String courses;
@@ -22,9 +23,9 @@ public class Location {
     this.title = null;
     this.subtitle = null;
     this.imageUrl = null;
-    this.description = null;
     this.longitude = 0;
     this.latitude = 0;
+    this.description = null;
     setUnvisited();
   }
 
@@ -43,6 +44,7 @@ public class Location {
     return new LatLng(latitude, longitude);
   }
 
+  // Returns the number of minutes passed since visiting the location
   public int calculateVisitedAgo() {
     return (int) ((Calendar.getInstance().getTimeInMillis() - visitedTime) / 60);
   }

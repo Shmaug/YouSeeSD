@@ -20,7 +20,7 @@ public class Tour {
   @Exclude
   public double[] themeVector;
 
-  public List<Location> locations;
+  public ArrayList<String> locations;
   public int estimatedTime;
 
   public Tour() {
@@ -33,7 +33,7 @@ public class Tour {
     this.locations = new ArrayList<>();
   }
 
-  // this method will only be used if algorithm #1 is selected
+  // Calculates the difference between the user's input themes and this tour's theme
   public double getDifference(List<Theme> userInputThemes) {
     double difference = 0.0;
 
