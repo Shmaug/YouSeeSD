@@ -27,4 +27,8 @@ public class DatabaseUtil {
     t.tourId = tourId;
     ref.child(tourId).setValue(t, listener);
   }
+
+  public static void deleteTour(String uid, String tourId) {
+    getSingleTourDatabase(uid, tourId).removeValue();
+  }
 }

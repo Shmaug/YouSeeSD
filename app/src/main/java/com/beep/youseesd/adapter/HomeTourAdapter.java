@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.beep.youseesd.R;
 import com.beep.youseesd.activity.HomeActivity;
 import com.beep.youseesd.activity.OnTourActivity;
+import com.beep.youseesd.application.App;
 import com.beep.youseesd.fragment.ConfirmOnTourFragment;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.util.DatabaseUtil;
@@ -114,6 +116,18 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           MenuInflater inflater = popup.getMenuInflater();
           inflater.inflate(R.menu.menu_tour_card, popup.getMenu());
           popup.show();
+          popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+              switch (item.getItemId()) {
+                case R.id.delete_tour:
+                  DatabaseUtil.deleteTour(App.getUser().getUid(), t.tourId);
+                  return true;
+              }
+
+              return false;
+            }
+          });
         }
       });
 
