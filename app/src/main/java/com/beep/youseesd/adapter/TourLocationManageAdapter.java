@@ -11,10 +11,13 @@ import com.beep.youseesd.R;
 import com.beep.youseesd.activity.OnTourActivity;
 import com.beep.youseesd.model.Location;
 import com.beep.youseesd.model.Tour;
+import com.beep.youseesd.model.TourSet;
 import com.google.android.material.button.MaterialButton;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,7 +33,12 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
 
   public TourLocationManageAdapter(OnTourActivity act, Tour tour) {
     super();
-    mStops = tour.locations;
+
+    mStops = new ArrayList<>();
+    for (String location : tour.locations) {
+      mStops.add(TourSet.allLocations.get(location));
+    }
+
     mTour = tour;
     this.mActivity = act;
   }

@@ -9,11 +9,22 @@ public class DatabaseUtil {
   public static final String TOURS = "tours";
   public static final String USERS = "users";
   public static final String TOUR_ID = "tourId";
+  public static final String LOCATIONS = "locations";
 
   public static DatabaseReference getTourDatabase(String uid) {
     return FirebaseDatabase.getInstance().getReference()
         .child(USERS)
         .child(uid)
+        .child(TOURS);
+  }
+
+  public static DatabaseReference getAllLocations() {
+    return FirebaseDatabase.getInstance().getReference()
+        .child(LOCATIONS);
+  }
+
+  public static DatabaseReference getAllTours() {
+    return FirebaseDatabase.getInstance().getReference()
         .child(TOURS);
   }
 
@@ -23,6 +34,7 @@ public class DatabaseUtil {
 
   public static void createTour(String uid, Tour t, DatabaseReference.CompletionListener listener) {
     DatabaseReference ref = getTourDatabase(uid);
+    // generate new key (random ids)
     String tourId = ref.push().getKey();
     t.tourId = tourId;
     ref.child(tourId).setValue(t, listener);

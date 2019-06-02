@@ -18,6 +18,8 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import java.util.List;
 
+// DELETE
+
 public class CreateTourLocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private static final int LOCATION_VIEW = 0x01;

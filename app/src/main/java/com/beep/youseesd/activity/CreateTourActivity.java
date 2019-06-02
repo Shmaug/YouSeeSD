@@ -46,6 +46,8 @@ public class CreateTourActivity extends AppCompatActivity {
     super.onBackPressed();
   }
 
+
+  //
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
@@ -53,6 +55,7 @@ public class CreateTourActivity extends AppCompatActivity {
         List<Chip> selectedChips = filterSelectedChips(findChips(mChipGroup));
         List<Theme> selectedThemes = generateThemes(selectedChips);
 
+        // Create a tour based on the themes that were selected and write to database
         TourSet ts = new TourSet();
         Tour t = ts.findBestFitTour(selectedThemes);
         DatabaseUtil.createTour(App.getUser().getUid(), t, new DatabaseReference.CompletionListener() {
@@ -67,6 +70,7 @@ public class CreateTourActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
+  // Creates menu above tags
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_create_tour, menu);
@@ -77,6 +81,8 @@ public class CreateTourActivity extends AppCompatActivity {
     return true;
   }
 
+
+  // Store reference to our tags as well as the tool bar
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -56,4 +56,12 @@ public class Location {
   public void setUnvisited() {
     visitedTime = 0;
   }
+
+  public String getTitle() { return this.title; }
+
+  public String getSubtitle() { return this.subtitle; }
+
+  public String getDescription()  { return this.description; }
+
+  public String getImageUrl() { return this.imageUrl; }
 }

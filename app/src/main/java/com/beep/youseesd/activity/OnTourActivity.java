@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.TourLocationManageAdapter;
 import com.beep.youseesd.model.Tour;
+import com.beep.youseesd.model.TourSet;
 import com.beep.youseesd.util.DatabaseUtil;
 import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
@@ -252,7 +253,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   }
 
   private void addPlacePinsOnMap(Tour t) {
-    for (com.beep.youseesd.model.Location l : t.locations) {
+    for (String location : t.locations) {
+      com.beep.youseesd.model.Location l = TourSet.allLocations.get(location);
       MarkerOptions markerOptions = new MarkerOptions().position(l.generateLatLng())
           .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
               .color(getResources().getColor(R.color.secondaryColor))
@@ -290,8 +292,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       return;
     }
 
-    com.beep.youseesd.model.Location l = mTour.locations.get(id);
-
+    com.beep.youseesd.model.Location l = TourSet.allLocations.get(mTour.locations.get(id));
     Glide.with(this)
         .load(l.imageUrl)
         .centerCrop()
@@ -363,7 +364,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       @Override
       public boolean onMarkerClick(Marker marker) {
         mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-        updateBottomSheetCollapsed(mTour.locations.get(mSelectedTour));
+        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
         return true;
       }
     });
@@ -508,7 +509,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         if (mSelectedTour < 0) {
           break;
         }
-        com.beep.youseesd.model.Location t = mTour.locations.get(mSelectedTour);
+        com.beep.youseesd.model.Location t = TourSet.allLocations.get(mTour.locations.get(mSelectedTour));
         if (!t.isVisited()) {
           t.setVisited();
         } else {
@@ -517,7 +518,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
         mAdapter.notifyDataSetChanged();
         updateLocationPinMarkerVisited(t.isVisited(), mSelectedTour);
-        updateBottomSheetCollapsed(mTour.locations.get(mSelectedTour));
+        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
         break;
 
       case R.id.item_end_tour_btn:

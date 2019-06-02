@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import com.beep.youseesd.R;
 import com.beep.youseesd.application.App;
 import com.beep.youseesd.fragment.TourListFragment;
+import com.beep.youseesd.model.TourSet;
 import com.beep.youseesd.util.WLog;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -64,6 +65,8 @@ public class HomeActivity extends BaseActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    TourSet.setUpTours();
+    TourSet.setUpLocations();
 
     // create weather object
     helper = new OpenWeatherMapHelper("4c3866391f6138c27bfb9d71a837631e");

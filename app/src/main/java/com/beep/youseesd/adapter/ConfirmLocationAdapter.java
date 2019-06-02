@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.beep.youseesd.R;
 import com.beep.youseesd.model.Location;
 import com.beep.youseesd.model.Tour;
+import com.beep.youseesd.model.TourSet;
 import com.bumptech.glide.Glide;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -24,7 +25,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
   private static final int FOOTER_VIEW = 0x03;
 
   private Tour mTour;
-  private List<Location> tourLocations;
+  private List<String> tourLocations;
 
   public ConfirmLocationAdapter() {
   }
@@ -66,10 +67,11 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
     if (holder instanceof LocationViewHolder) {
       LocationViewHolder h = (LocationViewHolder) holder;
-      h.title.setText(tourLocations.get(i).title);
-      h.subtitle.setText(tourLocations.get(i).subtitle);
+      Location loc = TourSet.allLocations.get(tourLocations.get(i));
+      h.title.setText(loc.getTitle());
+      h.subtitle.setText(loc.getSubtitle());
       Glide.with(h.imageView.getContext())
-          .load(tourLocations.get(i).imageUrl)
+          .load(loc.getImageUrl())
           .centerCrop()
           .into(h.imageView);
     } else if (holder instanceof HeaderViewHolder) {
@@ -79,7 +81,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
           .centerCrop()
           .into(h.imageView);
 
-      h.titleView.setText("Are you ready to enjoy " + mTour.estimatedTime + " mins?");
+      h.titleView.setText("Are you ready to enjoy " + mTour.estimatedTime + " mins? ");
       h.titleView.setDrawableEnd(new IconicsDrawable(h.titleView.getContext()).icon(FontAwesome.Icon.faw_smile).color(Color.GRAY).paddingDp(3).sizeDp(24));
     } else if (holder instanceof FooterViewHolder) {
       FooterViewHolder h = (FooterViewHolder) holder;
