@@ -72,6 +72,9 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
     if (holder instanceof TourLocationManageViewHolder) {
       TourLocationManageViewHolder h = (TourLocationManageViewHolder) holder;
       Location l = mStops.get(i);
+      if (l == null) {
+        return;
+      }
       h.mLayout.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {

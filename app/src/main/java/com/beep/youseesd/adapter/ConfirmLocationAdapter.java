@@ -40,7 +40,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
   public int getItemViewType(int position) {
     if (position == 0) {
       return TRANSPARENT_HEADER_VIEW;
-    } else if (position >= tourLocations.size()) {
+    } else if (position > tourLocations.size()) {
       return FOOTER_VIEW;
     }
 
@@ -66,6 +66,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
     if (holder instanceof LocationViewHolder) {
+      i--;
       LocationViewHolder h = (LocationViewHolder) holder;
       Location loc = TourSet.allLocations.get(tourLocations.get(i));
       h.title.setText(loc.getTitle());

@@ -45,7 +45,6 @@ public class ConfirmOnTourFragment extends Fragment {
     layoutManager = new LinearLayoutManager(view.getContext());
     confirmTourListView.setLayoutManager(layoutManager);
 
-//    String uid = "jDbXXUNhVuSHE3y8tEbNNVZfzpJ3";
     String uid = App.getUser().getUid();
     String tourId = getArguments().getString(DatabaseUtil.TOUR_ID);
     loadLocations(uid, tourId);

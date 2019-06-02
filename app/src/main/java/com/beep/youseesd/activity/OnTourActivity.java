@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.TourLocationManageAdapter;
+import com.beep.youseesd.application.App;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.model.TourSet;
 import com.beep.youseesd.util.DatabaseUtil;
@@ -127,6 +128,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     return super.onOptionsItemSelected(item);
   }
 
+  // sets up option menu icon
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_tour, menu);
@@ -241,7 +243,9 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         mTour = t;
         mAdapter = new TourLocationManageAdapter(OnTourActivity.this, mTour);
         mLocationManagerListView.setAdapter(mAdapter);
+        System.out.println("HI: " + t);
         drawPathPoints(t);
+        System.out.println("BYE: " + t);
         addPlacePinsOnMap(t);
       }
 
@@ -254,7 +258,11 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
   private void addPlacePinsOnMap(Tour t) {
     for (String location : t.locations) {
+      if (location == null) {
+        continue;
+      }
       com.beep.youseesd.model.Location l = TourSet.allLocations.get(location);
+      System.out.println("location object: " + l);
       MarkerOptions markerOptions = new MarkerOptions().position(l.generateLatLng())
           .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
               .color(getResources().getColor(R.color.secondaryColor))
@@ -357,7 +365,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 //    drawTour();
 
     final String tourId = getIntent().getStringExtra(DatabaseUtil.TOUR_ID);
-    String uid = "jDbXXUNhVuSHE3y8tEbNNVZfzpJ3";
+//    String uid = "jDbXXUNhVuSHE3y8tEbNNVZfzpJ3";
+    String uid = App.getUser().getUid();
     loadLocations(uid, tourId);
 
     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
