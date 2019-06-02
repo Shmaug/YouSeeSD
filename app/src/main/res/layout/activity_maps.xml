@@ -152,7 +152,7 @@
                             android:layout_height="18dp"
                             android:layout_marginRight="32dp"
                             app:iiv_color="@color/primaryColor"
-                            app:iiv_icon="faw_hashtag"/>
+                            app:iiv_icon="faw_info_circle"/>
 
                     <TextView
                             android:id="@+id/tour_bottom_tags"

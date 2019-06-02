@@ -113,6 +113,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   private TextView mBottomPlaceSeatsTextView;
   private TextView mBottomPlaceCoursesTextView;
 
+
+  // TODO: need to update first location with one closest to user
   private int mSelectedTour = -1;
   List<Marker> mMarkers;
 
@@ -314,9 +316,9 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mBottomPlaceDetailCoursesLayout.setVisibility(l.courses != null && !l.courses.isEmpty() ? View.VISIBLE : View.GONE);
 
     mBottomPlaceSeatsTextView.setText(l.seats);
-    mBottomPlaceSeatsTextView.setText(l.tags);
-    mBottomPlaceSeatsTextView.setText(l.builtin);
-    mBottomPlaceSeatsTextView.setText(l.courses);
+    mBottomPlaceHashTextView.setText(l.description);
+    mBottomPlaceBuiltinTextView.setText(l.builtin);
+    mBottomPlaceCoursesTextView.setText(l.courses);
   }
 
   @Override
