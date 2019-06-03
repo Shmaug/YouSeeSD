@@ -140,6 +140,8 @@ public class TourSet {
       }
     }
 
-    return bestFitTour;
+//    return bestFitTour;
+    // need to implement full logic
+    return allTours.get(1);
   }
 }
