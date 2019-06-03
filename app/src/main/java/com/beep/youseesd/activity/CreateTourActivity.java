@@ -58,6 +58,7 @@ public class CreateTourActivity extends AppCompatActivity {
         // Create a tour based on the themes that were selected and write to database
         TourSet ts = new TourSet();
         Tour t = ts.findBestFitTour(selectedThemes);
+        t.selectedTags.addAll(getSelectedTagLabels(selectedChips));
         DatabaseUtil.createTour(App.getUser().getUid(), t, new DatabaseReference.CompletionListener() {
           @Override
           public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
@@ -81,7 +82,6 @@ public class CreateTourActivity extends AppCompatActivity {
     return true;
   }
 
-
   // Store reference to our tags as well as the tool bar
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +90,19 @@ public class CreateTourActivity extends AppCompatActivity {
     mToolbar = (MaterialToolbar) findViewById(R.id.create_toolbar);
     setSupportActionBar(mToolbar);
     mChipGroup = (ChipGroup) findViewById(R.id.chip_group);
+  }
+
+  private List<String> getSelectedTagLabels(List<Chip> chips) {
+    if (chips == null || chips.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    List<String> res = new ArrayList<>();
+    for (Chip c : chips) {
+      res.add(String.valueOf(c.getText()));
+    }
+
+    return res;
   }
 
   private Theme generateTheme(@IdRes int viewId) {

@@ -23,6 +23,7 @@ public class Tour {
 
   public ArrayList<String> locations;
   public int estimatedTime;
+  public List<String> selectedTags;
 
   public Tour() {
     this.tourId = "";
@@ -32,6 +33,7 @@ public class Tour {
     this.estimatedTime = 0;
     this.themeVector = new ArrayList<>();
     this.locations = new ArrayList<>();
+    this.selectedTags = new ArrayList<>();
   }
 
   // Calculates the difference between the user's input themes and this tour's theme
