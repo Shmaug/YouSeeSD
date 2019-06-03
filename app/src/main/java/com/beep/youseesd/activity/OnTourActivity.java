@@ -169,9 +169,10 @@ public class OnTourActivity extends AppCompatActivity
     route.clickable(false);
 
     // go through all of the locations on our tour and add a LatLng object for each one
-    for (int i = (int) mTourProgress; i < mTour.locations.size(); i++) {
-      com.beep.youseesd.model.Location l = TourSet.allLocations.get(mTour.locations.get(i));
-      route.add(new LatLng(l.latitude, l.longitude));
+    for (int i = (int) mTourProgress; i < mTour.getLocations().size(); i++) {
+      com.beep.youseesd.model.Location l =
+          TourSet.getAllLocations().get(mTour.getLocations().get(i));
+      route.add(l.generateLatLng());
     }
 
     // set the route's color
@@ -180,22 +181,22 @@ public class OnTourActivity extends AppCompatActivity
 
     // get the starting and ending location on the tour
     com.beep.youseesd.model.Location locOrigin =
-        TourSet.allLocations.get(mTour.locations.get(0));
+        TourSet.getAllLocations().get(mTour.getLocations().get(0));
     com.beep.youseesd.model.Location locDestination =
-        TourSet.allLocations.get(mTour.locations.get(1));
+        TourSet.getAllLocations().get(mTour.getLocations().get(1));
 
     // create LatLng objects for both of them
-    LatLng origin = new LatLng(locOrigin.latitude, locOrigin.longitude);
-    LatLng destination = new LatLng(locDestination.latitude, locDestination.longitude);
+    LatLng origin = locOrigin.generateLatLng();
+    LatLng destination = locDestination.generateLatLng();
     WLog.i("origin: " + origin + ", destination: " + destination);
 
     // go through all of the locations on our tour and draw a marker for each one
-    for (String t : mTour.locations) {
-      com.beep.youseesd.model.Location loc = TourSet.allLocations.get(t);
+    for (String t : mTour.getLocations()) {
+      com.beep.youseesd.model.Location loc = TourSet.getAllLocations().get(t);
 
       // create the marker with these options
       MarkerOptions markerOptions =
-          new MarkerOptions().position(new LatLng(loc.latitude, loc.longitude))
+          new MarkerOptions().position(loc.generateLatLng())
               .icon(getMarkerIconFromDrawable(
                   new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
                       .color(getResources().getColor(R.color.secondaryColor))
@@ -208,7 +209,8 @@ public class OnTourActivity extends AppCompatActivity
     // create a listener for each marker so we can update the bottom sheet
     mMap.setOnMarkerClickListener(marker -> {
       mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-      updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
+      updateBottomSheetCollapsed(
+          TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
       return true;
     });
   }
@@ -233,18 +235,18 @@ public class OnTourActivity extends AppCompatActivity
 
     // get the distance between the last and next stops
     com.beep.youseesd.model.Location ourLoc =
-        TourSet.allLocations.get(mTour.locations.get((int) mTourProgress));
+        TourSet.getAllLocations().get(mTour.getLocations().get((int) mTourProgress));
     com.beep.youseesd.model.Location ourNextLoc =
-        TourSet.allLocations.get(mTour.locations.get((int) mTourProgress));
+        TourSet.getAllLocations().get(mTour.getLocations().get((int) mTourProgress));
 
     // create our location objects based on the latitude and longitudes of our locations
     Location l = new Location("");
-    l.setLatitude(ourLoc.latitude);
-    l.setLongitude(ourLoc.longitude);
+    l.setLatitude(ourLoc.getLatitude());
+    l.setLongitude(ourLoc.getLongitude());
 
     Location n = new Location("");
-    n.setLatitude(ourNextLoc.latitude);
-    n.setLongitude(ourNextLoc.longitude);
+    n.setLatitude(ourNextLoc.getLatitude());
+    n.setLongitude(ourNextLoc.getLongitude());
 
     /* Diagram to help visualize the math for our drawing
 
@@ -305,7 +307,7 @@ public class OnTourActivity extends AppCompatActivity
     if (location.distanceTo(n) < ARRIVAL_DISTANCE) {
       mTourProgress = (int) mTourProgress + 1;
       stopReached();
-      if (mTourProgress == mTour.locations.size() - 1) {
+      if (mTourProgress == mTour.getLocations().size() - 1) {
         endTour();
       }
     } else {
@@ -494,13 +496,13 @@ public class OnTourActivity extends AppCompatActivity
    * @param t the tour we're on
    */
   private void addPlacePinsOnMap(Tour t) {
-    for (String location : t.locations) {
+    for (String location : t.getLocations()) {
       if (location == null) {
         continue;
       }
 
       // get the associated Location object (our definition of a Location, not Android's)
-      com.beep.youseesd.model.Location l = TourSet.allLocations.get(location);
+      com.beep.youseesd.model.Location l = TourSet.getAllLocations().get(location);
       // place a marker with the specified options
       MarkerOptions markerOptions = new MarkerOptions().position(l.generateLatLng())
           .icon(
@@ -538,30 +540,31 @@ public class OnTourActivity extends AppCompatActivity
     }
 
     // get the appropriate location using the given id
-    com.beep.youseesd.model.Location l = TourSet.allLocations.get(mTour.locations.get(id));
+    com.beep.youseesd.model.Location l =
+        TourSet.getAllLocations().get(mTour.getLocations().get(id));
     Glide.with(this)
-        .load(l.imageUrl)
+        .load(l.getImageUrl())
         .centerCrop()
         .into(mBottomImageView);
 
     // populate the subtitle with text
-    mBottomPlaceDescription.setText(l.subtitle);
+    mBottomPlaceDescription.setText(l.getSubtitle());
 
     // display visibility based on the input we're using
     mBottomPlaceDetailSeatsLayout.setVisibility(
-        l.seats != null && !l.seats.isEmpty() ? View.VISIBLE : View.GONE);
+        l.getSeats() != null && !l.getSeats().isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailHashLayout.setVisibility(
-        l.tags != null && !l.tags.isEmpty() ? View.VISIBLE : View.GONE);
+        l.getTags() != null && !l.getTags().isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailBuiltinLayout.setVisibility(
-        l.builtin != null && !l.builtin.isEmpty() ? View.VISIBLE : View.GONE);
+        l.getBuiltin() != null && !l.getBuiltin().isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailCoursesLayout.setVisibility(
-        l.courses != null && !l.courses.isEmpty() ? View.VISIBLE : View.GONE);
+        l.getCourses() != null && !l.getCourses().isEmpty() ? View.VISIBLE : View.GONE);
 
     // populate layouts with the appropriate text
-    mBottomPlaceSeatsTextView.setText(l.seats);
-    mBottomPlaceHashTextView.setText(l.description);
-    mBottomPlaceBuiltinTextView.setText(l.builtin);
-    mBottomPlaceCoursesTextView.setText(l.courses);
+    mBottomPlaceSeatsTextView.setText(l.getSeats());
+    mBottomPlaceHashTextView.setText(l.getDescription());
+    mBottomPlaceBuiltinTextView.setText(l.getBuiltin());
+    mBottomPlaceCoursesTextView.setText(l.getCourses());
   }
 
   /**
@@ -634,7 +637,8 @@ public class OnTourActivity extends AppCompatActivity
     // register click listener on the map
     mMap.setOnMarkerClickListener(marker -> {
       mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-      updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
+      updateBottomSheetCollapsed(
+          TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
       return true;
     });
   }
@@ -666,8 +670,8 @@ public class OnTourActivity extends AppCompatActivity
    */
   public void updateBottomSheetCollapsed(com.beep.youseesd.model.Location l) {
     // update the display appropriately
-    mBottomTitle.setText(l.title);
-    mBottomSubtitle.setText(l.subtitle);
+    mBottomTitle.setText(l.getTitle());
+    mBottomSubtitle.setText(l.getSubtitle());
     mMarkVisitedButton.setTextColor(
         getResources().
             getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
@@ -709,13 +713,16 @@ public class OnTourActivity extends AppCompatActivity
   }
 
   @Override
-  public void onStatusChanged(String provider, int status, Bundle extras) { }
+  public void onStatusChanged(String provider, int status, Bundle extras) {
+  }
 
   @Override
-  public void onProviderEnabled(String provider) { }
+  public void onProviderEnabled(String provider) {
+  }
 
   @Override
-  public void onProviderDisabled(String provider) { }
+  public void onProviderDisabled(String provider) {
+  }
 
   /**
    * Listener for click actions on our map
@@ -734,7 +741,7 @@ public class OnTourActivity extends AppCompatActivity
 
         // get the location that we tapped on
         com.beep.youseesd.model.Location t =
-            TourSet.allLocations.get(mTour.locations.get(mSelectedTour));
+            TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour));
 
         if (!t.isVisited()) {
           t.setVisited();
@@ -745,7 +752,8 @@ public class OnTourActivity extends AppCompatActivity
         // update views and adapter as necessary
         mAdapter.notifyDataSetChanged();
         updateLocationPinMarkerVisited(t.isVisited(), mSelectedTour);
-        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
+        updateBottomSheetCollapsed(
+            TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
         break;
 
       // end the tour if that's what the user desires
@@ -756,5 +764,6 @@ public class OnTourActivity extends AppCompatActivity
   }
 
   @Override
-  public void onMapClick(LatLng latLng) { }
+  public void onMapClick(LatLng latLng) {
+  }
 }

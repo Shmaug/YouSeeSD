@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -111,13 +110,13 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
       // get the tour with respect to i and properly load the information
       Tour t = mTours.get(i);
-      h.titleView.setText(mTours.get(i).title);
-      h.subtitleView.setText(mTours.get(i).subtitle);
+      h.titleView.setText(mTours.get(i).getTitle());
+      h.subtitleView.setText(mTours.get(i).getSubtitle());
       Glide.with(h.imageView.getContext())
-          .load(mTours.get(i).imageUrl)
+          .load(mTours.get(i).getImageUrl())
           .centerCrop()
           .into(h.imageView);
-      h.tourTravelTimeView.setText(mTours.get(i).estimatedTime + " mins");
+      h.tourTravelTimeView.setText(mTours.get(i).getEstimatedTime() + " mins");
 
       // add a listener to the card so that we can prepare to start a new tour
       h.cardView.setOnClickListener(v -> {
@@ -136,14 +135,14 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // load the ConfirmOnTourFragment that will display the locations on our tour
             ConfirmOnTourFragment fragment = new ConfirmOnTourFragment();
             Bundle b = new Bundle();
-            b.putString(DatabaseUtil.TOUR_ID, t.tourId);
+            b.putString(DatabaseUtil.TOUR_ID, t.getTourId());
             fragment.setArguments(b);
             act.updateFragment(fragment, "ConfirmOnTour");
 
             // add a listener to the button that will start the tour if clicked on
             act.getFAB().setOnClickListener(v1 -> {
               Intent intent = new Intent(v1.getContext(), OnTourActivity.class);
-              intent.putExtra(DatabaseUtil.TOUR_ID, t.tourId);
+              intent.putExtra(DatabaseUtil.TOUR_ID, t.getTourId());
               act.startActivity(intent);
             });
             break;
@@ -159,7 +158,7 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         popup.setOnMenuItemClickListener(item -> {
           switch (item.getItemId()) {
             case R.id.delete_tour:
-              DatabaseUtil.deleteTour(App.getUser().getUid(), t.tourId);
+              DatabaseUtil.deleteTour(App.getUser().getUid(), t.getTourId());
               return true;
           }
 

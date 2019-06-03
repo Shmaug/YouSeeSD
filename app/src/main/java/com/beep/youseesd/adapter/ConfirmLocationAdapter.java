@@ -40,7 +40,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
    */
   public void updateData(Tour t) {
     this.mTour = t;
-    this.tourLocations = t.locations;
+    this.tourLocations = t.getLocations();
     // this will force an update on the UI
     notifyDataSetChanged();
   }
@@ -102,7 +102,7 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
       LocationViewHolder h = (LocationViewHolder) holder;
 
       // display the information as necessary
-      Location loc = TourSet.allLocations.get(tourLocations.get(i));
+      Location loc = TourSet.getAllLocations().get(tourLocations.get(i));
       h.title.setText(loc.getTitle());
       h.subtitle.setText(loc.getSubtitle());
       Glide.with(h.imageView.getContext())
@@ -113,12 +113,12 @@ public class ConfirmLocationAdapter extends RecyclerView.Adapter<RecyclerView.Vi
       // display the appropriate information
       HeaderViewHolder h = (HeaderViewHolder) holder;
       Glide.with(h.imageView.getContext())
-          .load(mTour.imageUrl)
+          .load(mTour.getImageUrl())
           .centerCrop()
           .into(h.imageView);
 
       // display the text for the tours
-      h.titleView.setText("Are you ready to enjoy " + mTour.estimatedTime + " mins? ");
+      h.titleView.setText("Are you ready to enjoy " + mTour.getEstimatedTime() + " mins? ");
       h.titleView.setDrawableEnd(
           new IconicsDrawable(h.titleView.getContext()).icon(FontAwesome.Icon.faw_smile)
               .color(Color.GRAY)

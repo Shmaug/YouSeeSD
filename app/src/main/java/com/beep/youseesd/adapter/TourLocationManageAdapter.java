@@ -42,8 +42,8 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
 
     // save all of the locations on tour
     mStops = new ArrayList<>();
-    for (String location : tour.locations) {
-      mStops.add(TourSet.allLocations.get(location));
+    for (String location : tour.getLocations()) {
+      mStops.add(TourSet.getAllLocations().get(location));
     }
 
     this.mActivity = act;
@@ -114,7 +114,7 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
       });
 
       // set the appropriate text on each of the locations in the menu depending if visited
-      h.mTitleView.setText(l.title);
+      h.mTitleView.setText(l.getTitle());
       if (l.isVisited()) {
         long time = Calendar.getInstance().getTimeInMillis() - l.getVisitedTime();
         if (time == 1) {

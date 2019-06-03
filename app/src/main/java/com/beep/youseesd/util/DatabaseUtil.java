@@ -36,7 +36,7 @@ public class DatabaseUtil {
     DatabaseReference ref = getTourDatabase(uid);
     // generate new key (random ids)
     String tourId = ref.push().getKey();
-    t.tourId = tourId;
+    t.setTourId(tourId);
     ref.child(tourId).setValue(t, listener);
   }
 

@@ -100,7 +100,7 @@ public class TourListFragment extends Fragment {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
           String dsid = ds.getKey();
           Tour t = ds.getValue(Tour.class);
-          t.tourId = dsid;
+          t.setTourId(dsid);
           tours.add(t);
         }
 

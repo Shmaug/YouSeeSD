@@ -107,32 +107,39 @@ public class CreateTourActivity extends AppCompatActivity {
     // switch-case for the predefined themes that have been specified in the TourSet model
     switch (viewId) {
       case R.id.tag_warren:
-        return new Theme(TourSet.TAG_WARREN, TourSet.THEME_MAP.get(TourSet.TAG_WARREN));
+        return new Theme(TourSet.getTagWarren(), TourSet.getThemeMap().get(TourSet.getTagWarren()));
       case R.id.tag_erc:
-        return new Theme(TourSet.TAG_ERC, TourSet.THEME_MAP.get(TourSet.TAG_ERC));
+        return new Theme(TourSet.getTagErc(), TourSet.getThemeMap().get(TourSet.getTagErc()));
       case R.id.tag_sixth:
-        return new Theme(TourSet.TAG_SIXTH, TourSet.THEME_MAP.get(TourSet.TAG_SIXTH));
+        return new Theme(TourSet.getTagSixth(), TourSet.getThemeMap().get(TourSet.getTagSixth()));
       case R.id.tag_marshall:
-        return new Theme(TourSet.TAG_MARSHAL, TourSet.THEME_MAP.get(TourSet.TAG_MARSHAL));
+        return new Theme(TourSet.getTagMarshall(),
+            TourSet.getThemeMap().get(TourSet.getTagMarshall()));
       case R.id.tag_muir:
-        return new Theme(TourSet.TAG_MUIR, TourSet.THEME_MAP.get(TourSet.TAG_MUIR));
+        return new Theme(TourSet.getTagMuir(), TourSet.getThemeMap().get(TourSet.getTagMuir()));
       case R.id.tag_revelle:
-        return new Theme(TourSet.TAG_REVELLE, TourSet.THEME_MAP.get(TourSet.TAG_REVELLE));
+        return new Theme(TourSet.getTagRevelle(),
+            TourSet.getThemeMap().get(TourSet.getTagRevelle()));
       case R.id.tag_fitness:
-        return new Theme(TourSet.TAG_FITNESS, TourSet.THEME_MAP.get(TourSet.TAG_FITNESS));
+        return new Theme(TourSet.getTagFitness(),
+            TourSet.getThemeMap().get(TourSet.getTagFitness()));
       case R.id.tag_social:
-        return new Theme(TourSet.TAG_SOCIAL, TourSet.THEME_MAP.get(TourSet.TAG_SOCIAL));
+        return new Theme(TourSet.getTagSocial(), TourSet.getThemeMap().get(TourSet.getTagSocial()));
       case R.id.tag_engineering:
-        return new Theme(TourSet.TAG_ENGINEERING, TourSet.THEME_MAP.get(TourSet.TAG_ENGINEERING));
+        return new Theme(
+            TourSet.getTagEngineering(), TourSet.getThemeMap().get(TourSet.getTagEngineering()));
       case R.id.tag_food_living:
-        return new Theme(TourSet.TAG_FOOD_LIVING, TourSet.THEME_MAP.get(TourSet.TAG_FOOD_LIVING));
+        return new Theme(
+            TourSet.getTagFoodLiving(), TourSet.getThemeMap().get(TourSet.getTagFoodLiving()));
       case R.id.tag_humanities:
-        return new Theme(TourSet.TAG_HUMANITIES, TourSet.THEME_MAP.get(TourSet.TAG_HUMANITIES));
+        return new Theme(
+            TourSet.getTagHumanities(), TourSet.getThemeMap().get(TourSet.getTagHumanities()));
       case R.id.tag_popular:
-        return new Theme(TourSet.TAG_POPULAR, TourSet.THEME_MAP.get(TourSet.TAG_POPULAR));
+        return new Theme(TourSet.getTagPopular(),
+            TourSet.getThemeMap().get(TourSet.getTagPopular()));
       case R.id.tag_natural_sciences:
-        return new Theme(TourSet.TAG_NATURAL_SCIENCES,
-            TourSet.THEME_MAP.get(TourSet.TAG_NATURAL_SCIENCES));
+        return new Theme(TourSet.getTagNaturalSciences(),
+            TourSet.getThemeMap().get(TourSet.getTagNaturalSciences()));
     }
 
     return null;
