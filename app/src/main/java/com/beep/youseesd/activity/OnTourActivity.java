@@ -20,27 +20,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.TourLocationManageAdapter;
 import com.beep.youseesd.application.App;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.model.TourSet;
 import com.beep.youseesd.util.DatabaseUtil;
+import com.beep.youseesd.util.DistanceUtil;
 import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,8 +46,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -69,11 +65,9 @@ import com.google.maps.model.TravelMode;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.joda.time.DateTime;
 
 
@@ -84,6 +78,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   private static final float ARRIVAL_DISTANCE = 10; // distance to "arrive" at a TourStop
   private static final float WANDER_DISTANCE = 15; // distance to wander away from tour path before warning
 
+  private Location mUserCurrentLocation;
   private GoogleMap mMap;
   private Tour mTour;
   private float mTourProgress; // divide by (mTour.getNumStops() - 1) to get total tour percentage
@@ -125,7 +120,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   private TextView mBottomPlaceSeatsTextView;
   private TextView mBottomPlaceCoursesTextView;
 
-  private int mSelectedTour = -1;
+  private int mSelectedTour = 0;
   List<Marker> mMarkers;
 
 //  private void loadDefaultTour() {
@@ -169,9 +164,6 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   }
 
   private void endTour() {
-    mTour = null;
-    mLocationManager.removeUpdates(this);
-
     WLog.i("end tour clicked.");
     new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?").setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
       @Override
@@ -181,6 +173,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     }).setPositiveButton("Yes, I am done", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
+        mTour = null;
+        mLocationManager.removeUpdates(OnTourActivity.this);
         finish();
       }
     }).create().show();
@@ -436,6 +430,9 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         System.out.println("BYE: " + t);
         addPlacePinsOnMap(t);
         drawTour();
+
+        // for default location
+        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(0)));
       }
 
       @Override
@@ -481,7 +478,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       return;
     }
 
-    super.onBackPressed();
+    endTour();
   }
 
   private void showPlaceDetails(int id) {
@@ -495,15 +492,15 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         .centerCrop()
         .into(mBottomImageView);
 
-    mBottomPlaceDescription.setText(l.subtitle);
+    mBottomPlaceDescription.setText(l.description);
 
     mBottomPlaceDetailSeatsLayout.setVisibility(l.seats != null && !l.seats.isEmpty() ? View.VISIBLE : View.GONE);
-    mBottomPlaceDetailHashLayout.setVisibility(l.tags != null && !l.tags.isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailHashLayout.setVisibility(l.subtitle != null && !l.subtitle.isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailBuiltinLayout.setVisibility(l.builtin != null && !l.builtin.isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailCoursesLayout.setVisibility(l.courses != null && !l.courses.isEmpty() ? View.VISIBLE : View.GONE);
 
     mBottomPlaceSeatsTextView.setText(l.seats);
-    mBottomPlaceHashTextView.setText(l.description);
+    mBottomPlaceHashTextView.setText(l.subtitle);
     mBottomPlaceBuiltinTextView.setText(l.builtin);
     mBottomPlaceCoursesTextView.setText(l.courses);
   }
@@ -615,7 +612,22 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mBottomSubtitle.setText(l.subtitle);
     mMarkVisitedButton.setTextColor(getResources().getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
     mMarkVisitedButton.setText(l.isVisited() ? "MARK UNVISITED" : "MARK VISITED");
-    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
+//    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
+
+    String subtitle = generateSubtitleAccordingly(mUserCurrentLocation, l);
+    mVisitText.setText(subtitle);
+  }
+
+  private String generateSubtitleAccordingly(Location userLocation, com.beep.youseesd.model.Location destination) {
+    if (!destination.isVisited()) {
+      float[] result = new float[1];
+      Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(), destination.latitude, destination.longitude, result);
+      double d = DistanceUtil.toMiles(result[0] / 1000);
+      String mile = String.format("%.1f", d);
+      return mile + " mile away";
+    }
+
+    return destination.calculateVisitedAgo() + " mins";
   }
 
   private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
@@ -629,6 +641,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
   @Override
   public void onLocationChanged(Location location) {
+    mUserCurrentLocation = location;
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
 
     updateLocation(location);

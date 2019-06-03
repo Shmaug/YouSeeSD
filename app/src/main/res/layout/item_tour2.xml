@@ -60,7 +60,6 @@
                 android:id="@+id/card_tour_eta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/card_tour_img_wrapper"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="20dp"
@@ -71,7 +70,6 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/card_tour_img_wrapper"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="14dp"
@@ -97,9 +95,9 @@
                 android:layout_marginRight="16dp"/>
 
         <TextView
+                android:id="@+id/tour_tag_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/card_tour_img_wrapper"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="24dp"
@@ -108,45 +106,18 @@
                 android:textColor="@color/dark_gray"
                 android:text="Tour Tags"/>
 
-        <LinearLayout
+        <com.nex3z.flowlayout.FlowLayout
+                android:id="@+id/tour_tags_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
+                app:flChildSpacing="auto"
+                app:flChildSpacingForLastRow="align"
+                app:flRowSpacing="8dp">
+        </com.nex3z.flowlayout.FlowLayout>
 
-            <com.mikepenz.iconics.view.IconicsTextView
-                    android:id="@+id/card_tour_hash1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/rounded_corner"
-                    android:padding="5dp"
-                    android:text="markets"
-                    android:textColor="@color/dark_gray"
-                    app:iiv_all_color="@color/dark_gray"/>
-
-            <com.mikepenz.iconics.view.IconicsTextView
-                    android:id="@+id/card_tour_hash2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corner"
-                    android:padding="5dp"
-                    android:text="engineering"
-                    android:textColor="@color/dark_gray"
-                    app:iiv_all_color="@color/dark_gray"/>
-
-            <com.mikepenz.iconics.view.IconicsTextView
-                    android:id="@+id/card_tour_hash3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corner"
-                    android:padding="5dp"
-                    android:text="warren"
-                    android:textColor="@color/dark_gray"
-                    app:iiv_all_color="@color/dark_gray"/>
-        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 

@@ -124,6 +124,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="15dp"
+                        android:lineSpacingExtra="4dp"
                         android:gravity="start"
                         android:text="On desktop, the location information for this map is displayed in side sheet because screen widths are larger than screen heights."
                         android:textColor="@color/black"

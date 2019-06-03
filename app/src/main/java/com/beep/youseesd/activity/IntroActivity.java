@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
   private IconicsImageView mLogoImageView;
   private ImageView mUCSDLogoImageView;
   private MaterialButton mRegisterButton;
+  private TextView mLoginLoadingTextView;
 
   private static final String[] IMAGE_LINKS = {
       "https://ucpa.ucsd.edu/images/image_library/triton-fountain-at-price-center.jpg",
@@ -34,14 +36,18 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
       "https://ucpa.ucsd.edu/images/image_library/wellsfargohall.jpg"
   };
 
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_intro);
+    mLoginLoadingTextView = (TextView) findViewById(R.id.login_guide);
     mRegisterButton = (MaterialButton) findViewById(R.id.intro_join_btn);
     mRegisterButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        mLoginLoadingTextView.setVisibility(View.VISIBLE);
+        mRegisterButton.setEnabled(false);
         AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this);
       }
     });
@@ -71,6 +77,9 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
 
   @Override
   public void onComplete(@NonNull Task<AuthResult> task) {
+    mLoginLoadingTextView.setVisibility(View.GONE);
+    mRegisterButton.setEnabled(true);
+
     FirebaseUser newUser = task.getResult().getUser();
     WLog.i("newUserId: " + newUser.getUid());
     if (!newUser.getUid().isEmpty()) {

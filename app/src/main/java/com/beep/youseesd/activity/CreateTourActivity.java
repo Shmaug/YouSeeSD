@@ -19,6 +19,7 @@ import com.beep.youseesd.util.WLog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -53,11 +54,18 @@ public class CreateTourActivity extends AppCompatActivity {
     switch (item.getItemId()) {
       case R.id.menu_create_tour_ok:
         List<Chip> selectedChips = filterSelectedChips(findChips(mChipGroup));
+
+        if (selectedChips.isEmpty()) {
+          Snackbar.make(findViewById(R.id.create_tour_root_layout), "You have to select at least 1 tag!", Snackbar.LENGTH_LONG).show();
+          return false;
+        }
+
         List<Theme> selectedThemes = generateThemes(selectedChips);
 
         // Create a tour based on the themes that were selected and write to database
         TourSet ts = new TourSet();
         Tour t = ts.findBestFitTour(selectedThemes);
+        t.selectedTags.addAll(getSelectedTagLabels(selectedChips));
         DatabaseUtil.createTour(App.getUser().getUid(), t, new DatabaseReference.CompletionListener() {
           @Override
           public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
@@ -81,7 +89,6 @@ public class CreateTourActivity extends AppCompatActivity {
     return true;
   }
 
-
   // Store reference to our tags as well as the tool bar
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +97,19 @@ public class CreateTourActivity extends AppCompatActivity {
     mToolbar = (MaterialToolbar) findViewById(R.id.create_toolbar);
     setSupportActionBar(mToolbar);
     mChipGroup = (ChipGroup) findViewById(R.id.chip_group);
+  }
+
+  private List<String> getSelectedTagLabels(List<Chip> chips) {
+    if (chips == null || chips.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    List<String> res = new ArrayList<>();
+    for (Chip c : chips) {
+      res.add(String.valueOf(c.getText()));
+    }
+
+    return res;
   }
 
   private Theme generateTheme(@IdRes int viewId) {
