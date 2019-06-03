@@ -33,11 +33,12 @@ public class HomeActivity extends BaseActivity {
   private IconicsTextView weatherTextView;
   private BottomAppBar appBar;
   private OpenWeatherMapHelper helper;
-  private boolean fahrenheit = true;
+
+  private boolean fahrenheit;
   private CurrentWeather currentWeather;
 
   /**
-   * If fragment stack is 0, renders bottom components again
+   * Handles the back button behavior If fragment stack is 0, renders bottom components again
    */
   @Override
   public void onBackPressed() {
@@ -61,10 +62,18 @@ public class HomeActivity extends BaseActivity {
     }
   }
 
+  /**
+   * Initial setup of our application Sets up our tours and locations from database. Sets up API for
+   * the weather units
+   *
+   * @param savedInstanceState used as a lifecycle method
+   */
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+
+    // retrieve tours and locations from database
     TourSet.setUpTours();
     TourSet.setUpLocations();
 
@@ -75,6 +84,8 @@ public class HomeActivity extends BaseActivity {
     SharedPreferences settings = getSharedPreferences("Temperature", 0);
     String preferredUnits = settings.getString("Units", "");
     WLog.i(preferredUnits);
+
+    // setup display with initial preferences
     if (preferredUnits.equals("Celsius")) {
       fahrenheit = false;
       helper.setUnits(Units.METRIC);
@@ -83,20 +94,26 @@ public class HomeActivity extends BaseActivity {
       helper.setUnits(Units.IMPERIAL);
     }
 
+    // setup the UI and display the list of tours saved under the user's account
     setupUI();
-
     TourListFragment tourListFragment = new TourListFragment();
     updateFragment(tourListFragment, null);
-
     WLog.i("home launched");
     WLog.i("check user session..");
 
+    // log in the user
     handleUserLogin();
   }
 
+  /**
+   * Handles the user's login by tying in their device to an account on firebase
+   */
   private void handleUserLogin() {
     FirebaseUser currentUser = App.getUser();
     WLog.i(currentUser != null ? "uid: " + currentUser.getUid() : "currentUser is null");
+
+    // load the "register device" screen if the user is not registered on firebase
+    // otherwise, don't do anything and remain on this screen
     if (currentUser == null) {
       Intent intent = new Intent(this, IntroActivity.class);
       startActivity(intent);
@@ -110,62 +127,56 @@ public class HomeActivity extends BaseActivity {
    * Set up the UI of the screen (app bar, weather, create tour button)
    */
   private void setupUI() {
-    appBar = (BottomAppBar) findViewById(R.id.bottom_app_bar);
+    appBar = findViewById(R.id.bottom_app_bar);
 
     // set up weather information
     setupWeather();
 
     // set up click listener for weather text
-    weatherTextView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        SharedPreferences settings = getSharedPreferences("Temperature", 0);
-        SharedPreferences.Editor editor = settings.edit();
+    weatherTextView.setOnClickListener(v -> {
+      SharedPreferences settings = getSharedPreferences("Temperature", 0);
+      SharedPreferences.Editor editor = settings.edit();
 
-        // flip units
-        if (fahrenheit) {
-          helper.setUnits(Units.METRIC);
-          fahrenheit = false;
-          editor.putString("Units", "Celsius");
-          editor.commit();
-        } else {
-          helper.setUnits(Units.IMPERIAL);
-          fahrenheit = true;
-          editor.putString("Units", "Fahrenheit");
-          editor.commit();
-        }
-
-        // get updated weather information in new units
-        setupWeather();
-
-        // set weather temperature text
-        String temperature = ((int) currentWeather.getMain().getTemp()) + "";
-        if (fahrenheit) {
-          temperature += "°F";
-        } else {
-          temperature += "°C";
-        }
-        weatherTextView.setText(temperature);
+      // flip units
+      if (fahrenheit) {
+        helper.setUnits(Units.METRIC);
+        fahrenheit = false;
+        editor.putString("Units", "Celsius");
+        editor.commit();
+      } else {
+        helper.setUnits(Units.IMPERIAL);
+        fahrenheit = true;
+        editor.putString("Units", "Fahrenheit");
+        editor.commit();
       }
+
+      // get updated weather information in new units
+      setupWeather();
+
+      // set weather temperature text
+      String temperature = ((int) currentWeather.getMain().getTemp()) + "";
+      if (fahrenheit) {
+        temperature += "°F";
+      } else {
+        temperature += "°C";
+      }
+      weatherTextView.setText(temperature);
     });
 
-    // Sets up click listener for the button to create a tour
-    mCreateTourButton = (FloatingActionButton) findViewById(R.id.fab);
-    mCreateTourButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
-        startActivity(intent);
-      }
+    // sets up click listener for the button to create a tour
+    mCreateTourButton = findViewById(R.id.fab);
+    mCreateTourButton.setOnClickListener(v -> {
+      Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
+      startActivity(intent);
     });
   }
 
   /**
    * Set up the weather information in the bottom right hand corner of the screen
    */
-  public void setupWeather() {
+  private void setupWeather() {
     HomeActivity activity = this;
-    weatherTextView = (IconicsTextView) findViewById(R.id.weather_text);
+    weatherTextView = findViewById(R.id.weather_text);
 
     // get the current weather information
     helper.getCurrentWeatherByZipCode("92093", new CurrentWeatherCallback() {
@@ -211,7 +222,11 @@ public class HomeActivity extends BaseActivity {
             break;
         }
 
-        weatherTextView.setDrawableStart((new IconicsDrawable(activity).icon(weatherIcon).color(Color.WHITE).paddingDp(4).sizeDp(24)));
+        weatherTextView.setDrawableStart(new IconicsDrawable(activity)
+            .icon(weatherIcon)
+            .color(Color.WHITE)
+            .paddingDp(4)
+            .sizeDp(24));
         weatherTextView.setVisibility(View.VISIBLE);
       }
 
@@ -228,14 +243,29 @@ public class HomeActivity extends BaseActivity {
     });
   }
 
+  /**
+   * Getter for createTourButton
+   *
+   * @return a reference to the createTourButton
+   */
   public FloatingActionButton getFAB() {
     return mCreateTourButton;
   }
 
+  /**
+   * Getter for the weatherTextView
+   *
+   * @return a reference to the weatherTextView
+   */
   public IconicsTextView getWeatherTextView() {
     return weatherTextView;
   }
 
+  /**
+   * Getter for the appBar
+   *
+   * @return a reference to the appBar
+   */
   public BottomAppBar getAppBar() {
     return appBar;
   }
