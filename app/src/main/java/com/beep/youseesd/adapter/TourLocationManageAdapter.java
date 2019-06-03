@@ -16,9 +16,7 @@ import com.google.android.material.button.MaterialButton;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -91,12 +89,7 @@ public class TourLocationManageAdapter extends RecyclerView.Adapter<RecyclerView
 
       h.mTitleView.setText(l.title);
       if (l.isVisited()) {
-        long time = Calendar.getInstance().getTimeInMillis() - l.getVisitedTime();
-        if (time == 1) {
-          h.mSubtitleView.setText("just visited!");
-        } else {
-          h.mSubtitleView.setText("visited " + time + "ago");
-        }
+        h.mSubtitleView.setText("visited " + l.calculateVisitedAgo() + " mins ago");
         h.mSubtitleView.setVisibility(View.VISIBLE);
         h.mCheckImageView.setIcon(new IconicsDrawable(mActivity)
             .icon(MaterialDesignIconic.Icon.gmi_check_square)
