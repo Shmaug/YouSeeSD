@@ -612,14 +612,13 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mBottomSubtitle.setText(l.subtitle);
     mMarkVisitedButton.setTextColor(getResources().getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
     mMarkVisitedButton.setText(l.isVisited() ? "MARK UNVISITED" : "MARK VISITED");
-//    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
 
     String subtitle = generateSubtitleAccordingly(mUserCurrentLocation, l);
     mVisitText.setText(subtitle);
   }
 
   private String generateSubtitleAccordingly(Location userLocation, com.beep.youseesd.model.Location destination) {
-    if (!destination.isVisited()) {
+    if (userLocation != null && !destination.isVisited()) {
       float[] result = new float[1];
       Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(), destination.latitude, destination.longitude, result);
       double d = DistanceUtil.toMiles(result[0] / 1000);
