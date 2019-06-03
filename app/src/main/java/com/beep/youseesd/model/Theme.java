@@ -1,20 +1,25 @@
 package com.beep.youseesd.model;
 
-// theme = tags = hashtags(#)
+import android.annotation.SuppressLint;
+import androidx.annotation.NonNull;
+
+/**
+ * THIS CLASS IS NOW PRETTY MUCH POINTLESS
+ */
 public class Theme {
-    private boolean includedInTour;
-    private double[] tagTheme;
+  //must be int type, ranging from 0 ~ (Tour.NUM_THEMES - 1)
+  public int themeId;
+  public String themeName;
 
-    public Theme(double [] tagTheme) {
-        this.tagTheme = tagTheme;
-        includedInTour = false;
-    }
+  public Theme(String themeName, Integer themeId) {
+    this.themeId = themeId;
+    this.themeName = themeName;
+  }
 
-    public void toggleInclusion() {
-        this.includedInTour = !this.includedInTour;
-    }
-
-    public double[] getTagTheme() {
-        return tagTheme;
-    }
+  @SuppressLint("DefaultLocale")
+  @NonNull
+  @Override
+  public String toString() {
+    return String.format("%s(%d)", themeName, themeId);
+  }
 }

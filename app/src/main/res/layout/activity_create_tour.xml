@@ -1,73 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primaryColor"
-    android:orientation="vertical">
-
-    <!--a toolbar to open/close action-->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/home_toolbar"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:gravity="right"
-        app:menu="@menu/menu_create_tour"
-        app:navigationIcon="@drawable/ic_drop_open" />
+        android:layout_height="wrap_content">
 
-    <!--The backdrop view-->
-    <com.pedromassango.ibackdrop.Backdrop
-        android:id="@+id/backdrop_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:animationDuration="75"
-        app:closeIcon="@drawable/ic_drop_close"
-        app:openIcon="@drawable/ic_drop_open"
-        app:removeTopRightRadius="false"
-        app:toolbar="@id/home_toolbar">
-
-        <!--your back view-->
-        <include
-            layout="@layout/create_tour_back"
+    <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="272dp" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="1dp">
 
-        <!--your foldable view (front view)-->
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/create_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/primaryColor"
+                android:elevation="12dp"
+                app:title="Create Tour by Tags"
+                app:titleTextColor="@color/white"
+                app:menu="@menu/menu_create_tour"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:paddingTop="56dp">
 
-            <TextView
-                android:id="@+id/locations_front_title"
+        <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="15dp"
-                android:text="0 Locations Added"
-                android:textColor="@color/gray"
-                android:textSize="17sp" />
+                style="@style/Widget.MaterialComponents.ChipGroup"
+                android:padding="16dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.7dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@color/light_gray" />
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_warren"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Warren"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_location"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:context=".activity.CreateTourActivity"
-                tools:listitem="@layout/item_location" />
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_erc"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ERC"/>
 
-        </LinearLayout>
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_sixth"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sixth"/>
 
-    </com.pedromassango.ibackdrop.Backdrop>
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_marshall"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marshall"/>
 
-</LinearLayout>
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_muir"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Muir"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_revelle"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Revelle"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_fitness"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fitness"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_social"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Social"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_engineering"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Engineering"/>
+
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_food_living"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Food and Living"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_humanities"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Humanities"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_popular"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Popular"/>
+
+            <com.google.android.material.chip.Chip
+                    android:id="@id/tag_natural_sciences"
+                    style="@style/TagChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Natural Sciences"/>
+
+        </com.google.android.material.chip.ChipGroup>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

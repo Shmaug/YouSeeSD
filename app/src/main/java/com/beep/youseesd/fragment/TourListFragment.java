@@ -4,75 +4,87 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.beep.youseesd.R;
 import com.beep.youseesd.activity.HomeActivity;
 import com.beep.youseesd.adapter.HomeTourAdapter;
+import com.beep.youseesd.application.App;
 import com.beep.youseesd.model.Tour;
-import com.beep.youseesd.model.TourStop;
-
+import com.beep.youseesd.util.DatabaseUtil;
+import com.beep.youseesd.util.WLog;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TourListFragment extends Fragment {
 
-    private RecyclerView tourListView;
-    private LinearLayoutManager layoutManager;
-    private HomeTourAdapter adapter;
-    private ProgressBar progressBar;
+  private RecyclerView tourListView;
+  private LinearLayoutManager layoutManager;
+  private HomeTourAdapter adapter;
+  private ProgressBar progressBar;
+  private ImageView mEmptyImageView;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_home, container, false);
+  }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        progressBar = (ProgressBar) view.findViewById(R.id.home_progressbar);
-        tourListView = (RecyclerView) view.findViewById(R.id.list_tour);
+    mEmptyImageView = (ImageView) view.findViewById(R.id.home_empty_image);
+    progressBar = (ProgressBar) view.findViewById(R.id.home_progressbar);
+    tourListView = (RecyclerView) view.findViewById(R.id.list_tour);
 
-        layoutManager = new LinearLayoutManager(view.getContext());
-        tourListView.setLayoutManager(layoutManager);
+    Glide.with(getActivity())
+        .load(getResources().getDrawable(R.drawable.tour_empty))
+        .apply(RequestOptions.circleCropTransform())
+        .into(mEmptyImageView);
 
-        adapter = new HomeTourAdapter((HomeActivity) getActivity(), createTours());
+    adapter = new HomeTourAdapter((HomeActivity) getActivity(), new ArrayList<>());
+    layoutManager = new LinearLayoutManager(view.getContext());
+    tourListView.setLayoutManager(layoutManager);
+    loadTours(App.getUser().getUid());
+  }
 
-        tourListView.getViewTreeObserver()
-                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        tourListView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
-
-        tourListView.setAdapter(adapter);
-    }
-
-    private List<Tour> createTours() {
+  private void loadTours(String uid) {
+    DatabaseUtil.getTourDatabase(uid).addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         List<Tour> tours = new ArrayList<>();
-        tours.add(new Tour("Good to Walk", new TourStop[0]).subTitle("Muir is the first college founded at UCSD").imageUrl("https://lh5.googleusercontent.com/p/AF1QipOa9szj6hbfUFULO6IuTFzDua8-5FAIxkmjQkTu=s500-k-no"));
-        tours.add(new Tour("Congratulations!", new TourStop[0]).subTitle("7 spots must be visited for engineering students").imageUrl("https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/Front-Entrance-at-Dusk-1.jpg"));
-        tours.add(new Tour("Bring your puppy!", new TourStop[0]).subTitle("Get some fresh air at UCSD").imageUrl("https://ucpa.ucsd.edu/images/image_library/fallen-star-and-jsoe-building.jpg"));
-        tours.add(new Tour("Nice Spots for Sunset", new TourStop[0]).subTitle("Time to take a relax").imageUrl("https://ucpa.ucsd.edu/images/image_library/geisel.jpg"));
-        tours.add(new Tour("more item", new TourStop[0]).imageUrl("http://i.imgur.com/DvpvklR.png"));
-        tours.add(new Tour("cse110", new TourStop[0]).imageUrl("http://i.imgur.com/DvpvklR.png"));
-        tours.add(new Tour("Gary", new TourStop[0]).imageUrl("http://i.imgur.com/DvpvklR.png"));
-        tours.add(new Tour("we just did quiz3", new TourStop[0]).imageUrl("http://i.imgur.com/DvpvklR.png"));
-        return tours;
-    }
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+          String dsid = ds.getKey();
+          Tour t = ds.getValue(Tour.class);
+          t.tourId = dsid;
+          tours.add(t);
+        }
+
+        adapter.updateTours(tours);
+        tourListView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
+        mEmptyImageView.setVisibility(tours.isEmpty() ? View.VISIBLE : View.GONE);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+        WLog.e(databaseError.getMessage());
+        progressBar.setVisibility(View.GONE);
+        mEmptyImageView.setVisibility(View.VISIBLE);
+        Snackbar.make(getView(), "Something went wrong. Failed to load tours", Snackbar.LENGTH_LONG).show();
+      }
+    });
+  }
 }

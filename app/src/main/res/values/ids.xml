@@ -1,3 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item type="id" name="tag_warren"/>
+    <item type="id" name="tag_erc"/>
+    <item type="id" name="tag_sixth"/>
+    <item type="id" name="tag_marshall"/>
+    <item type="id" name="tag_muir"/>
+    <item type="id" name="tag_revelle"/>
+    <item type="id" name="tag_fitness"/>
+    <item type="id" name="tag_social"/>
+    <item type="id" name="tag_engineering"/>
+    <item type="id" name="tag_food_living"/>
+    <item type="id" name="tag_humanities"/>
+    <item type="id" name="tag_popular"/>
+    <item type="id" name="tag_natural_sciences"/>
 </resources>

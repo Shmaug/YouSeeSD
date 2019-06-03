@@ -5,19 +5,15 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import com.beep.youseesd.R;
+import com.beep.youseesd.application.App;
 import com.beep.youseesd.fragment.TourListFragment;
-import com.beep.youseesd.handler.AuthHandler;
+import com.beep.youseesd.model.TourSet;
 import com.beep.youseesd.util.WLog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.kwabenaberko.openweathermaplib.constants.Lang;
 import com.kwabenaberko.openweathermaplib.constants.Units;
@@ -31,7 +27,7 @@ import com.mikepenz.iconics.view.IconicsTextView;
 /**
  * The main screen of our app
  */
-public class HomeActivity extends BaseActivity implements OnCompleteListener<AuthResult> {
+public class HomeActivity extends BaseActivity {
 
   private FloatingActionButton mCreateTourButton;
   private IconicsTextView weatherTextView;
@@ -69,6 +65,8 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    TourSet.setUpTours();
+    TourSet.setUpLocations();
 
     // create weather object
     helper = new OpenWeatherMapHelper("4c3866391f6138c27bfb9d71a837631e");
@@ -97,13 +95,14 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
   }
 
   private void handleUserLogin() {
-    AuthHandler.signinAnonymously(this, this);
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseUser currentUser = App.getUser();
     WLog.i(currentUser != null ? "uid: " + currentUser.getUid() : "currentUser is null");
     if (currentUser == null) {
       Intent intent = new Intent(this, IntroActivity.class);
       startActivity(intent);
       finish();
+    } else {
+      WLog.i("user not null: " + currentUser.getUid());
     }
   }
 
@@ -193,7 +192,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
         FontAwesome.Icon weatherIcon;
 
         // decide which icon to load based on weather
-        switch(weather) {
+        switch (weather) {
           case "Clouds":
             weatherIcon = FontAwesome.Icon.faw_cloud;
             break;
@@ -213,6 +212,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
         }
 
         weatherTextView.setDrawableStart((new IconicsDrawable(activity).icon(weatherIcon).color(Color.WHITE).paddingDp(4).sizeDp(24)));
+        weatherTextView.setVisibility(View.VISIBLE);
       }
 
       /**
@@ -223,13 +223,7 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
        */
       @Override
       public void onFailure(Throwable throwable) {
-        if (fahrenheit) {
-          weatherTextView.setText("70°F");
-        } else {
-          weatherTextView.setText("21°C");
-        }
-
-        weatherTextView.setDrawableStart((new IconicsDrawable(activity).icon(FontAwesome.Icon.faw_cloud).color(Color.WHITE).paddingDp(4).sizeDp(24)));
+        weatherTextView.setVisibility(View.GONE);
       }
     });
   }
@@ -244,14 +238,5 @@ public class HomeActivity extends BaseActivity implements OnCompleteListener<Aut
 
   public BottomAppBar getAppBar() {
     return appBar;
-  }
-
-  /**
-   * When the activity is done loading, connect the user to Firebase
-   * @param task
-   */
-  @Override
-  public void onComplete(@NonNull Task<AuthResult> task) {
-    FirebaseUser newUser = task.getResult().getUser();
   }
 }

@@ -1,117 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_tour"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="6dp"
-    app:cardMaxElevation="8dp"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="false"
-    app:contentPadding="0dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <LinearLayout
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_tour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="6dp"
+        app:cardMaxElevation="8dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="false"
+        app:contentPadding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/card_tour_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/card_tour_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="Subtitle goes here"
-            android:textSize="16sp" />
-
-        <RelativeLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp">
+
+        <TextView
+                android:id="@+id/card_tour_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textSize="24sp"/>
+
+        <TextView
+                android:id="@+id/card_tour_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="Subtitle goes here"
+                android:textSize="16sp"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
 
             <RelativeLayout
-                android:id="@+id/card_tour_img_wrapper"
-                android:layout_width="match_parent"
-                android:layout_height="158dp">
+                    android:id="@+id/card_tour_img_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="158dp">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:id="@+id/card_tour_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                        android:id="@+id/card_tour_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 <LinearLayout
-                    android:id="@+id/card_tour_info1_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
-
-                    <com.mikepenz.iconics.view.IconicsTextView
-                        android:id="@+id/card_tour_hash1"
+                        android:id="@+id/card_tour_info1_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/rounded_corner"
-                        android:padding="5dp"
-                        android:text="Muir"
-                        android:textColor="@color/gray"
-                        app:iiv_all_color="@color/gray" />
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        android:padding="15dp">
 
                     <com.mikepenz.iconics.view.IconicsTextView
-                        android:id="@+id/card_tour_hash2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_corner"
-                        android:padding="5dp"
-                        android:text="Engineering"
-                        android:textColor="@color/gray"
-                        app:iiv_all_color="@color/gray" />
+                            android:id="@+id/card_tour_hash1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/rounded_corner"
+                            android:padding="5dp"
+                            android:text="Muir"
+                            android:textColor="@color/gray"
+                            app:iiv_all_color="@color/gray"/>
+
+                    <com.mikepenz.iconics.view.IconicsTextView
+                            android:id="@+id/card_tour_hash2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rounded_corner"
+                            android:padding="5dp"
+                            android:text="Engineering"
+                            android:textColor="@color/gray"
+                            app:iiv_all_color="@color/gray"/>
                 </LinearLayout>
             </RelativeLayout>
 
             <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/card_tour_menu"
-                android:layout_width="32dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_tour_img_wrapper"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:paddingLeft="10dp"
-                android:paddingTop="25dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:background="@drawable/bg_menu_btn" />
+                    android:id="@+id/card_tour_menu"
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_tour_img_wrapper"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="25dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/bg_menu_btn"/>
 
-            <TextView
-                android:id="@+id/card_tour_eta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_tour_img_wrapper"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
-                android:text="1hour 30min" />
+            <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/card_tour_eta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_tour_img_wrapper"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="1hour 30min"/>
         </RelativeLayout>
     </LinearLayout>
 

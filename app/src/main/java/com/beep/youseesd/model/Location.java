@@ -1,49 +1,67 @@
 package com.beep.youseesd.model;
 
+import com.google.android.gms.maps.model.LatLng;
+import java.util.Calendar;
+
 public class Location {
-    public String title;
-    public String subtitle;
-    public String imageUrl;
-    // user to check if the location was visited during the tour
-    private boolean visited;
 
-    public Location() {
-        this(null,null,null);
-    }
+  public String locationId; //could be String type
+  public String title;
+  public String subtitle;
+  public String imageUrl;
+  public double longitude;
+  public double latitude;
+  // Used for the locations' info.s during the tour
+  public String description;
+  public String seats;
+  public String builtin;
+  public String courses;
+  public String tags;
 
-    public Location(String title, String subtitle, String imageUrl) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.imageUrl = imageUrl;
-        this.visited = false;
-    }
+  public Location() {
+    this.locationId = "";
+    this.title = null;
+    this.subtitle = null;
+    this.imageUrl = null;
+    this.longitude = 0;
+    this.latitude = 0;
+    this.description = null;
+    setUnvisited();
+  }
 
-    public String getTitle() {
-        return this.title;
-    }
+  // only used in On-tour, not in sync with the firebase database.
+  private long visitedTime;
 
-    public String getSubtitle() {
-        return this.subtitle;
-    }
+  public boolean isVisited() {
+    return visitedTime > 0;
+  }
 
-    public String getImageUrl() {
-        return this.imageUrl;
-    }
+  public long getVisitedTime() {
+    return visitedTime;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public LatLng generateLatLng() {
+    return new LatLng(latitude, longitude);
+  }
 
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
+  // Returns the number of minutes passed since visiting the location
+  public int calculateVisitedAgo() {
+    return (int) ((Calendar.getInstance().getTimeInMillis() - visitedTime) / 60);
+  }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+  public void setVisited() {
+    visitedTime = Calendar.getInstance().getTimeInMillis();
+  }
 
-    public void toggleVisited() {
-        this.visited = !this.visited;
-    }
+  public void setUnvisited() {
+    visitedTime = 0;
+  }
 
+  public String getTitle() { return this.title; }
+
+  public String getSubtitle() { return this.subtitle; }
+
+  public String getDescription()  { return this.description; }
+
+  public String getImageUrl() { return this.imageUrl; }
 }

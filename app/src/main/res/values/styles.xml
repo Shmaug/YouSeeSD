@@ -20,4 +20,8 @@
         <item name="cornerRadius">5dp</item>
     </style>
 
+    <style name="TagChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="rippleColor">@color/primaryColor</item>
+    </style>
+
 </resources>
