@@ -2,6 +2,7 @@ package com.beep.youseesd.model;
 
 import com.google.android.gms.maps.model.LatLng;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class that stores information about a single location on our tour
@@ -72,7 +73,8 @@ public class Location {
    * @return the number of minutes passed since visiting the location
    */
   public int calculateVisitedAgo() {
-    return (int) ((Calendar.getInstance().getTimeInMillis() - getVisitedTime()) / 60);
+    long diff = (Calendar.getInstance().getTimeInMillis() - visitedTime);
+    return (int) TimeUnit.MILLISECONDS.toMinutes(diff);
   }
 
   /**

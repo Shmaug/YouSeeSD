@@ -18,6 +18,7 @@ import com.beep.youseesd.application.App;
 import com.beep.youseesd.fragment.ConfirmOnTourFragment;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.util.DatabaseUtil;
+import com.beep.youseesd.view.TourTagTextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.card.MaterialCardView;
@@ -26,6 +27,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.iconics.view.IconicsTextView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+import com.nex3z.flowlayout.FlowLayout;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,6 +50,9 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    */
   public HomeTourAdapter(HomeActivity act, List<Tour> tours) {
     super();
+
+    // reverse tours so it's intuitive for user
+    Collections.reverse(tours);
     this.mTours = tours;
     this.act = act;
   }
@@ -57,6 +63,9 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
    * @param tours list of tours to update with
    */
   public void updateTours(List<Tour> tours) {
+    // reverse tours so it's intuitive for user
+    Collections.reverse(tours);
+
     this.mTours = tours;
     notifyDataSetChanged();
   }
@@ -117,6 +126,13 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           .centerCrop()
           .into(h.imageView);
       h.tourTravelTimeView.setText(mTours.get(i).getEstimatedTime() + " mins");
+
+      // modify the layout to display the tags if available
+      for (String tagLabel : t.getSelectedTags()) {
+        TourTagTextView tagTextView = new TourTagTextView(h.tourTagsLayout.getContext(), tagLabel);
+        h.tourTagsLayout.addView(tagTextView);
+      }
+      h.tourTagTitle.setText(t.getSelectedTags().isEmpty() ? "Show Tour Details" : "Tour Tags");
 
       // add a listener to the card so that we can prepare to start a new tour
       h.cardView.setOnClickListener(v -> {
@@ -213,10 +229,10 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private TextView titleView;
     private TextView subtitleView;
     private IconicsImageView imageView;
-    private IconicsTextView hashTextView1;
-    private IconicsTextView hashTextView2;
     private IconicsImageView menuImageView;
     private IconicsTextView tourTravelTimeView;
+    private TextView tourTagTitle;
+    private FlowLayout tourTagsLayout;
 
     /**
      * Constructor for the HomeTour holder
@@ -231,6 +247,11 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       titleView = itemView.findViewById(R.id.card_tour_title);
       subtitleView = itemView.findViewById(R.id.card_tour_subtitle);
 
+      tourTagsLayout = itemView.findViewById(R.id.tour_tags_layout);
+      tourTagTitle = itemView.findViewById(R.id.tour_tag_title);
+
+      imageView = itemView.findViewById(R.id.card_tour_img);
+      imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image).color(Color.GRAY).sizeDp(24));
       tourTravelTimeView = itemView.findViewById(R.id.card_tour_eta);
       tourTravelTimeView.setDrawableStart(
           new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_clock)
@@ -238,28 +259,12 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
               .paddingDp(4)
               .color(itemView.getContext().getColor(R.color.gray)));
 
+      menuImageView = itemView.findViewById(R.id.card_tour_menu);
+      menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(MaterialDesignIconic.Icon.gmi_more_vert).color(itemView.getContext().getColor(R.color.light_gray)).sizeDp(14));
       imageView = itemView.findViewById(R.id.card_tour_img);
       imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image)
           .color(Color.GRAY)
           .sizeDp(24));
-
-      hashTextView1 = itemView.findViewById(R.id.card_tour_hash1);
-      hashTextView1.setDrawableStart(
-          new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag)
-              .color(hashTextView1.getResources().getColor(R.color.dark_gray))
-              .sizeDp(12));
-
-      hashTextView2 = itemView.findViewById(R.id.card_tour_hash2);
-      hashTextView2.setDrawableStart(
-          new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag)
-              .color(hashTextView2.getResources().getColor(R.color.dark_gray))
-              .sizeDp(12));
-
-      hashTextView2 = itemView.findViewById(R.id.card_tour_hash3);
-      hashTextView2.setDrawableStart(
-          new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_hashtag)
-              .color(hashTextView2.getResources().getColor(R.color.dark_gray))
-              .sizeDp(12));
 
       menuImageView = itemView.findViewById(R.id.card_tour_menu);
       menuImageView.setIcon(

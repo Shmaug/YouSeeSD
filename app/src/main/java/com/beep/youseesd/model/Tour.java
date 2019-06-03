@@ -18,13 +18,15 @@ public class Tour {
   private String subtitle;
   private String imageUrl;
 
-  private ArrayList<Double> themeVector;
-  private ArrayList<String> locations;
+  private List<Double> themeVector;
+  private List<String> locations;
+  private List<String> selectedTags;
   private int estimatedTime;
 
   /**
    * No-arg constructor for our Tour object
    */
+
   public Tour() {
     this.setTourId("");
     this.setTitle(null);
@@ -33,6 +35,7 @@ public class Tour {
     this.setEstimatedTime(0);
     this.setThemeVector(new ArrayList<>());
     this.setLocations(new ArrayList<>());
+    this.setSelectedTags(new ArrayList<>());
   }
 
   /**
@@ -137,7 +140,7 @@ public class Tour {
    *
    * @return themeVector
    */
-  public ArrayList<Double> getThemeVector() {
+  public List<Double> getThemeVector() {
     return themeVector;
   }
 
@@ -155,7 +158,7 @@ public class Tour {
    *
    * @return locations
    */
-  public ArrayList<String> getLocations() {
+  public List<String> getLocations() {
     return locations;
   }
 
@@ -184,6 +187,24 @@ public class Tour {
    */
   public void setEstimatedTime(int estimatedTime) {
     this.estimatedTime = estimatedTime;
+  }
+
+  /**
+   * Getter for selectedTags
+   *
+   * @return selectedTags
+   */
+  public List<String> getSelectedTags() {
+    return selectedTags;
+  }
+
+  /**
+   * Setter for selectedTags
+   *
+   * @param selectedTags the selectedTags to be set
+   */
+  public void setSelectedTags(List<String> selectedTags) {
+    this.selectedTags = selectedTags;
   }
 }
 

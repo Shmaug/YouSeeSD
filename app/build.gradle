@@ -63,6 +63,8 @@ dependencies {
 
     implementation 'com.google.maps:google-maps-services:0.1.20'
 
+    // tags in card view layout
+    implementation 'com.nex3z:flow-layout:1.2.4'
 
     // firebase API
     implementation 'com.google.firebase:firebase-core:16.0.9'

@@ -2,7 +2,9 @@ package com.beep.youseesd.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
   private IconicsImageView mLogoImageView;
   private ImageView mUCSDLogoImageView;
   private MaterialButton mRegisterButton;
+  private TextView mLoginLoadingTextView;
 
   // images that will greet the user
   private static final String[] IMAGE_LINKS = {
@@ -53,6 +56,15 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
         v -> AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this));
 
     // setup the logo
+    mLogoImageView = findViewById(R.id.intro_logo_image);
+
+    mLoginLoadingTextView = findViewById(R.id.login_guide);
+    mRegisterButton = findViewById(R.id.intro_join_btn);
+    mRegisterButton.setOnClickListener(v -> {
+      mLoginLoadingTextView.setVisibility(View.VISIBLE);
+      mRegisterButton.setEnabled(false);
+      AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this);
+    });
     mLogoImageView = findViewById(R.id.intro_logo_image);
     Glide.with(this)
         .load(getResources()
@@ -87,6 +99,9 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
    */
   @Override
   public void onComplete(@NonNull Task<AuthResult> task) {
+    mLoginLoadingTextView.setVisibility(View.GONE);
+    mRegisterButton.setEnabled(true);
+
     // create a new user in firebase and write to it
     FirebaseUser newUser = task.getResult().getUser();
     WLog.i("newUserId: " + newUser.getUid());

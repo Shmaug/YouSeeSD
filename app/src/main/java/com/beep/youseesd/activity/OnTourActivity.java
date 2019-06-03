@@ -19,26 +19,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.beep.youseesd.R;
 import com.beep.youseesd.adapter.TourLocationManageAdapter;
 import com.beep.youseesd.application.App;
 import com.beep.youseesd.model.Tour;
 import com.beep.youseesd.model.TourSet;
 import com.beep.youseesd.util.DatabaseUtil;
+import com.beep.youseesd.util.DistanceUtil;
 import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,8 +45,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -61,7 +58,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +74,7 @@ public class OnTourActivity extends AppCompatActivity
   // distance to wander away from tour path before warning
   private static final float WANDER_DISTANCE = 15;
 
+  private Location mUserCurrentLocation;
   private GoogleMap mMap;
   private Tour mTour;
 
@@ -112,7 +109,7 @@ public class OnTourActivity extends AppCompatActivity
   private TextView mBottomPlaceSeatsTextView;
   private TextView mBottomPlaceCoursesTextView;
 
-  private int mSelectedTour = -1;
+  private int mSelectedTour = 0;
   List<Marker> mMarkers;
 
   /**
@@ -150,11 +147,12 @@ public class OnTourActivity extends AppCompatActivity
     // create the dialog alert that allows the user to end the tour
     new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?")
         .setNegativeButton("Not yet", (dialog, which) -> {
-
         })
-        .setPositiveButton("Yes, I am done", (dialog, which) -> finish())
-        .create()
-        .show();
+        .setPositiveButton("Yes, I am done", (dialog, which) -> {
+          mTour = null;
+          mLocationManager.removeUpdates(OnTourActivity.this);
+          finish();
+        }).create().show();
   }
 
   /**
@@ -209,6 +207,9 @@ public class OnTourActivity extends AppCompatActivity
     // create a listener for each marker so we can update the bottom sheet
     mMap.setOnMarkerClickListener(marker -> {
       mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+      if(mSelectedTour >= mTour.getLocations().size()) {
+        return false;
+      }
       updateBottomSheetCollapsed(
           TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
       return true;
@@ -481,6 +482,9 @@ public class OnTourActivity extends AppCompatActivity
         // draw the markers and paths on the map
         addPlacePinsOnMap(t);
         drawTour();
+
+        // for default location
+        updateBottomSheetCollapsed(TourSet.getAllLocations().get(mTour.getLocations().get(0)));
       }
 
       @Override
@@ -526,7 +530,7 @@ public class OnTourActivity extends AppCompatActivity
       return;
     }
 
-    super.onBackPressed();
+    endTour();
   }
 
   /**
@@ -548,13 +552,13 @@ public class OnTourActivity extends AppCompatActivity
         .into(mBottomImageView);
 
     // populate the subtitle with text
-    mBottomPlaceDescription.setText(l.getSubtitle());
+    mBottomPlaceDescription.setText(l.getDescription());
 
     // display visibility based on the input we're using
     mBottomPlaceDetailSeatsLayout.setVisibility(
         l.getSeats() != null && !l.getSeats().isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailHashLayout.setVisibility(
-        l.getTags() != null && !l.getTags().isEmpty() ? View.VISIBLE : View.GONE);
+        l.getSubtitle() != null && !l.getSubtitle().isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailBuiltinLayout.setVisibility(
         l.getBuiltin() != null && !l.getBuiltin().isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailCoursesLayout.setVisibility(
@@ -562,7 +566,7 @@ public class OnTourActivity extends AppCompatActivity
 
     // populate layouts with the appropriate text
     mBottomPlaceSeatsTextView.setText(l.getSeats());
-    mBottomPlaceHashTextView.setText(l.getDescription());
+    mBottomPlaceHashTextView.setText(l.getSubtitle());
     mBottomPlaceBuiltinTextView.setText(l.getBuiltin());
     mBottomPlaceCoursesTextView.setText(l.getCourses());
   }
@@ -677,8 +681,25 @@ public class OnTourActivity extends AppCompatActivity
             getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
 
     mMarkVisitedButton.setText(l.isVisited() ? "MARK UNVISITED" : "MARK VISITED");
-    mVisitText.setText(
-        l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
+    //    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
+
+    String subtitle = generateSubtitleAccordingly(mUserCurrentLocation, l);
+    mVisitText.setText(subtitle);
+  }
+
+  private String generateSubtitleAccordingly(Location userLocation,
+      com.beep.youseesd.model.Location destination) {
+
+    if (userLocation != null && !destination.isVisited()) {
+      float[] result = new float[1];
+      Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(),
+          destination.getLatitude(), destination.getLongitude(), result);
+      double d = DistanceUtil.toMiles(result[0] / 1000);
+      String mile = String.format("%.1f", d);
+      return mile + " mile away";
+    }
+
+    return destination.calculateVisitedAgo() + " mins";
   }
 
   /**
@@ -705,6 +726,7 @@ public class OnTourActivity extends AppCompatActivity
    */
   @Override
   public void onLocationChanged(Location location) {
+    mUserCurrentLocation = location;
     // move the camera appropriately and call on our updateLocation helper
     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
         new LatLng(location.getLatitude(), location.getLongitude()), 17));
@@ -764,6 +786,5 @@ public class OnTourActivity extends AppCompatActivity
   }
 
   @Override
-  public void onMapClick(LatLng latLng) {
-  }
+  public void onMapClick(LatLng latLng) { }
 }
