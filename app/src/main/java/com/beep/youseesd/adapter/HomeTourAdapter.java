@@ -29,6 +29,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.iconics.view.IconicsTextView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.nex3z.flowlayout.FlowLayout;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -41,11 +42,15 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   public HomeTourAdapter(HomeActivity act, List<Tour> tours) {
     super();
+    Collections.reverse(tours);
     this.mTours = tours;
     this.act = act;
   }
 
   public void updateTours(List<Tour> tours) {
+    // assumes the tours are in reversed order.
+    Collections.reverse(tours);
+
     this.mTours = tours;
     notifyDataSetChanged();
   }
