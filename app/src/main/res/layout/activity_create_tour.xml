@@ -82,21 +82,21 @@
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Humanities"/>
+                    android:text="Fitness"/>
 
             <com.google.android.material.chip.Chip
                     android:id="@id/tag_social"
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Popular"/>
+                    android:text="Social"/>
 
             <com.google.android.material.chip.Chip
                     android:id="@id/tag_engineering"
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Natural Sciences"/>
+                    android:text="Engineering"/>
 
 
             <com.google.android.material.chip.Chip
@@ -104,28 +104,28 @@
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Social"/>
+                    android:text="Food and Living"/>
 
             <com.google.android.material.chip.Chip
                     android:id="@id/tag_humanities"
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Engineering"/>
+                    android:text="Humanities"/>
 
             <com.google.android.material.chip.Chip
                     android:id="@id/tag_popular"
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fitness"/>
+                    android:text="Popular"/>
 
             <com.google.android.material.chip.Chip
                     android:id="@id/tag_natural_sciences"
                     style="@style/TagChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Food and Living"/>
+                    android:text="Natural Sciences"/>
 
         </com.google.android.material.chip.ChipGroup>
     </ScrollView>

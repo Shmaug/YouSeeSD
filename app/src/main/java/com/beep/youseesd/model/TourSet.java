@@ -134,14 +134,17 @@ public class TourSet {
     Tour bestFitTour = null;
     double smallestDifference = Double.MAX_VALUE;
     for (Tour t : allTours) {
+      System.out.print("vector: " + t.tourId);
+      for (double d : t.themeVector) {
+        System.out.print(d + ", ");
+      }
+      System.out.println();
       if (smallestDifference > t.getDifference(userInputVector)) {
         smallestDifference = t.getDifference(userInputVector);
         bestFitTour = t;
       }
     }
 
-//    return bestFitTour;
-    // need to implement full logic
-    return allTours.get(1);
+    return bestFitTour;
   }
 }

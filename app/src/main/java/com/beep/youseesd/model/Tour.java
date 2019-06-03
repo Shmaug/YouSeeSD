@@ -1,6 +1,7 @@
 package com.beep.youseesd.model;
 
 import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class Tour {
   public String subtitle;
   public String imageUrl;
 
-  @Exclude
-  public double[] themeVector;
+  //@Exclude
+  public ArrayList<Double> themeVector;
 
   public ArrayList<String> locations;
   public int estimatedTime;
@@ -29,7 +30,7 @@ public class Tour {
     this.subtitle = null;
     this.imageUrl = null;
     this.estimatedTime = 0;
-    this.themeVector = new double[NUM_THEMES];
+    this.themeVector = new ArrayList<>();
     this.locations = new ArrayList<>();
   }
 
@@ -38,7 +39,7 @@ public class Tour {
     double difference = 0.0;
 
     for (Theme t : userInputThemes) {
-      difference += Math.abs(THEME_MAX_VALUE - this.themeVector[t.themeId]);
+      difference += Math.abs(THEME_MAX_VALUE - this.themeVector.get(t.themeId));
     }
 
     return difference;
