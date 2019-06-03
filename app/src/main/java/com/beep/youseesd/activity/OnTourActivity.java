@@ -24,9 +24,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +39,7 @@ import com.beep.youseesd.model.TourLocation;
 import com.beep.youseesd.model.TourStop;
 import com.beep.youseesd.util.WLog;
 import com.bumptech.glide.Glide;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,26 +63,32 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.RoundCap;
+
+import org.joda.time.DateTime;
+
+public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener, GoogleMap.OnMapClickListener {
     private static final int PERMISSION_GRANTED_LOCATION = 0x01;
     private static final long INTERVAL = 2000;
     private static final long FASTEST_INTERVAL = 1000;
+    private static final float ARRIVAL_DISTANCE = 10; // distance to "arrive" at a TourStop
+    private static final float WANDER_DISTANCE = 15; // distance to wander away from tour path before warning
 
     private GoogleMap mMap;
     private Tour mTour;
-    private float mTourProgress;
+    private float mTourProgress; // divide by (mTour.getNumStops() - 1) to get total tour percentage
+    private Polyline mHintPolyline;
+    private Polyline mPathPolyline;
 
     private Criteria mCriteria;
     private LocationManager mLocationManager;
 
-    private Location mCurrentLocation;
     private String mLocationProvider;
 
     private LinearLayout llBottomSheet;
@@ -124,6 +133,145 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 //                new TourStop(32.880227, -117.237991, null),
                 new TourStop(32.880197, -117.239942, peterson),
         });
+    }
+
+    private void beginTour() {
+        mTourProgress = 0f;
+
+        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        mCriteria = new Criteria();
+        mLocationProvider = String.valueOf(mLocationManager.getBestProvider(mCriteria, true));
+
+        try {
+            mLocationManager.requestLocationUpdates(mLocationProvider, 1000, 3.f, this);
+            Location l = mLocationManager.getLastKnownLocation(mLocationProvider);
+            if (l != null) onLocationChanged(l);
+        } catch (SecurityException e) {
+        }
+
+        mMap.setOnMapClickListener(this);
+        drawTour();
+    }
+
+    private void endTour(){
+        mTour = null;
+        mLocationManager.removeUpdates(this);
+
+        WLog.i("end tour clicked.");
+        new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?").setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).setPositiveButton("Yes, I am done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        }).create().show();
+    }
+
+    private void drawTour() {
+        if (mPathPolyline != null) mPathPolyline.remove();
+        PolylineOptions route = new PolylineOptions();
+        route.clickable(false);
+
+        for (int i = (int)mTourProgress; i < mTour.getNumStops(); i++)
+            route.add(mTour.getStop(i).getCoords());
+
+        route.color(0xff55ff55);
+        mPathPolyline = mMap.addPolyline(route);
+
+        LatLng origin = new LatLng(mTour.getStop(0).getCoords().latitude, mTour.getStop(0).getCoords().longitude);
+        LatLng destination = new LatLng(mTour.getStop(1).getCoords().latitude, mTour.getStop(1).getCoords().longitude);
+        WLog.i("origin: " + origin + ", destination: " + destination);
+//        mMap.addPolyline(addPolyline(getDirectionResult(origin, destination)));
+
+        for (TourStop t : mTour.getStops()) {
+            MarkerOptions markerOptions = new MarkerOptions().position(t.getCoords())
+                    .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
+                            .color(getResources().getColor(R.color.secondaryColor))
+                            .sizeDp(42)));
+
+//            mMarkers.add(m);
+            Marker addedMarker = mMap.addMarker(markerOptions);
+            mMarkers.add(addedMarker);
+        }
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+                updateBottomSheetCollapsed(mTour.getStop(mSelectedTour));
+                return true;
+            }
+        });
+    }
+
+    private void stopReached(TourStop stop){
+        drawTour();
+    }
+
+    private void updateLocation(Location location){
+        if (mTour == null) return; // no active tour
+
+        // get the distance between the last and next stops
+        Location l = mTour.getStop((int)mTourProgress).toLocation();
+        Location n = mTour.getStop((int)mTourProgress + 1).toLocation();
+
+        /*
+             location
+                *
+              /  |
+             /   |
+          x /    | q
+           /     |
+          /theta |
+        l -------- --------- n
+              p
+                 d (l to n)
+        */
+
+        float d = l.distanceTo(n);
+        float x = location.distanceTo(l);
+        float b0 = l.bearingTo(location);
+        float b1 = l.bearingTo(n);
+        float theta = (float)Math.toRadians(Math.abs(b0 - b1));
+        float p = x * (float)Math.cos(theta); // distance parallel along the path
+        float q = x * (float)Math.sin(theta); // distance perpendicular away from the path
+
+        if (theta > Math.PI * .5 || // user is behind previous stop... (going the wrong way?)
+                q > WANDER_DISTANCE) { // user is far from the route line
+
+            if (mHintPolyline != null) mHintPolyline.remove();
+
+            PolylineOptions hint = new PolylineOptions();
+            hint.clickable(false);
+            hint.add(new LatLng(location.getLatitude(), location.getLongitude()));
+            hint.add(new LatLng(l.getLatitude(), l.getLongitude()));
+
+            hint.color(0xffaa0000);
+            hint.endCap(new RoundCap());
+            hint.startCap(new RoundCap());
+            hint.width(5f);
+
+            mHintPolyline = mMap.addPolyline(hint);
+        }
+        else
+        {
+            if (mHintPolyline != null) mHintPolyline.remove();
+            mHintPolyline = null;
+        }
+
+        float t = Math.max(0f, Math.min(p / d, .99f)); // p / d shouldn't be > 1 but clamp just in case
+        if (location.distanceTo(n) < ARRIVAL_DISTANCE){
+            mTourProgress = (int)mTourProgress + 1;
+            stopReached(mTour.getStop((int)mTourProgress));
+            if (mTourProgress == mTour.getNumStops() - 1){
+                endTour();
+            }
+        } else
+            mTourProgress = (int)mTourProgress + t;
     }
 
     @Override
@@ -292,21 +440,6 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         drawTour();
     }
 
-    public void beginTour() {
-        mTourProgress = 0f;
-
-        mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        mCriteria = new Criteria();
-        mLocationProvider = String.valueOf(mLocationManager.getBestProvider(mCriteria, true));
-
-        try {
-            mLocationManager.requestLocationUpdates(mLocationProvider, 1000, 3.f, this);
-            Location l = mLocationManager.getLastKnownLocation(mLocationProvider);
-            if (l != null) onLocationChanged(l);
-        } catch (SecurityException e) {
-        }
-    }
-
     private GeoApiContext getGeoContext() {
         GeoApiContext geoApiContext = new GeoApiContext();
         return geoApiContext.setApiKey(getString(R.string.google_maps_key))
@@ -337,43 +470,6 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         PolylineOptions out = new PolylineOptions().addAll(decodedPath);
         return out;
     }
-
-    public void drawTour() {
-        PolylineOptions route = new PolylineOptions();
-        route.color(getResources().getColor(R.color.primaryColor));
-        route.clickable(false);
-
-//        for (int i = 0; i < mTour.getNumStops(); i++) {
-//            route.add(mTour.getStop(i).getCoords());
-//        }
-//        mMap.addPolyline(route);
-
-        com.google.maps.model.LatLng origin = new com.google.maps.model.LatLng(mTour.getStop(0).getCoords().latitude, mTour.getStop(0).getCoords().longitude);
-        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(mTour.getStop(1).getCoords().latitude, mTour.getStop(1).getCoords().longitude);
-        WLog.i("origin: " + origin + ", destination: " + destination);
-//        mMap.addPolyline(addPolyline(getDirectionResult(origin, destination)));
-
-        for (TourStop t : mTour.getStops()) {
-            MarkerOptions markerOptions = new MarkerOptions().position(t.getCoords())
-                    .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
-                            .color(getResources().getColor(R.color.secondaryColor))
-                            .sizeDp(42)));
-
-//            mMarkers.add(m);
-            Marker addedMarker = mMap.addMarker(markerOptions);
-            mMarkers.add(addedMarker);
-        }
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-                updateBottomSheetCollapsed(mTour.getStop(mSelectedTour));
-                return true;
-            }
-        });
-    }
-
 
     public void updateLocationPinMarkerVisited(boolean visited, int i) {
         Marker m = mMarkers.get(i);
@@ -406,32 +502,19 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
 
-        // get the distance between the last and next stops
-        Location l = mTour.getStop((int) mTourProgress).toLocation();
-        Location n = mTour.getStop((int) mTourProgress + 1).toLocation();
-        float distance = l.distanceTo(n);
-
-        // calculate tour progress by progress towards next stop
-//        mTourProgress = (int) mTourProgress + location.distanceTo(l) / distance;
+        updateLocation(location);
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onProviderEnabled(String provider) { }
 
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+    public void onProviderDisabled(String provider) { }
 
     @Override
     public void onClick(View v) {
@@ -460,18 +543,11 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void endTour() {
-        WLog.i("end tour clicked.");
-        new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?").setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        }).setPositiveButton("Yes, I am done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        }).create().show();
+    @Override
+    public void onMapClick(LatLng latLng) {
+        //Location l = new Location(mLocationProvider);
+        //l.setLatitude(latLng.latitude);
+        //l.setLongitude(latLng.longitude);
+        //updateLocation(l);
     }
 }
