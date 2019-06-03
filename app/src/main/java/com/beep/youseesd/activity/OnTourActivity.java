@@ -2,7 +2,6 @@ package com.beep.youseesd.activity;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -52,62 +51,52 @@ import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.maps.DirectionsApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.android.PolyUtil;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.TravelMode;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.joda.time.DateTime;
 
-
-public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener, GoogleMap.OnMapClickListener {
+/**
+ * Activity that handles the screen when we're on the tour
+ */
+public class OnTourActivity extends AppCompatActivity
+    implements OnMapReadyCallback, LocationListener, View.OnClickListener,
+    GoogleMap.OnMapClickListener {
   private static final int PERMISSION_GRANTED_LOCATION = 0x01;
-  private static final long INTERVAL = 2000;
-  private static final long FASTEST_INTERVAL = 1000;
-  private static final float ARRIVAL_DISTANCE = 10; // distance to "arrive" at a TourStop
-  private static final float WANDER_DISTANCE = 15; // distance to wander away from tour path before warning
+
+  // distance to "arrive" at a Location
+  private static final float ARRIVAL_DISTANCE = 10;
+  // distance to wander away from tour path before warning
+  private static final float WANDER_DISTANCE = 15;
 
   private Location mUserCurrentLocation;
   private GoogleMap mMap;
   private Tour mTour;
-  private float mTourProgress; // divide by (mTour.getNumStops() - 1) to get total tour percentage
+
+  // divide by (mTour.getNumStops() - 1) to get total tour percentage
+  private float mTourProgress;
   private Polyline mHintPolyline;
   private Polyline mPathPolyline;
 
-  private Criteria mCriteria;
   private LocationManager mLocationManager;
 
-  private String mLocationProvider;
-
-  private LinearLayout llBottomSheet;
   private BottomSheetBehavior bottomSheetBehavior;
-  private Toolbar mToolbar;
-  private NavigationView mNavigationView;
   private DrawerLayout mDrawerLayout;
 
   private TextView mBottomTitle;
   private TextView mBottomSubtitle;
-  private ViewGroup mBottomSheetHeaderLayout;
   private IconicsImageView mBottomImageView;
 
   private MaterialButton mMarkVisitedButton;
   private TextView mVisitText;
-  private LinearLayout mTagContentLayout;
   private TextView mBottomPlaceDescription;
 
   private RecyclerView mLocationManagerListView;
-  private LinearLayoutManager layoutManager;
   private TourLocationManageAdapter mAdapter;
 
   private LinearLayout mBottomPlaceDetailHashLayout;
@@ -123,152 +112,176 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   private int mSelectedTour = 0;
   List<Marker> mMarkers;
 
-//  private void loadDefaultTour() {
-//    TourLocation geisel = new TourLocation("Geisel Library", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/geisel.jpg");
-//    TourLocation MedicalEducation = new TourLocation("Medical Education and Telemedicine building", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Medical-Education-Telemedicine-Building.jpg");
-//    TourLocation radyManagement = new TourLocation("Rady School of Management", "The best spot at UCSD", "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg");
-//    TourLocation priceCenterWest = new TourLocation("Price Center West", "The heart of UCSD", "https://ucpa.ucsd.edu/images/image_library/Price-Center-West.jpg");
-//    TourLocation centerHall = new TourLocation("Center Hall", "Big lecture hall", "https://act.ucsd.edu/m/assets/min/img.php?img=https://saber.ucsd.edu/m/campustours/Images/2-centerHall.jpg");
-//    TourLocation peterson = new TourLocation("Petersno Hall", "Big lecture hall", "http://ucsdguardian.org/wp-content/uploads/2014/02/ucsd010.jpg");
-//
-//    mTour = new Tour("Default Tour", new TourStop[]{
-//        new TourStop(32.877974, -117.237469, centerHall),
-////                new TourStop(32.878154, -117.237549, null),
-////                new TourStop(32.879332, -117.237566, null),
-//        new TourStop(32.879777, -117.236958, priceCenterWest),
-////                new TourStop(32.880323, -117.236296, null),
-////                new TourStop(32.880364, -117.236587, null),
-////                new TourStop(32.880327, -117.237036, null),
-//        new TourStop(32.880275, -117.237557, geisel),
-////                new TourStop(32.880227, -117.237991, null),
-//        new TourStop(32.880197, -117.239942, peterson),
-//    });
-//  }
-
+  /**
+   * Handles logic to begin our tour once screen is loaded
+   */
   private void beginTour() {
     mTourProgress = 0f;
 
     mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-    mCriteria = new Criteria();
-    mLocationProvider = String.valueOf(mLocationManager.getBestProvider(mCriteria, true));
+    Criteria mCriteria = new Criteria();
+    String mLocationProvider = String.valueOf(mLocationManager
+        .getBestProvider(mCriteria, true));
 
+    // get the location of the user
     try {
       mLocationManager.requestLocationUpdates(mLocationProvider, 1000, 3.f, this);
       Location l = mLocationManager.getLastKnownLocation(mLocationProvider);
       if (l != null) onLocationChanged(l);
     } catch (SecurityException e) {
+      WLog.d(e.getMessage());
     }
 
+    // sets the click listener on our map to this class
     mMap.setOnMapClickListener(this);
-//    drawTour();
   }
 
+  /**
+   * Handles logic when ending our tour
+   */
   private void endTour() {
+    mTour = null;
+    mLocationManager.removeUpdates(this);
     WLog.i("end tour clicked.");
-    new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?").setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
 
-      }
-    }).setPositiveButton("Yes, I am done", new DialogInterface.OnClickListener() {
-      @Override
-      public void onClick(DialogInterface dialog, int which) {
-        mTour = null;
-        mLocationManager.removeUpdates(OnTourActivity.this);
-        finish();
-      }
-    }).create().show();
+    // create the dialog alert that allows the user to end the tour
+    new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?")
+        .setNegativeButton("Not yet", (dialog, which) -> {
+        })
+        .setPositiveButton("Yes, I am done", (dialog, which) -> {
+          mTour = null;
+          mLocationManager.removeUpdates(OnTourActivity.this);
+          finish();
+        }).create().show();
   }
 
+  /**
+   * Handles the drawing logic of our tours
+   */
   private void drawTour() {
-    if (mPathPolyline != null) mPathPolyline.remove();
+    if (mPathPolyline != null) {
+      mPathPolyline.remove();
+    }
+
     PolylineOptions route = new PolylineOptions();
     route.clickable(false);
 
-    for (int i = (int) mTourProgress; i < mTour.locations.size(); i++) {
-      com.beep.youseesd.model.Location l = TourSet.allLocations.get(mTour.locations.get(i));
-      route.add(new LatLng(l.latitude, l.longitude));
+    // go through all of the locations on our tour and add a LatLng object for each one
+    for (int i = (int) mTourProgress; i < mTour.getLocations().size(); i++) {
+      com.beep.youseesd.model.Location l =
+          TourSet.getAllLocations().get(mTour.getLocations().get(i));
+      route.add(l.generateLatLng());
     }
 
+    // set the route's color
     route.color(0xff55ff55);
     mPathPolyline = mMap.addPolyline(route);
 
-    com.beep.youseesd.model.Location locOrigin = TourSet.allLocations.get(mTour.locations.get(0));
-    com.beep.youseesd.model.Location locDestination = TourSet.allLocations.get(mTour.locations.get(1));
+    // get the starting and ending location on the tour
+    com.beep.youseesd.model.Location locOrigin =
+        TourSet.getAllLocations().get(mTour.getLocations().get(0));
+    com.beep.youseesd.model.Location locDestination =
+        TourSet.getAllLocations().get(mTour.getLocations().get(1));
 
-    LatLng origin = new LatLng(locOrigin.latitude, locOrigin.longitude);
-    LatLng destination = new LatLng(locDestination.latitude, locDestination.longitude);
+    // create LatLng objects for both of them
+    LatLng origin = locOrigin.generateLatLng();
+    LatLng destination = locDestination.generateLatLng();
     WLog.i("origin: " + origin + ", destination: " + destination);
-//        mMap.addPolyline(addPolyline(getDirectionResult(origin, destination)));
 
-    for (String t : mTour.locations) {
-      com.beep.youseesd.model.Location loc = TourSet.allLocations.get(t);
-      MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(loc.latitude, loc.longitude))
-          .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
-              .color(getResources().getColor(R.color.secondaryColor))
-              .sizeDp(42)));
+    // go through all of the locations on our tour and draw a marker for each one
+    for (String t : mTour.getLocations()) {
+      com.beep.youseesd.model.Location loc = TourSet.getAllLocations().get(t);
 
-//            mMarkers.add(m);
+      // create the marker with these options
+      MarkerOptions markerOptions =
+          new MarkerOptions().position(loc.generateLatLng())
+              .icon(getMarkerIconFromDrawable(
+                  new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
+                      .color(getResources().getColor(R.color.secondaryColor))
+                      .sizeDp(42)));
+
       Marker addedMarker = mMap.addMarker(markerOptions);
       mMarkers.add(addedMarker);
     }
 
-    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-      @Override
-      public boolean onMarkerClick(Marker marker) {
-        mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
-        return true;
+    // create a listener for each marker so we can update the bottom sheet
+    mMap.setOnMarkerClickListener(marker -> {
+      mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+      if(mSelectedTour >= mTour.getLocations().size()) {
+        return false;
       }
+      updateBottomSheetCollapsed(
+          TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
+      return true;
     });
   }
 
-  //private void stopReached(TourStop stop) {
+  /**
+   * Redraws tour once we've reached a location
+   */
   private void stopReached() {
     drawTour();
   }
 
+  /**
+   * Updates our location while we're on the tour
+   *
+   * @param location our current location
+   */
   private void updateLocation(Location location) {
-    if (mTour == null) return; // no active tour
+    // no active tour
+    if (mTour == null) {
+      return;
+    }
 
     // get the distance between the last and next stops
-    com.beep.youseesd.model.Location ourLoc = TourSet.allLocations.get(mTour.locations.get((int) mTourProgress));
-    com.beep.youseesd.model.Location ourNextLoc = TourSet.allLocations.get(mTour.locations.get((int) mTourProgress));
+    com.beep.youseesd.model.Location ourLoc =
+        TourSet.getAllLocations().get(mTour.getLocations().get((int) mTourProgress));
+    com.beep.youseesd.model.Location ourNextLoc =
+        TourSet.getAllLocations().get(mTour.getLocations().get((int) mTourProgress));
 
+    // create our location objects based on the latitude and longitudes of our locations
     Location l = new Location("");
-    l.setLatitude(ourLoc.latitude);
-    l.setLongitude(ourLoc.longitude);
+    l.setLatitude(ourLoc.getLatitude());
+    l.setLongitude(ourLoc.getLongitude());
 
     Location n = new Location("");
-    n.setLatitude(ourNextLoc.latitude);
-    n.setLongitude(ourNextLoc.longitude);
+    n.setLatitude(ourNextLoc.getLatitude());
+    n.setLongitude(ourNextLoc.getLongitude());
 
-        /*
-             location
-                *
-              /  |
-             /   |
-          x /    | q
-           /     |
-          /theta |
-        l -------- --------- n
-              p
-                 d (l to n)
-        */
+    /* Diagram to help visualize the math for our drawing
+
+         location
+            *
+          /  |
+         /   |
+      x /    | q
+       /     |
+      /theta |
+    l -------- --------- n
+          p
+             d (l to n)
+    */
 
     float d = l.distanceTo(n);
     float x = location.distanceTo(l);
     float b0 = l.bearingTo(location);
     float b1 = l.bearingTo(n);
     float theta = (float) Math.toRadians(Math.abs(b0 - b1));
-    float p = x * (float) Math.cos(theta); // distance parallel along the path
-    float q = x * (float) Math.sin(theta); // distance perpendicular away from the path
 
-    if (theta > Math.PI * .5 || // user is behind previous stop... (going the wrong way?)
-        q > WANDER_DISTANCE) { // user is far from the route line
+    // distance parallel along the path
+    float p = x * (float) Math.cos(theta);
+    // distance perpendicular away from the path
+    float q = x * (float) Math.sin(theta);
 
-      if (mHintPolyline != null) mHintPolyline.remove();
+    // user is behind previous stop... (going the wrong way?)
+    // or user is far from the route line
+    if (theta > Math.PI * .5 || q > WANDER_DISTANCE) {
+      if (mHintPolyline != null) {
+        mHintPolyline.remove();
+      }
 
+      // path to help the user back on track
       PolylineOptions hint = new PolylineOptions();
       hint.clickable(false);
       hint.add(new LatLng(location.getLatitude(), location.getLongitude()));
@@ -281,36 +294,51 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
 
       mHintPolyline = mMap.addPolyline(hint);
     } else {
-      if (mHintPolyline != null) mHintPolyline.remove();
+      // remove if unnecessary
+      if (mHintPolyline != null) {
+        mHintPolyline.remove();
+      }
       mHintPolyline = null;
     }
 
-    float t = Math.max(0f, Math.min(p / d, .99f)); // p / d shouldn't be > 1 but clamp just in case
+    // p / d shouldn't be > 1 but clamp just in case
+    float t = Math.max(0f, Math.min(p / d, .99f));
+
+    // redraw once we've reached a location
     if (location.distanceTo(n) < ARRIVAL_DISTANCE) {
       mTourProgress = (int) mTourProgress + 1;
-      //stopReached(mTour.getStop((int) mTourProgress));
       stopReached();
-      if (mTourProgress == mTour.locations.size() - 1) {
+      if (mTourProgress == mTour.getLocations().size() - 1) {
         endTour();
       }
-    } else
+    } else {
       mTourProgress = (int) mTourProgress + t;
+    }
   }
 
+  /**
+   * Lifecycle method to handle the menu in the top right
+   *
+   * @param item the button to open the menu drawer
+   * @return true if we were able to open the menu
+   */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.menu_show_locations:
-        WLog.i("menu item clicked");
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-        return true;
+    if (item.getItemId() == R.id.menu_show_locations) {
+      WLog.i("menu item clicked");
+      mDrawerLayout.openDrawer(Gravity.RIGHT);
+      return true;
     }
 
     return super.onOptionsItemSelected(item);
   }
 
-
-  // sets up option menu icon
+  /**
+   * Lifecycle method that sets up the option menu icon
+   *
+   * @param menu the menu we want to display
+   * @return true if we were able to load the menu
+   */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_tour, menu);
@@ -321,21 +349,30 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     return true;
   }
 
+  /**
+   * Lifecycle method that handles the creation of the map layout
+   *
+   * @param savedInstanceState state that is used in the super's onCreate method
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_maps);
 
-    mToolbar = (Toolbar) findViewById(R.id.tour_toolbar);
+    // create the toolbar at the bottom of the screen
+    Toolbar mToolbar = findViewById(R.id.tour_toolbar);
     mToolbar.setTitleTextColor(Color.WHITE);
     mToolbar.setTitle("");
     setSupportActionBar(mToolbar);
 
-    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+    // setup the map fragment on our screen
+    SupportMapFragment mapFragment =
+        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this);
 
+    // initialize our markers list and setup the menu drawer layout
     mMarkers = new ArrayList<>();
-    mDrawerLayout = (DrawerLayout) findViewById(R.id.tour_drawer_layout);
+    mDrawerLayout = findViewById(R.id.tour_drawer_layout);
     mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
       @Override
       public void onDrawerOpened(View drawerView) {
@@ -350,45 +387,45 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       }
     });
 
-    mBottomPlaceDetailHashLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_hash_layout);
-    mBottomPlaceDetailBuiltinLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_builtin_layout);
-    mBottomPlaceDetailCoursesLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_courses_layout);
-    mBottomPlaceDetailSeatsLayout = (LinearLayout) findViewById(R.id.bottom_place_detail_seats_layout);
-    mBottomPlaceBuiltinTextView = (TextView) findViewById(R.id.tour_bottom_builtin_year);
-    mBottomPlaceSeatsTextView = (TextView) findViewById(R.id.tour_bottom_tags_seats);
-    mBottomPlaceCoursesTextView = (TextView) findViewById(R.id.tour_bottom_classes);
-    mBottomPlaceHashTextView = (TextView) findViewById(R.id.tour_bottom_tags);
+    // link layouts to instance variables
+    mBottomPlaceDetailHashLayout = findViewById(R.id.bottom_place_detail_hash_layout);
+    mBottomPlaceDetailBuiltinLayout = findViewById(R.id.bottom_place_detail_builtin_layout);
+    mBottomPlaceDetailCoursesLayout = findViewById(R.id.bottom_place_detail_courses_layout);
+    mBottomPlaceDetailSeatsLayout = findViewById(R.id.bottom_place_detail_seats_layout);
+    mBottomPlaceBuiltinTextView = findViewById(R.id.tour_bottom_builtin_year);
+    mBottomPlaceSeatsTextView = findViewById(R.id.tour_bottom_tags_seats);
+    mBottomPlaceCoursesTextView = findViewById(R.id.tour_bottom_classes);
+    mBottomPlaceHashTextView = findViewById(R.id.tour_bottom_tags);
 
-    mTagContentLayout = (LinearLayout) findViewById(R.id.tour_bottom_tags_layout);
-    mBottomImageView = (IconicsImageView) findViewById(R.id.tour_bottom_image);
-    mMarkVisitedButton = (MaterialButton) findViewById(R.id.tour_visit_mark_btn);
-    mVisitText = (TextView) findViewById(R.id.tour_bottom_visit_text);
+    // link more UI elements
+    mBottomImageView = findViewById(R.id.tour_bottom_image);
+    mMarkVisitedButton = findViewById(R.id.tour_visit_mark_btn);
+    mVisitText = findViewById(R.id.tour_bottom_visit_text);
     mMarkVisitedButton.setOnClickListener(this);
-    mNavigationView = (NavigationView) findViewById(R.id.tour_side_nav_layout);
-    mBottomPlaceDescription = (TextView) findViewById(R.id.tour_bottom_description);
-    mBottomSheetHeaderLayout = (ViewGroup) findViewById(R.id.tour_bottom_sheet_header_layout);
-    mBottomSheetHeaderLayout.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-          bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-          bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        }
+    mBottomPlaceDescription = findViewById(R.id.tour_bottom_description);
+
+    // set up listener for the bottom sheet
+    ViewGroup mBottomSheetHeaderLayout = findViewById(R.id.tour_bottom_sheet_header_layout);
+    mBottomSheetHeaderLayout.setOnClickListener(v -> {
+      if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+      } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
       }
     });
 
-    mLocationManagerListView = (RecyclerView) findViewById(R.id.tour_location_manage_list);
-    layoutManager = new LinearLayoutManager(this);
+    // link more UI elements to variables
+    mLocationManagerListView = findViewById(R.id.tour_location_manage_list);
+    LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     mLocationManagerListView.setLayoutManager(layoutManager);
 
-    mBottomTitle = (TextView) findViewById(R.id.tour_bottom_sheet_header_title);
-    mBottomSubtitle = (TextView) findViewById(R.id.tour_bottom_sheet_header_subtitle);
+    mBottomTitle = findViewById(R.id.tour_bottom_sheet_header_title);
+    mBottomSubtitle = findViewById(R.id.tour_bottom_sheet_header_subtitle);
 
-    llBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+    LinearLayout llBottomSheet = findViewById(R.id.bottom_sheet);
     bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
 
-    // get the bottom sheet view
+    // get the bottom sheet view and add a call back depending on the state of the sheet
     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
       @Override
@@ -412,27 +449,42 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     });
   }
 
+  /**
+   * Loads our locations on the map using our uid and tourId
+   *
+   * @param uid the user's id in firebase
+   * @param tourId the id of the tour we want to load
+   */
   private void loadLocations(String uid, String tourId) {
+    // get the tour data from firebase
     DatabaseReference tourRef = DatabaseUtil.getSingleTourDatabase(uid, tourId);
     tourRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+      /**
+       * Firebase method that grabs data for us
+       *
+       * @param dataSnapshot the data stored in a dataSnapshot
+       */
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        // parse the snapshot as a Tour object
         Tour t = dataSnapshot.getValue(Tour.class);
+        // return if unable to do so
         if (t == null) {
           return;
         }
 
+        // use our adapter to populate our tour activity
         mTour = t;
         mAdapter = new TourLocationManageAdapter(OnTourActivity.this, mTour);
         mLocationManagerListView.setAdapter(mAdapter);
-        System.out.println("HI: " + t);
-        drawPathPoints(t);
-        System.out.println("BYE: " + t);
+
+        // draw the markers and paths on the map
         addPlacePinsOnMap(t);
         drawTour();
 
         // for default location
-        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(0)));
+        updateBottomSheetCollapsed(TourSet.getAllLocations().get(mTour.getLocations().get(0)));
       }
 
       @Override
@@ -442,35 +494,35 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     });
   }
 
+  /**
+   * Place pins on our map
+   *
+   * @param t the tour we're on
+   */
   private void addPlacePinsOnMap(Tour t) {
-    for (String location : t.locations) {
+    for (String location : t.getLocations()) {
       if (location == null) {
         continue;
       }
-      com.beep.youseesd.model.Location l = TourSet.allLocations.get(location);
-      System.out.println("location object: " + l);
+
+      // get the associated Location object (our definition of a Location, not Android's)
+      com.beep.youseesd.model.Location l = TourSet.getAllLocations().get(location);
+      // place a marker with the specified options
       MarkerOptions markerOptions = new MarkerOptions().position(l.generateLatLng())
-          .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
-              .color(getResources().getColor(R.color.secondaryColor))
-              .sizeDp(42)));
+          .icon(
+              getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
+                  .color(getResources()
+                      .getColor(R.color.secondaryColor))
+                  .sizeDp(42)));
 
       Marker addedMarker = mMap.addMarker(markerOptions);
       mMarkers.add(addedMarker);
     }
   }
 
-  private void drawPathPoints(Tour t) {
-//    PolylineOptions route = new PolylineOptions();
-//    route.color(getResources().getColor(R.color.secondaryColor));
-//    route.clickable(false);
-//
-//    for (com.beep.youseesd.model.Location l : t.locations) {
-//      LatLng coords = new LatLng(l.latitude, l.longitude);
-//      route.add(coords);
-//      mMap.addPolyline(route);
-//    }
-  }
-
+  /**
+   * Handles the behavior of the bottom sheet if the back button is pressed
+   */
   @Override
   public void onBackPressed() {
     if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
@@ -481,124 +533,132 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     endTour();
   }
 
+  /**
+   * Renders the information on the bottom sheet based on the location that we've selected
+   *
+   * @param id the id of the location
+   */
   private void showPlaceDetails(int id) {
     if (id < 0) {
       return;
     }
 
-    com.beep.youseesd.model.Location l = TourSet.allLocations.get(mTour.locations.get(id));
+    // get the appropriate location using the given id
+    com.beep.youseesd.model.Location l =
+        TourSet.getAllLocations().get(mTour.getLocations().get(id));
     Glide.with(this)
-        .load(l.imageUrl)
+        .load(l.getImageUrl())
         .centerCrop()
         .into(mBottomImageView);
 
-    mBottomPlaceDescription.setText(l.description);
+    // populate the subtitle with text
+    mBottomPlaceDescription.setText(l.getDescription());
 
-    mBottomPlaceDetailSeatsLayout.setVisibility(l.seats != null && !l.seats.isEmpty() ? View.VISIBLE : View.GONE);
-    mBottomPlaceDetailHashLayout.setVisibility(l.subtitle != null && !l.subtitle.isEmpty() ? View.VISIBLE : View.GONE);
-    mBottomPlaceDetailBuiltinLayout.setVisibility(l.builtin != null && !l.builtin.isEmpty() ? View.VISIBLE : View.GONE);
-    mBottomPlaceDetailCoursesLayout.setVisibility(l.courses != null && !l.courses.isEmpty() ? View.VISIBLE : View.GONE);
+    // display visibility based on the input we're using
+    mBottomPlaceDetailSeatsLayout.setVisibility(
+        l.getSeats() != null && !l.getSeats().isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailHashLayout.setVisibility(
+        l.getSubtitle() != null && !l.getSubtitle().isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailBuiltinLayout.setVisibility(
+        l.getBuiltin() != null && !l.getBuiltin().isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailCoursesLayout.setVisibility(
+        l.getCourses() != null && !l.getCourses().isEmpty() ? View.VISIBLE : View.GONE);
 
-    mBottomPlaceSeatsTextView.setText(l.seats);
-    mBottomPlaceHashTextView.setText(l.subtitle);
-    mBottomPlaceBuiltinTextView.setText(l.builtin);
-    mBottomPlaceCoursesTextView.setText(l.courses);
+    // populate layouts with the appropriate text
+    mBottomPlaceSeatsTextView.setText(l.getSeats());
+    mBottomPlaceHashTextView.setText(l.getSubtitle());
+    mBottomPlaceBuiltinTextView.setText(l.getBuiltin());
+    mBottomPlaceCoursesTextView.setText(l.getCourses());
   }
 
+  /**
+   * Requests permission to use the user's location for our app
+   *
+   * @param requestCode the code that represents the user's choice
+   * @param permissions the array of Strings that represent our permissions
+   * @param grantResults the array of ints that represent our permissions
+   */
   @Override
-  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+  public void onRequestPermissionsResult(int requestCode, String[] permissions,
+      int[] grantResults) {
+
+    // check to see if fine location permission has been granted
+    // should only be 1 permission here, so the loop should only run once
     if (requestCode == PERMISSION_GRANTED_LOCATION) {
-      // check to see if fine location permission has been granted
-      // should only be 1 permission here, so the loop should only run once
-      boolean f = false;
+      boolean permission = false;
+
       for (int i = 0; i < permissions.length; i++) {
-        if (permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-          f = true;
+        if (permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)
+            && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+          permission = true;
           break;
         }
       }
 
       // use the permission to enable location on the map and find nearby locations
-      if (f) {
+      if (permission) {
         try {
           mMap.setMyLocationEnabled(true);
           beginTour();
         } catch (SecurityException e) {
         }
-      } else {
-        // user doesn't want us to use their location :(
       }
     }
   }
 
+  /**
+   * Called once the map is ready for use
+   *
+   * @param googleMap the map that we now have access to
+   */
   @Override
   public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
 
+    // setup the options that we want
     mMap.setBuildingsEnabled(true);
     mMap.setIndoorEnabled(true);
     mMap.getUiSettings().setZoomControlsEnabled(true);
     mMap.getUiSettings().setCompassEnabled(true);
     mMap.getUiSettings().setIndoorLevelPickerEnabled(true);
 
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    // check to see if we have permission from the user to use their location
+    // if not, ask for it
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        == PackageManager.PERMISSION_GRANTED) {
       mMap.setMyLocationEnabled(true);
       beginTour();
     } else {
-      ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GRANTED_LOCATION);
+      ActivityCompat.requestPermissions(this,
+          new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GRANTED_LOCATION);
     }
-//    drawTour();
 
-    final String tourId = getIntent().getStringExtra(DatabaseUtil.TOUR_ID);
-//    String uid = "jDbXXUNhVuSHE3y8tEbNNVZfzpJ3";
+    // load the map with the locations on the tour that we're passing
+    final String tourId = getIntent().getStringExtra(DatabaseUtil.getTourId());
     String uid = App.getUser().getUid();
     loadLocations(uid, tourId);
 
-    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-      @Override
-      public boolean onMarkerClick(Marker marker) {
-        mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
-        return true;
-      }
+    // register click listener on the map
+    mMap.setOnMarkerClickListener(marker -> {
+      mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+      updateBottomSheetCollapsed(
+          TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
+      return true;
     });
   }
 
-  private GeoApiContext getGeoContext() {
-    GeoApiContext geoApiContext = new GeoApiContext();
-    return geoApiContext.setApiKey(getString(R.string.google_maps_key))
-        .setConnectTimeout(5, TimeUnit.SECONDS)
-        .setReadTimeout(5, TimeUnit.SECONDS)
-        .setWriteTimeout(5, TimeUnit.SECONDS);
-  }
-
-  private DirectionsResult getDirectionResult(com.google.maps.model.LatLng origin, com.google.maps.model.LatLng destination) {
-    try {
-      DateTime now = new DateTime();
-      DirectionsResult result = DirectionsApi.newRequest(getGeoContext())
-          .mode(TravelMode.WALKING)
-          .origin(origin)
-          .destination(destination)
-          .departureTime(now)
-          .await();
-      return result;
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return null;
-  }
-
-  private PolylineOptions addPolyline(DirectionsResult results) {
-    List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
-    PolylineOptions out = new PolylineOptions().addAll(decodedPath);
-    return out;
-  }
-
+  /**
+   * Updates the markers to be a different color if we've visited them
+   *
+   * @param visited true if we've visited, false if we haven't
+   * @param i the location that we're setting
+   */
   public void updateLocationPinMarkerVisited(boolean visited, int i) {
+    // get the marker using i
     Marker m = mMarkers.get(i);
     LatLng loc = m.getPosition();
 
+    // change its appearance based on the value of visited
     MarkerOptions opt = new MarkerOptions().position(loc)
         .icon(getMarkerIconFromDrawable(new IconicsDrawable(this, MaterialDesignIconic.Icon.gmi_pin)
             .color(getResources().getColor(visited ? R.color.primaryColor : R.color.secondaryColor))
@@ -607,21 +667,33 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mMarkers.set(i, mMap.addMarker(opt));
   }
 
+  /**
+   * Update the bottom sheet based on the location that we've selected
+   *
+   * @param l the location that we've clicked on
+   */
   public void updateBottomSheetCollapsed(com.beep.youseesd.model.Location l) {
-    mBottomTitle.setText(l.title);
-    mBottomSubtitle.setText(l.subtitle);
-    mMarkVisitedButton.setTextColor(getResources().getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
+    // update the display appropriately
+    mBottomTitle.setText(l.getTitle());
+    mBottomSubtitle.setText(l.getSubtitle());
+    mMarkVisitedButton.setTextColor(
+        getResources().
+            getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
+
     mMarkVisitedButton.setText(l.isVisited() ? "MARK UNVISITED" : "MARK VISITED");
-//    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
+    //    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
 
     String subtitle = generateSubtitleAccordingly(mUserCurrentLocation, l);
     mVisitText.setText(subtitle);
   }
 
-  private String generateSubtitleAccordingly(Location userLocation, com.beep.youseesd.model.Location destination) {
-    if (!destination.isVisited()) {
+  private String generateSubtitleAccordingly(Location userLocation,
+      com.beep.youseesd.model.Location destination) {
+
+    if (userLocation != null && !destination.isVisited()) {
       float[] result = new float[1];
-      Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(), destination.latitude, destination.longitude, result);
+      Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(),
+          destination.getLatitude(), destination.getLongitude(), result);
       double d = DistanceUtil.toMiles(result[0] / 1000);
       String mile = String.format("%.1f", d);
       return mile + " mile away";
@@ -630,65 +702,83 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     return destination.calculateVisitedAgo() + " mins";
   }
 
+  /**
+   * Gets the marker from the menu
+   *
+   * @param drawable the item that we've selected
+   * @return a BitmapDescriptor that represents the marker
+   */
   private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
     Canvas canvas = new Canvas();
-    Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+    Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+        Bitmap.Config.ARGB_8888);
+
     canvas.setBitmap(bitmap);
     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
     drawable.draw(canvas);
     return BitmapDescriptorFactory.fromBitmap(bitmap);
   }
 
+  /**
+   * Listener for when our location changes
+   *
+   * @param location our new location
+   */
   @Override
   public void onLocationChanged(Location location) {
     mUserCurrentLocation = location;
-    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
+    // move the camera appropriately and call on our updateLocation helper
+    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+        new LatLng(location.getLatitude(), location.getLongitude()), 17));
 
     updateLocation(location);
-    // get the distance between the last and next stops
-//        Location l = mTour.getStop((int) mTourProgress).toLocation();
-//        Location n = mTour.getStop((int) mTourProgress + 1).toLocation();
-//        float distance = l.distanceTo(n);
-
-    // calculate tour progress by progress towards next stop
-//        mTourProgress = (int) mTourProgress + location.distanceTo(l) / distance;
   }
 
   @Override
   public void onStatusChanged(String provider, int status, Bundle extras) {
-
   }
 
   @Override
   public void onProviderEnabled(String provider) {
-
   }
 
   @Override
   public void onProviderDisabled(String provider) {
-
   }
 
+  /**
+   * Listener for click actions on our map
+   *
+   * @param v the item that was clicked on our activity
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
+      // handles logic to set locations as visited
       case R.id.tour_visit_mark_btn:
       case R.id.item_tour_location_layout:
         if (mSelectedTour < 0) {
           break;
         }
-        com.beep.youseesd.model.Location t = TourSet.allLocations.get(mTour.locations.get(mSelectedTour));
+
+        // get the location that we tapped on
+        com.beep.youseesd.model.Location t =
+            TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour));
+
         if (!t.isVisited()) {
           t.setVisited();
         } else {
           t.setUnvisited();
         }
 
+        // update views and adapter as necessary
         mAdapter.notifyDataSetChanged();
         updateLocationPinMarkerVisited(t.isVisited(), mSelectedTour);
-        updateBottomSheetCollapsed(TourSet.allLocations.get(mTour.locations.get(mSelectedTour)));
+        updateBottomSheetCollapsed(
+            TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
         break;
 
+      // end the tour if that's what the user desires
       case R.id.item_end_tour_btn:
         endTour();
         break;
@@ -696,10 +786,5 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   }
 
   @Override
-  public void onMapClick(LatLng latLng) {
-    //Location l = new Location(mLocationProvider);
-    //l.setLatitude(latLng.latitude);
-    //l.setLongitude(latLng.longitude);
-    //updateLocation(l);
-  }
+  public void onMapClick(LatLng latLng) { }
 }

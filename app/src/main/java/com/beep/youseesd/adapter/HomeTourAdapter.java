@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -32,6 +31,9 @@ import com.nex3z.flowlayout.FlowLayout;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Adapter for the home page
+ */
 public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private static final int TOUR_VIEW = 0x01;
@@ -40,21 +42,40 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private List<Tour> mTours;
   private HomeActivity act;
 
+  /**
+   * Constructor that sets up the tours that we have to display
+   *
+   * @param act reference to the home activity
+   * @param tours list of tours given to us from the database
+   */
   public HomeTourAdapter(HomeActivity act, List<Tour> tours) {
     super();
+
+    // reverse tours so it's intuitive for user
     Collections.reverse(tours);
     this.mTours = tours;
     this.act = act;
   }
 
+  /**
+   * Updates the tour list with an updated one from the database
+   *
+   * @param tours list of tours to update with
+   */
   public void updateTours(List<Tour> tours) {
-    // assumes the tours are in reversed order.
+    // reverse tours so it's intuitive for user
     Collections.reverse(tours);
 
     this.mTours = tours;
     notifyDataSetChanged();
   }
 
+  /**
+   * Determines what view we're in based on position
+   *
+   * @param position the position we're at
+   * @return the corresponding int that represents the view
+   */
   @Override
   public int getItemViewType(int position) {
     if (position >= mTours.size()) {
@@ -64,6 +85,13 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     return TOUR_VIEW;
   }
 
+  /**
+   * Lifecycle method that handles the creation of our holders
+   *
+   * @param parent where our holders will be created within
+   * @param viewType the type of view that we're dealing with
+   * @return the ViewHolder that we want to use based on viewType
+   */
   @NonNull
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -77,25 +105,36 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     return new HomeTourViewHolder(v);
   }
 
+  /**
+   * Lifecycle method that's called once our holders are properly binded
+   *
+   * @param holder the holder we're dealing with
+   * @param i the int of the tour we're currently handling
+   */
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
     if (holder instanceof HomeTourViewHolder) {
+      // typecast the holder
       HomeTourViewHolder h = (HomeTourViewHolder) holder;
+
+      // get the tour with respect to i and properly load the information
       Tour t = mTours.get(i);
-      h.titleView.setText(mTours.get(i).title);
-      h.subtitleView.setText(mTours.get(i).subtitle);
+      h.titleView.setText(mTours.get(i).getTitle());
+      h.subtitleView.setText(mTours.get(i).getSubtitle());
       Glide.with(h.imageView.getContext())
-          .load(mTours.get(i).imageUrl)
+          .load(mTours.get(i).getImageUrl())
           .centerCrop()
           .into(h.imageView);
-      h.tourTravelTimeView.setText(mTours.get(i).estimatedTime + " mins");
+      h.tourTravelTimeView.setText(mTours.get(i).getEstimatedTime() + " mins");
 
-      for (String tagLabel : t.selectedTags) {
+      // modify the layout to display the tags if available
+      for (String tagLabel : t.getSelectedTags()) {
         TourTagTextView tagTextView = new TourTagTextView(h.tourTagsLayout.getContext(), tagLabel);
         h.tourTagsLayout.addView(tagTextView);
       }
-      h.tourTagTitle.setText(t.selectedTags.isEmpty() ? "Show Tour Details" : "Tour Tags");
+      h.tourTagTitle.setText(t.getSelectedTags().isEmpty() ? "Show Tour Details" : "Tour Tags");
 
+      // add a listener to the card so that we can prepare to start a new tour
       h.cardView.setOnClickListener(v -> {
         switch (act.getAppBar().getFabAlignmentMode()) {
           case BottomAppBar.FAB_ALIGNMENT_MODE_CENTER:
@@ -103,69 +142,87 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             act.getAppBar().setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE);
             act.getWeatherTextView().setVisibility(View.GONE);
 
-            act.getFAB().setImageDrawable(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_play).color(Color.WHITE).sizeDp(24));
+            // change the icon to show a different icon
+            act.getFAB()
+                .setImageDrawable(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_play)
+                    .color(Color.WHITE)
+                    .sizeDp(24));
 
+            // load the ConfirmOnTourFragment that will display the locations on our tour
             ConfirmOnTourFragment fragment = new ConfirmOnTourFragment();
             Bundle b = new Bundle();
-            b.putString(DatabaseUtil.TOUR_ID, t.tourId);
+            b.putString(DatabaseUtil.getTourId(), t.getTourId());
             fragment.setArguments(b);
             act.updateFragment(fragment, "ConfirmOnTour");
-            act.getFAB().setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), OnTourActivity.class);
-                intent.putExtra(DatabaseUtil.TOUR_ID, t.tourId);
-                act.startActivity(intent);
-              }
+
+            // add a listener to the button that will start the tour if clicked on
+            act.getFAB().setOnClickListener(v1 -> {
+              Intent intent = new Intent(v1.getContext(), OnTourActivity.class);
+              intent.putExtra(DatabaseUtil.getTourId(), t.getTourId());
+              act.startActivity(intent);
             });
             break;
         }
       });
 
-      h.menuImageView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          PopupMenu popup = new PopupMenu(act, v);
-          MenuInflater inflater = popup.getMenuInflater();
-          inflater.inflate(R.menu.menu_tour_card, popup.getMenu());
-          popup.show();
-          popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-              switch (item.getItemId()) {
-                case R.id.delete_tour:
-                  DatabaseUtil.deleteTour(App.getUser().getUid(), t.tourId);
-                  return true;
-              }
+      // add a listener to the three dots on each card so the user is allowed to delete a tour
+      h.menuImageView.setOnClickListener(v -> {
+        PopupMenu popup = new PopupMenu(act, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_tour_card, popup.getMenu());
+        popup.show();
+        popup.setOnMenuItemClickListener(item -> {
+          switch (item.getItemId()) {
+            case R.id.delete_tour:
+              DatabaseUtil.deleteTour(App.getUser().getUid(), t.getTourId());
+              return true;
+          }
 
-              return false;
-            }
-          });
-        }
+          return false;
+        });
       });
-
-    } else if (holder instanceof FooterViewHolder) {
-      FooterViewHolder h = (FooterViewHolder) holder;
     }
+    // we don't handle the FooterViewHolder since we don't need to do anything with it
   }
 
+  /**
+   * Lifecycle method that gets called once we have properly attached the View
+   *
+   * @param recyclerView the view to be used with the super method
+   */
   @Override
   public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
     super.onAttachedToRecyclerView(recyclerView);
   }
 
+  /**
+   * Returns the number of tours we have + 1 for the view
+   *
+   * @return the number of tours we have + 1
+   */
   @Override
   public int getItemCount() {
     return mTours.size() + 1;
   }
 
+  /**
+   * Holder for the footer
+   */
   static class FooterViewHolder extends RecyclerView.ViewHolder {
 
+    /**
+     * Constructor for the header holder
+     *
+     * @param itemView the view we have a reference to in our holder
+     */
     public FooterViewHolder(@NonNull View itemView) {
       super(itemView);
     }
   }
 
+  /**
+   * Holder for the HomeTours
+   */
   static class HomeTourViewHolder extends RecyclerView.ViewHolder {
 
     private MaterialCardView cardView;
@@ -177,23 +234,43 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private TextView tourTagTitle;
     private FlowLayout tourTagsLayout;
 
+    /**
+     * Constructor for the HomeTour holder
+     *
+     * @param itemView the view we have a reference to in our holder
+     */
     public HomeTourViewHolder(@NonNull View itemView) {
       super(itemView);
-      cardView = (MaterialCardView) itemView.findViewById(R.id.card_tour);
 
-      titleView = (TextView) itemView.findViewById(R.id.card_tour_title);
-      subtitleView = (TextView) itemView.findViewById(R.id.card_tour_subtitle);
-      tourTravelTimeView = (IconicsTextView) itemView.findViewById(R.id.card_tour_eta);
-      tourTravelTimeView.setDrawableStart(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_clock).sizeDp(20).paddingDp(4).color(itemView.getContext().getColor(R.color.gray)));
+      // link UI elements to views
+      cardView = itemView.findViewById(R.id.card_tour);
+      titleView = itemView.findViewById(R.id.card_tour_title);
+      subtitleView = itemView.findViewById(R.id.card_tour_subtitle);
 
-      tourTagsLayout = (FlowLayout) itemView.findViewById(R.id.tour_tags_layout);
-      tourTagTitle = (TextView) itemView.findViewById(R.id.tour_tag_title);
+      tourTagsLayout = itemView.findViewById(R.id.tour_tags_layout);
+      tourTagTitle = itemView.findViewById(R.id.tour_tag_title);
 
-      imageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_img);
+      imageView = itemView.findViewById(R.id.card_tour_img);
       imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image).color(Color.GRAY).sizeDp(24));
+      tourTravelTimeView = itemView.findViewById(R.id.card_tour_eta);
+      tourTravelTimeView.setDrawableStart(
+          new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_clock)
+              .sizeDp(20)
+              .paddingDp(4)
+              .color(itemView.getContext().getColor(R.color.gray)));
 
-      menuImageView = (IconicsImageView) itemView.findViewById(R.id.card_tour_menu);
+      menuImageView = itemView.findViewById(R.id.card_tour_menu);
       menuImageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(MaterialDesignIconic.Icon.gmi_more_vert).color(itemView.getContext().getColor(R.color.light_gray)).sizeDp(14));
+      imageView = itemView.findViewById(R.id.card_tour_img);
+      imageView.setIcon(new IconicsDrawable(itemView.getContext()).icon(FontAwesome.Icon.faw_image)
+          .color(Color.GRAY)
+          .sizeDp(24));
+
+      menuImageView = itemView.findViewById(R.id.card_tour_menu);
+      menuImageView.setIcon(
+          new IconicsDrawable(itemView.getContext()).icon(MaterialDesignIconic.Icon.gmi_more_vert)
+              .color(itemView.getContext().getColor(R.color.light_gray))
+              .sizeDp(14));
     }
   }
 }

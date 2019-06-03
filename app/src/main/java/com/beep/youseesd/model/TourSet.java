@@ -13,66 +13,73 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that handles the creation of a new Tour and stores Theme information for said Tour
+ */
 public class TourSet {
 
-  // A Theme map that has a size of Tour.NUM_THEMES (=13 for now)
-  public static final Map<String, Integer> THEME_MAP;
+  // a Theme map that has a size of Tour.NUM_THEMES
+  private static final Map<String, Integer> THEME_MAP;
 
-  public static final String TAG_WARREN = "warren";
-  public static final String TAG_ERC = "erc";
-  public static final String TAG_SIXTH = "sixth";
-  public static final String TAG_MARSHAL = "marshall";
-  public static final String TAG_MUIR = "muir";
-  public static final String TAG_REVELLE = "revelle";
-  public static final String TAG_FITNESS = "fitness";
-  public static final String TAG_SOCIAL = "social";
-  public static final String TAG_ENGINEERING = "engineering";
-  public static final String TAG_FOOD_LIVING = "food_living";
-  public static final String TAG_POPULAR = "popular";
-  public static final String TAG_NATURAL_SCIENCES = "natural_sciences";
-  public static final String TAG_HUMANITIES = "humanities";
+  private static final String TAG_WARREN = "warren";
+  private static final String TAG_ERC = "erc";
+  private static final String TAG_SIXTH = "sixth";
+  private static final String TAG_MARSHALL = "marshall";
+  private static final String TAG_MUIR = "muir";
+  private static final String TAG_REVELLE = "revelle";
+  private static final String TAG_FITNESS = "fitness";
+  private static final String TAG_SOCIAL = "social";
+  private static final String TAG_ENGINEERING = "engineering";
+  private static final String TAG_FOOD_LIVING = "food_living";
+  private static final String TAG_POPULAR = "popular";
+  private static final String TAG_NATURAL_SCIENCES = "natural_sciences";
+  private static final String TAG_HUMANITIES = "humanities";
 
   static {
     THEME_MAP = new HashMap<>();
-    THEME_MAP.put(TAG_WARREN, 0);
-    THEME_MAP.put(TAG_ERC, 1);
-    THEME_MAP.put(TAG_SIXTH, 2);
-    THEME_MAP.put(TAG_MARSHAL, 3);
-    THEME_MAP.put(TAG_MUIR, 4);
-    THEME_MAP.put(TAG_REVELLE, 5);
-    THEME_MAP.put(TAG_FITNESS, 6);
-    THEME_MAP.put(TAG_SOCIAL, 7);
-    THEME_MAP.put(TAG_ENGINEERING, 8);
-    THEME_MAP.put(TAG_FOOD_LIVING, 9);
-    THEME_MAP.put(TAG_POPULAR, 10);
-    THEME_MAP.put(TAG_NATURAL_SCIENCES, 11);
-    THEME_MAP.put(TAG_HUMANITIES, 12);
+    getThemeMap().put(getTagWarren(), 0);
+    getThemeMap().put(getTagErc(), 1);
+    getThemeMap().put(getTagSixth(), 2);
+    getThemeMap().put(getTagMarshall(), 3);
+    getThemeMap().put(getTagMuir(), 4);
+    getThemeMap().put(getTagRevelle(), 5);
+    getThemeMap().put(getTagFitness(), 6);
+    getThemeMap().put(getTagSocial(), 7);
+    getThemeMap().put(getTagEngineering(), 8);
+    getThemeMap().put(getTagFoodLiving(), 9);
+    getThemeMap().put(getTagPopular(), 10);
+    getThemeMap().put(getTagNaturalSciences(), 11);
+    getThemeMap().put(getTagHumanities(), 12);
   }
-
-  // the pre-made tours
-//  private List<Tour> allTours;
 
   // list of all pre-made tours converted to be used
   private static List<Tour> allTours;
-  public static Map<String, Location> allLocations;
+  private static Map<String, Location> allLocations;
 
+  /**
+   * Method that sets up the tours list by pulling information from database
+   */
   public static void setUpTours() {
-    allTours = new ArrayList<>();
+    setAllTours(new ArrayList<>());
 
-    // get all premade tours from database
+    // get all tours from database
     DatabaseReference databaseTours = DatabaseUtil.getAllTours();
 
     databaseTours.addListenerForSingleValueEvent(new ValueEventListener() {
+      /**
+       * Method that parses each tour and stores it into our list
+       *
+       * @param dataSnapshot contains all of the information regarding our tours
+       */
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        // add each tour onto our list
+        // add each tour into our list
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
           String dsid = ds.getKey();
           Tour t = ds.getValue(Tour.class);
-          t.tourId = dsid;
-          allTours.add(t);
+          t.setTourId(dsid);
+          getAllTours().add(t);
         }
-        System.out.println("Finished setting up tours: " + allTours.size());
       }
 
       @Override
@@ -82,22 +89,30 @@ public class TourSet {
     });
   }
 
+  /**
+   * Method that sets up the locations list by pulling information from database
+   */
   public static void setUpLocations() {
-    allLocations = new HashMap<>();
+    setAllLocations(new HashMap<>());
 
+    // get all locations from database
     DatabaseReference databaseLocations = DatabaseUtil.getAllLocations();
 
     databaseLocations.addListenerForSingleValueEvent(new ValueEventListener() {
+      /**
+       * Method that parses each location and stores it into our list
+       *
+       * @param dataSnapshot contains all of the information regarding our locations
+       */
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        // add each tour onto our list
+        // add each location into our list
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
           String dsid = ds.getKey();
           Location l = ds.getValue(Location.class);
-          l.locationId = dsid;
-          allLocations.put(dsid, l);
+          l.setLocationId(dsid);
+          getAllLocations().put(dsid, l);
         }
-        System.out.println("Finished setting up locations : " + allLocations.size());
       }
 
       @Override
@@ -107,24 +122,174 @@ public class TourSet {
     });
   }
 
-  public TourSet() {
-    //allTours = new ArrayList<>();
-    // Create tour constructing methods below and populate allTours
-    //allTours.add(createTour1());
+  /**
+   * Getter for THEME_MAP
+   *
+   * @return THEME_MAP
+   */
+  public static Map<String, Integer> getThemeMap() {
+    return THEME_MAP;
   }
 
-  private Tour createTour1() {
-//    Tour t1 = new Tour();
-//    t1.title = "This is tour1";
-//    t1.subtitle = "this is the summary!";
-//    t1.imageUrl = "https://ucpa.ucsd.edu/images/image_library/triton-fountain-at-price-center.jpg";
-//
-//    return t1;
-
-    return allTours.get(0);
+  /**
+   * Getter for TAG_WARREN
+   *
+   * @return TAG_WARREN
+   */
+  public static String getTagWarren() {
+    return TAG_WARREN;
   }
 
-  // algorithm #1: Use vectors of doubles to find the best fit
+  /**
+   * Getter for TAG_ERC
+   *
+   * @return TAG_ERC
+   */
+  public static String getTagErc() {
+    return TAG_ERC;
+  }
+
+  /**
+   * Getter for TAG_SIXTH
+   *
+   * @return TAG_SIXTH
+   */
+  public static String getTagSixth() {
+    return TAG_SIXTH;
+  }
+
+  /**
+   * Getter for TAG_MARSHALL
+   *
+   * @return TAG_MARSHALL
+   */
+  public static String getTagMarshall() {
+    return TAG_MARSHALL;
+  }
+
+  /**
+   * Getter for TAG_MUIR
+   *
+   * @return TAG_MUIR
+   */
+  public static String getTagMuir() {
+    return TAG_MUIR;
+  }
+
+  /**
+   * Getter for TAG_REVELLE
+   *
+   * @return TAG_REVELLE
+   */
+  public static String getTagRevelle() {
+    return TAG_REVELLE;
+  }
+
+  /**
+   * Getter for TAG_FITNESS
+   *
+   * @return TAG_FITNESS
+   */
+  public static String getTagFitness() {
+    return TAG_FITNESS;
+  }
+
+  /**
+   * Getter for TAG_SOCIAL
+   *
+   * @return TAG_SOCIAL
+   */
+  public static String getTagSocial() {
+    return TAG_SOCIAL;
+  }
+
+  /**
+   * Getter for TAG_ENGINEERING
+   *
+   * @return TAG_ENGINEERING
+   */
+  public static String getTagEngineering() {
+    return TAG_ENGINEERING;
+  }
+
+  /**
+   * Getter for TAG_FOOD_LIVING
+   *
+   * @return TAG_FOOD_LIVING
+   */
+  public static String getTagFoodLiving() {
+    return TAG_FOOD_LIVING;
+  }
+
+  /**
+   * Getter for TAG_POPULAR
+   *
+   * @return TAG_POPULAR
+   */
+  public static String getTagPopular() {
+    return TAG_POPULAR;
+  }
+
+  /**
+   * Getter for TAG_NATURAL_SCIENCES
+   *
+   * @return TAG_NATURAL_SCIENCES
+   */
+  public static String getTagNaturalSciences() {
+    return TAG_NATURAL_SCIENCES;
+  }
+
+  /**
+   * Getter for TAG_HUMANITIES
+   *
+   * @return TAG_HUMANITIES
+   */
+  public static String getTagHumanities() {
+    return TAG_HUMANITIES;
+  }
+
+  /**
+   * Getter for allTours
+   *
+   * @return allTours
+   */
+  public static List<Tour> getAllTours() {
+    return allTours;
+  }
+
+  /**
+   * Setter for allTours
+   *
+   * @param allTours the allTours to be set
+   */
+  public static void setAllTours(List<Tour> allTours) {
+    TourSet.allTours = allTours;
+  }
+
+  /**
+   * Getter for allLocations
+   *
+   * @return allLocations
+   */
+  public static Map<String, Location> getAllLocations() {
+    return allLocations;
+  }
+
+  /**
+   * Setter for allLocations
+   *
+   * @param allLocations the allLocations to be set
+   */
+  public static void setAllLocations(Map<String, Location> allLocations) {
+    TourSet.allLocations = allLocations;
+  }
+
+  /**
+   * Method that uses vectors of doubles to find the tour of best fit
+   *
+   * @param userInputVector the themes the user selected
+   * @return the Tour that has the best fit
+   */
   public Tour findBestFitTour(List<Theme> userInputVector) {
     if (userInputVector == null || userInputVector.isEmpty()) {
       return null;
@@ -133,12 +298,9 @@ public class TourSet {
     // variable that has the smallest difference
     Tour bestFitTour = null;
     double smallestDifference = Double.MAX_VALUE;
-    for (Tour t : allTours) {
-      System.out.print("vector: " + t.tourId);
-      for (double d : t.themeVector) {
-        System.out.print(d + ", ");
-      }
-      System.out.println();
+
+    // iterate through all available tours and pick the best one
+    for (Tour t : getAllTours()) {
       if (smallestDifference > t.getDifference(userInputVector)) {
         smallestDifference = t.getDifference(userInputVector);
         bestFitTour = t;
