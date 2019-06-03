@@ -164,9 +164,6 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   }
 
   private void endTour() {
-    mTour = null;
-    mLocationManager.removeUpdates(this);
-
     WLog.i("end tour clicked.");
     new MaterialAlertDialogBuilder(this).setTitle("Finish the tour?").setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
       @Override
@@ -176,6 +173,8 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     }).setPositiveButton("Yes, I am done", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
+        mTour = null;
+        mLocationManager.removeUpdates(OnTourActivity.this);
         finish();
       }
     }).create().show();
@@ -479,7 +478,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
       return;
     }
 
-    super.onBackPressed();
+    endTour();
   }
 
   private void showPlaceDetails(int id) {
