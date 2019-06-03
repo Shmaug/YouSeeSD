@@ -2,104 +2,184 @@ package com.beep.youseesd.util;
 
 import android.util.Log;
 
+/**
+ * Utility class that wraps the Android Logger for convenience
+ */
 public class WLog {
 
-    static int lineNumber;
-    static String className;
-    static String methodName;
+  private static int lineNumber;
+  private static String className;
+  private static String methodName;
 
-    public static boolean isDebuggable() {
-//        return BuildConfig.DEBUG;
-        return true;
-    }
+  /**
+   * Always returns true (for now)
+   *
+   * @return true if the app is debuggable
+   */
+  public static boolean isDebuggable() {
+    return true;
+  }
 
-    private static void log(int mode, String className, String msg) {
-        if (isDebuggable()) return;
-//        CrashlyticsHelper.log(mode, className, msg);
-    }
+  /**
+   * Returns a buffer of the string with some formatting
+   *
+   * @param log the log
+   * @return the formatted log
+   */
+  private static String createLog(String log) {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("[");
+    buffer.append(getMethodName());
+    buffer.append("():");
+    buffer.append(getLineNumber());
+    buffer.append("]");
+    buffer.append(log);
 
-    /**
-     * Exceptions
-     */
-    public static void logException(Throwable e) {
-        e.printStackTrace();
+    return buffer.toString();
+  }
 
-        if (!isDebuggable()) return;
+  /**
+   * Gets the method names in question
+   *
+   * @param sElements the array of elements in the StackTrace
+   */
+  private static void getMethodNames(StackTraceElement[] sElements) {
+    setClassName(sElements[1].getFileName().replaceAll(".java", ""));
+    setMethodName(sElements[1].getMethodName());
+    setLineNumber(sElements[1].getLineNumber());
+  }
 
-//        Crashlytics.logException(e);
-    }
+  /**
+   * Logs using level e
+   *
+   * @param message the message to log
+   */
+  public static void e(String message) {
+    if (!isDebuggable()) return;
 
-    private static String createLog(String log) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("[");
-        buffer.append(methodName);
-        buffer.append("():");
-        buffer.append(lineNumber);
-        buffer.append("]");
-        buffer.append(log);
+    // Throwable instance must be created before any methods
+    getMethodNames(new Throwable().getStackTrace());
 
-        return buffer.toString();
-    }
+    Log.e(getClassName(), createLog(message));
+  }
 
-    private static void getMethodNames(StackTraceElement[] sElements) {
-        className = sElements[1].getFileName().replaceAll(".java", "");
-        methodName = sElements[1].getMethodName();
-        lineNumber = sElements[1].getLineNumber();
-    }
+  /**
+   * Logs using level i
+   *
+   * @param message the message to log
+   */
+  public static void i(String message) {
+    if (!isDebuggable()) return;
 
-    public static void e(String message) {
-        if (!isDebuggable()) return;
+    getMethodNames(new Throwable().getStackTrace());
 
-        // Throwable instance must be created before any methods
-        getMethodNames(new Throwable().getStackTrace());
+    Log.i(getClassName(), createLog(message));
+  }
 
-        Log.e(className, createLog(message));
-        log(Log.ERROR, className, createLog(message));
-    }
+  /**
+   * Logs using level d
+   *
+   * @param message the message to log
+   */
+  public static void d(String message) {
+    if (!isDebuggable()) return;
 
-    public static void i(String message) {
-        if (!isDebuggable()) return;
+    getMethodNames(new Throwable().getStackTrace());
 
-        getMethodNames(new Throwable().getStackTrace());
+    Log.d(getClassName(), createLog(message));
+  }
 
-        Log.i(className, createLog(message));
-        log(Log.INFO, className, createLog(message));
-    }
+  /**
+   * Logs using level v
+   *
+   * @param message the message to log
+   */
+  public static void v(String message) {
+    if (!isDebuggable()) return;
 
-    public static void d(String message) {
-        if (!isDebuggable()) return;
+    getMethodNames(new Throwable().getStackTrace());
 
-        getMethodNames(new Throwable().getStackTrace());
+    Log.v(getClassName(), createLog(message));
+  }
 
-        Log.d(className, createLog(message));
-        log(Log.DEBUG, className, createLog(message));
-    }
+  /**
+   * Logs using level w
+   *
+   * @param message the message to log
+   */
+  public static void w(String message) {
+    if (!isDebuggable()) return;
 
-    public static void v(String message) {
-        if (!isDebuggable()) return;
+    getMethodNames(new Throwable().getStackTrace());
 
-        getMethodNames(new Throwable().getStackTrace());
+    Log.w(getClassName(), createLog(message));
+  }
 
-        Log.v(className, createLog(message));
-        log(Log.VERBOSE, className, createLog(message));
-    }
+  /**
+   * Logs using level wtf
+   *
+   * @param message the message to log
+   */
+  public static void wtf(String message) {
+    if (!isDebuggable()) return;
 
-    public static void w(String message) {
-        if (!isDebuggable()) return;
+    getMethodNames(new Throwable().getStackTrace());
 
-        getMethodNames(new Throwable().getStackTrace());
+    Log.wtf(getClassName(), createLog(message));
+  }
 
-        Log.w(className, createLog(message));
-        log(Log.WARN, className, createLog(message));
-    }
+  /**
+   * Getter for lineNumber
+   *
+   * @return lineNumber
+   */
+  public static int getLineNumber() {
+    return lineNumber;
+  }
 
-    public static void wtf(String message) {
-        if (!isDebuggable()) return;
+  /**
+   * Setter for lineNumber
+   *
+   * @param lineNumber the lineNumber to be set
+   */
+  public static void setLineNumber(int lineNumber) {
+    WLog.lineNumber = lineNumber;
+  }
 
-        getMethodNames(new Throwable().getStackTrace());
+  /**
+   * Getter for className
+   *
+   * @return className
+   */
+  public static String getClassName() {
+    return className;
+  }
 
-        Log.wtf(className, createLog(message));
-        log(Log.ERROR, className, createLog("WatTheFuk: " + message));
-    }
+  /**
+   * Setter for className
+   *
+   * @param className the className to be set
+   */
+  public static void setClassName(String className) {
+    WLog.className = className;
+  }
+
+  /**
+   * Getter for methodName
+   *
+   * @return methodName
+   */
+  public static String getMethodName() {
+    return methodName;
+  }
+
+  /**
+   * Setter for methodName
+   *
+   * @param methodName the methodName to be set
+   */
+  public static void setMethodName(String methodName) {
+    WLog.methodName = methodName;
+  }
 }
 

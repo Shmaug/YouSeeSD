@@ -135,14 +135,14 @@ public class HomeTourAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // load the ConfirmOnTourFragment that will display the locations on our tour
             ConfirmOnTourFragment fragment = new ConfirmOnTourFragment();
             Bundle b = new Bundle();
-            b.putString(DatabaseUtil.TOUR_ID, t.getTourId());
+            b.putString(DatabaseUtil.getTourId(), t.getTourId());
             fragment.setArguments(b);
             act.updateFragment(fragment, "ConfirmOnTour");
 
             // add a listener to the button that will start the tour if clicked on
             act.getFAB().setOnClickListener(v1 -> {
               Intent intent = new Intent(v1.getContext(), OnTourActivity.class);
-              intent.putExtra(DatabaseUtil.TOUR_ID, t.getTourId());
+              intent.putExtra(DatabaseUtil.getTourId(), t.getTourId());
               act.startActivity(intent);
             });
             break;

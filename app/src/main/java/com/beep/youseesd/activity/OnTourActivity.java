@@ -630,7 +630,7 @@ public class OnTourActivity extends AppCompatActivity
     }
 
     // load the map with the locations on the tour that we're passing
-    final String tourId = getIntent().getStringExtra(DatabaseUtil.TOUR_ID);
+    final String tourId = getIntent().getStringExtra(DatabaseUtil.getTourId());
     String uid = App.getUser().getUid();
     loadLocations(uid, tourId);
 

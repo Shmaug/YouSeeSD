@@ -67,7 +67,7 @@ public class ConfirmOnTourFragment extends Fragment {
 
     // get the current user's id and load the tour in question
     String uid = App.getUser().getUid();
-    String tourId = getArguments().getString(DatabaseUtil.TOUR_ID);
+    String tourId = getArguments().getString(DatabaseUtil.getTourId());
     loadLocations(uid, tourId);
   }
 
