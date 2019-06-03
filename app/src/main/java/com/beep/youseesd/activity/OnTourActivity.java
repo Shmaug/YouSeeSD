@@ -125,7 +125,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
   private TextView mBottomPlaceSeatsTextView;
   private TextView mBottomPlaceCoursesTextView;
 
-  private int mSelectedTour = -1;
+  private int mSelectedTour = 0;
   List<Marker> mMarkers;
 
 //  private void loadDefaultTour() {
@@ -498,7 +498,7 @@ public class OnTourActivity extends AppCompatActivity implements OnMapReadyCallb
     mBottomPlaceDescription.setText(l.subtitle);
 
     mBottomPlaceDetailSeatsLayout.setVisibility(l.seats != null && !l.seats.isEmpty() ? View.VISIBLE : View.GONE);
-    mBottomPlaceDetailHashLayout.setVisibility(l.tags != null && !l.tags.isEmpty() ? View.VISIBLE : View.GONE);
+    mBottomPlaceDetailHashLayout.setVisibility(l.description != null && !l.description.isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailBuiltinLayout.setVisibility(l.builtin != null && !l.builtin.isEmpty() ? View.VISIBLE : View.GONE);
     mBottomPlaceDetailCoursesLayout.setVisibility(l.courses != null && !l.courses.isEmpty() ? View.VISIBLE : View.GONE);
 
