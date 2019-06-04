@@ -113,7 +113,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                app:flChildSpacing="auto"
                 app:flChildSpacingForLastRow="align"
                 app:flRowSpacing="8dp">
         </com.nex3z.flowlayout.FlowLayout>
