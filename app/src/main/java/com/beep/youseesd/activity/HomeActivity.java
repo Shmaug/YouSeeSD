@@ -11,6 +11,7 @@ import com.beep.youseesd.application.App;
 import com.beep.youseesd.fragment.TourListFragment;
 import com.beep.youseesd.handler.WeatherHandler;
 import com.beep.youseesd.model.TourSet;
+import com.beep.youseesd.model.Weather;
 import com.beep.youseesd.util.WLog;
 import com.beep.youseesd.view.WeatherTextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -167,13 +168,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
   /**
    * Displays the temperature and weather icon if the API call was successful
    *
-   * @param unit the currently preferred unit
    * @param weather holds info about the current weather
-   * @param temperature the actual temperature
    */
   @Override
-  public void onWeatherRequestCallback(String unit, String weather, int temperature) {
+  public void onWeatherRequestCallback(Weather weather) {
     // decide which icon to load based on weather
-    weatherTextView.updateWeatherText(unit, weather, temperature);
+    weatherTextView.updateWeatherText(weather);
   }
 }

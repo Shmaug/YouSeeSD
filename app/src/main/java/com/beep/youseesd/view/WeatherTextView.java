@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import com.beep.youseesd.model.Weather;
 import com.beep.youseesd.util.WLog;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -12,7 +13,7 @@ import com.mikepenz.iconics.view.IconicsTextView;
 
 /**
  * A weather text view with nice icon set.
- * */
+ */
 public class WeatherTextView extends IconicsTextView {
 
   /**
@@ -42,12 +43,12 @@ public class WeatherTextView extends IconicsTextView {
   /**
    * Displays with the given weather info.
    */
-  public void updateWeatherText(String unit, String weather, int temperature) {
+  public void updateWeatherText(Weather weather) {
     WLog.i("weather updated!");
-    String displayUnit = unit.equals("celcius") ? "°C" : "°F";
-    setText(temperature + displayUnit);
+    String displayUnit = weather.getUnit().equals("celcius") ? "°C" : "°F";
+    setText(weather.getTemperature() + displayUnit);
     setDrawableStart(new IconicsDrawable(getContext())
-        .icon(getWeatherIcon(weather))
+        .icon(getWeatherIcon(weather.getWeather()))
         .color(Color.WHITE)
         .paddingDp(4)
         .sizeDp(24));

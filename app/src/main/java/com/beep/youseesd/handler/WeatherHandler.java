@@ -1,6 +1,7 @@
 package com.beep.youseesd.handler;
 
 import android.content.SharedPreferences;
+import com.beep.youseesd.model.Weather;
 import com.kwabenaberko.openweathermaplib.constants.Lang;
 import com.kwabenaberko.openweathermaplib.constants.Units;
 import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
@@ -17,7 +18,7 @@ public class WeatherHandler {
    * A callback method when the current weather is successfully loaded.
    */
   public interface WeatherCallback {
-    void onWeatherRequestCallback(String unit, String weather, int temperature);
+    void onWeatherRequestCallback(Weather weather);
   }
 
   public static final String FAHRENHEIT = "fahrenheit";
@@ -115,17 +116,17 @@ public class WeatherHandler {
 
     /**
      * Notifies with the new weather info.
-     * */
+     */
     @Override
     public void onSuccess(CurrentWeather currentWeather) {
       int temperature = (int) currentWeather.getMain().getTemp();
       String weather = currentWeather.getWeather().get(0).getMain();
-      mCallback.onWeatherRequestCallback(mCurrentUnit, weather, temperature);
+      mCallback.onWeatherRequestCallback(new Weather(mCurrentUnit, weather, temperature));
     }
 
     /**
      * Fails to load the new weather, and we do nothing.
-     * */
+     */
     @Override
     public void onFailure(Throwable throwable) {
 
