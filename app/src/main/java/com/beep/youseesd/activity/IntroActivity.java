@@ -24,7 +24,7 @@ import com.synnapps.carouselview.CarouselView;
 /**
  * Activity that is loaded if the user is not logged in
  */
-public class IntroActivity extends AppCompatActivity implements OnCompleteListener<AuthResult> {
+public class IntroActivity extends AppCompatActivity implements OnCompleteListener<AuthResult>, View.OnClickListener {
 
   private CarouselView mCarouselView;
   private IconicsImageView mLogoImageView;
@@ -50,35 +50,18 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_intro);
 
+    setupUI();
+    loadLogoImages();
+    setupCrouselSwipingView();
+
     // setup the register button
-    mRegisterButton = findViewById(R.id.intro_join_btn);
-    mRegisterButton.setOnClickListener(
-        v -> AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this));
+    mRegisterButton.setOnClickListener(this);
+  }
 
-    // setup the logo
-    mLogoImageView = findViewById(R.id.intro_logo_image);
-
-    mLoginLoadingTextView = findViewById(R.id.login_guide);
-    mRegisterButton = findViewById(R.id.intro_join_btn);
-    mRegisterButton.setOnClickListener(v -> {
-      mLoginLoadingTextView.setVisibility(View.VISIBLE);
-      mRegisterButton.setEnabled(false);
-      AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this);
-    });
-    mLogoImageView = findViewById(R.id.intro_logo_image);
-    Glide.with(this)
-        .load(getResources()
-            .getDrawable(R.drawable.intro_logo))
-        .into(mLogoImageView);
-
-    mUCSDLogoImageView = findViewById(R.id.intro_ucsd_logo_image);
-    Glide.with(this)
-        .load(R.drawable.ucsd_logo)
-        .override(250, 50)
-        .into(mUCSDLogoImageView);
-
-    // setup the carousel with default pictures for the user to swipe through
-    mCarouselView = findViewById(R.id.intro_carousel);
+  /**
+   * setup the carousel with default pictures for the user to swipe through
+   */
+  private void setupCrouselSwipingView() {
     mCarouselView.setPageCount(IMAGE_LINKS.length);
     mCarouselView.setImageListener((position, imageView) -> {
       Glide.with(imageView.getContext())
@@ -89,6 +72,33 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
       imageView.setColorFilter(ImageUtil
           .changeBitmapContrastBrightness(0.5f, 0.7f));
     });
+  }
+
+  /**
+   * loads logo images
+   */
+  private void loadLogoImages() {
+    Glide.with(this)
+        .load(getResources()
+            .getDrawable(R.drawable.intro_logo))
+        .into(mLogoImageView);
+
+    Glide.with(this)
+        .load(R.drawable.ucsd_logo)
+        .override(250, 50)
+        .into(mUCSDLogoImageView);
+  }
+
+  /**
+   * setup UI components in IntroActivity
+   */
+  private void setupUI() {
+    mLogoImageView = findViewById(R.id.intro_logo_image);
+    mLoginLoadingTextView = findViewById(R.id.login_guide);
+    mRegisterButton = findViewById(R.id.intro_join_btn);
+    mLogoImageView = findViewById(R.id.intro_logo_image);
+    mUCSDLogoImageView = findViewById(R.id.intro_ucsd_logo_image);
+    mCarouselView = findViewById(R.id.intro_carousel);
   }
 
   /**
@@ -111,6 +121,17 @@ public class IntroActivity extends AppCompatActivity implements OnCompleteListen
       Intent intent = new Intent(IntroActivity.this, HomeActivity.class);
       startActivity(intent);
       finish();
+    }
+  }
+
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.intro_join_btn:
+        mLoginLoadingTextView.setVisibility(View.VISIBLE);
+        mRegisterButton.setEnabled(false);
+        AuthHandler.signinAnonymously(IntroActivity.this, IntroActivity.this);
+        break;
     }
   }
 }

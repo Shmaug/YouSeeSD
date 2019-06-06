@@ -37,13 +37,11 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp">
 
-                <com.mikepenz.iconics.view.IconicsTextView
+                <com.beep.youseesd.view.WeatherTextView
                         android:id="@+id/weather_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="71 °F"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
+                        android:layout_height="wrap_content"/>
+
             </LinearLayout>
 
         </com.google.android.material.bottomappbar.BottomAppBar>

@@ -78,6 +78,8 @@ public class OnTourActivity extends AppCompatActivity
   private GoogleMap mMap;
   private Tour mTour;
 
+  private Toolbar mToolbar;
+
   // divide by (mTour.getNumStops() - 1) to get total tour percentage
   private float mTourProgress;
   private Polyline mHintPolyline;
@@ -85,7 +87,7 @@ public class OnTourActivity extends AppCompatActivity
 
   private LocationManager mLocationManager;
 
-  private BottomSheetBehavior bottomSheetBehavior;
+  private BottomSheetBehavior mBottomSheetBehavior;
   private DrawerLayout mDrawerLayout;
 
   private TextView mBottomTitle;
@@ -103,6 +105,7 @@ public class OnTourActivity extends AppCompatActivity
   private LinearLayout mBottomPlaceDetailBuiltinLayout;
   private LinearLayout mBottomPlaceDetailSeatsLayout;
   private LinearLayout mBottomPlaceDetailCoursesLayout;
+  private ViewGroup mBottomSheetHeaderLayout;
 
   private TextView mBottomPlaceHashTextView;
   private TextView mBottomPlaceBuiltinTextView;
@@ -207,7 +210,7 @@ public class OnTourActivity extends AppCompatActivity
     // create a listener for each marker so we can update the bottom sheet
     mMap.setOnMarkerClickListener(marker -> {
       mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-      if(mSelectedTour >= mTour.getLocations().size()) {
+      if (mSelectedTour >= mTour.getLocations().size()) {
         return false;
       }
       updateBottomSheetCollapsed(
@@ -358,9 +361,58 @@ public class OnTourActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_maps);
+    setupUI();
+  }
 
+  /**
+   * Called once the map is ready for use
+   *
+   * @param googleMap the map that we now have access to
+   */
+  @Override
+  public void onMapReady(GoogleMap googleMap) {
+    // initialize our markers list
+    mMarkers = new ArrayList<>();
+
+    mMap = googleMap;
+
+    // setup the options that we want
+    mMap.setBuildingsEnabled(true);
+    mMap.setIndoorEnabled(true);
+    mMap.getUiSettings().setZoomControlsEnabled(true);
+    mMap.getUiSettings().setCompassEnabled(true);
+    mMap.getUiSettings().setIndoorLevelPickerEnabled(true);
+
+    // check to see if we have permission from the user to use their location
+    // if not, ask for it
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+      mMap.setMyLocationEnabled(true);
+      beginTour();
+    } else {
+      ActivityCompat.requestPermissions(this,
+          new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GRANTED_LOCATION);
+    }
+
+    // load the map with the locations on the tour that we're passing
+    final String tourId = getIntent().getStringExtra(DatabaseUtil.getTourId());
+    String uid = App.getUser().getUid();
+    loadLocations(uid, tourId);
+
+    // register click listener on the map
+    mMap.setOnMarkerClickListener(marker -> {
+      mSelectedTour = Integer.parseInt(marker.getId().substring(1));
+      updateBottomSheetCollapsed(
+          TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
+      return true;
+    });
+  }
+
+  /**
+   * setup UI components: toolbar, bottomsheet, side drawer and maps fragment.
+   * */
+  private void setupUI() {
     // create the toolbar at the bottom of the screen
-    Toolbar mToolbar = findViewById(R.id.tour_toolbar);
+    mToolbar = findViewById(R.id.tour_toolbar);
     mToolbar.setTitleTextColor(Color.WHITE);
     mToolbar.setTitle("");
     setSupportActionBar(mToolbar);
@@ -370,22 +422,7 @@ public class OnTourActivity extends AppCompatActivity
         (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this);
 
-    // initialize our markers list and setup the menu drawer layout
-    mMarkers = new ArrayList<>();
     mDrawerLayout = findViewById(R.id.tour_drawer_layout);
-    mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-      @Override
-      public void onDrawerOpened(View drawerView) {
-        super.onDrawerOpened(drawerView);
-        // to update the visited time in real-time.
-        mAdapter.notifyDataSetChanged();
-      }
-
-      @Override
-      public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-      }
-    });
 
     // link layouts to instance variables
     mBottomPlaceDetailHashLayout = findViewById(R.id.bottom_place_detail_hash_layout);
@@ -396,57 +433,34 @@ public class OnTourActivity extends AppCompatActivity
     mBottomPlaceSeatsTextView = findViewById(R.id.tour_bottom_tags_seats);
     mBottomPlaceCoursesTextView = findViewById(R.id.tour_bottom_classes);
     mBottomPlaceHashTextView = findViewById(R.id.tour_bottom_tags);
-
-    // link more UI elements
     mBottomImageView = findViewById(R.id.tour_bottom_image);
     mMarkVisitedButton = findViewById(R.id.tour_visit_mark_btn);
     mVisitText = findViewById(R.id.tour_bottom_visit_text);
-    mMarkVisitedButton.setOnClickListener(this);
     mBottomPlaceDescription = findViewById(R.id.tour_bottom_description);
-
-    // set up listener for the bottom sheet
-    ViewGroup mBottomSheetHeaderLayout = findViewById(R.id.tour_bottom_sheet_header_layout);
-    mBottomSheetHeaderLayout.setOnClickListener(v -> {
-      if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-      } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-      }
-    });
-
-    // link more UI elements to variables
-    mLocationManagerListView = findViewById(R.id.tour_location_manage_list);
-    LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-    mLocationManagerListView.setLayoutManager(layoutManager);
-
+    mBottomSheetHeaderLayout = findViewById(R.id.tour_bottom_sheet_header_layout);
     mBottomTitle = findViewById(R.id.tour_bottom_sheet_header_title);
     mBottomSubtitle = findViewById(R.id.tour_bottom_sheet_header_subtitle);
 
-    LinearLayout llBottomSheet = findViewById(R.id.bottom_sheet);
-    bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+    // setup the side sheet: a list of locations.
+    mDrawerLayout.addDrawerListener(new TourLocationManagerSideSheetListener());
 
+    // link more UI elements to variables
+    mLocationManagerListView = findViewById(R.id.tour_location_manage_list);
+
+    // setup as vertical list items
+    mLocationManagerListView.setLayoutManager(new LinearLayoutManager(this));
+
+    // setup the actual view component to listen to its behavior.
+    mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet));
+
+    // a default state for the bottom sheet behavior.
+    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     // get the bottom sheet view and add a call back depending on the state of the sheet
-    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-      @Override
-      public void onStateChanged(@NonNull View bottomSheet, int newState) {
-        switch (newState) {
-          case BottomSheetBehavior.STATE_EXPANDED:
-            mMap.getUiSettings().setAllGesturesEnabled(false);
-            showPlaceDetails(mSelectedTour);
-            break;
+    mBottomSheetBehavior.setBottomSheetCallback(new PlaceDetailBottomSheetBehavior());
 
-          default:
-            mMap.getUiSettings().setAllGesturesEnabled(true);
-            break;
-        }
-      }
-
-      @Override
-      public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-      }
-    });
+    // listens to the user click actions.
+    mMarkVisitedButton.setOnClickListener(this);
+    mBottomSheetHeaderLayout.setOnClickListener(this);
   }
 
   /**
@@ -525,8 +539,8 @@ public class OnTourActivity extends AppCompatActivity
    */
   @Override
   public void onBackPressed() {
-    if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-      bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+      mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
       return;
     }
 
@@ -580,7 +594,7 @@ public class OnTourActivity extends AppCompatActivity
    */
   @Override
   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-      int[] grantResults) {
+                                         int[] grantResults) {
 
     // check to see if fine location permission has been granted
     // should only be 1 permission here, so the loop should only run once
@@ -604,47 +618,6 @@ public class OnTourActivity extends AppCompatActivity
         }
       }
     }
-  }
-
-  /**
-   * Called once the map is ready for use
-   *
-   * @param googleMap the map that we now have access to
-   */
-  @Override
-  public void onMapReady(GoogleMap googleMap) {
-    mMap = googleMap;
-
-    // setup the options that we want
-    mMap.setBuildingsEnabled(true);
-    mMap.setIndoorEnabled(true);
-    mMap.getUiSettings().setZoomControlsEnabled(true);
-    mMap.getUiSettings().setCompassEnabled(true);
-    mMap.getUiSettings().setIndoorLevelPickerEnabled(true);
-
-    // check to see if we have permission from the user to use their location
-    // if not, ask for it
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        == PackageManager.PERMISSION_GRANTED) {
-      mMap.setMyLocationEnabled(true);
-      beginTour();
-    } else {
-      ActivityCompat.requestPermissions(this,
-          new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GRANTED_LOCATION);
-    }
-
-    // load the map with the locations on the tour that we're passing
-    final String tourId = getIntent().getStringExtra(DatabaseUtil.getTourId());
-    String uid = App.getUser().getUid();
-    loadLocations(uid, tourId);
-
-    // register click listener on the map
-    mMap.setOnMarkerClickListener(marker -> {
-      mSelectedTour = Integer.parseInt(marker.getId().substring(1));
-      updateBottomSheetCollapsed(
-          TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
-      return true;
-    });
   }
 
   /**
@@ -681,14 +654,13 @@ public class OnTourActivity extends AppCompatActivity
             getColor(l.isVisited() ? R.color.light_gray : R.color.primaryColor));
 
     mMarkVisitedButton.setText(l.isVisited() ? "MARK UNVISITED" : "MARK VISITED");
-    //    mVisitText.setText(l.isVisited() ? "Visited " + l.calculateVisitedAgo() + " mins ago" : "0.7 miles away");
 
     String subtitle = generateSubtitleAccordingly(mUserCurrentLocation, l);
     mVisitText.setText(subtitle);
   }
 
   private String generateSubtitleAccordingly(Location userLocation,
-      com.beep.youseesd.model.Location destination) {
+                                             com.beep.youseesd.model.Location destination) {
 
     if (userLocation != null && !destination.isVisited()) {
       float[] result = new float[1];
@@ -754,6 +726,14 @@ public class OnTourActivity extends AppCompatActivity
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
+      case R.id.tour_bottom_sheet_header_layout:
+        if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+          mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+          mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+        break;
+
       // handles logic to set locations as visited
       case R.id.tour_visit_mark_btn:
       case R.id.item_tour_location_layout:
@@ -786,5 +766,46 @@ public class OnTourActivity extends AppCompatActivity
   }
 
   @Override
-  public void onMapClick(LatLng latLng) { }
+  public void onMapClick(LatLng latLng) {
+  }
+
+  /**
+   * only controls the behavior of bottom sheet.
+   */
+  private class PlaceDetailBottomSheetBehavior extends BottomSheetBehavior.BottomSheetCallback {
+
+    /**
+     * a callback function when user clicks on bottom sheet. param bottomSheet
+     */
+    @Override
+    public void onStateChanged(@NonNull View bottomSheet, int newState) {
+      switch (newState) {
+        case BottomSheetBehavior.STATE_EXPANDED:
+          mMap.getUiSettings().setAllGesturesEnabled(false);
+          showPlaceDetails(mSelectedTour);
+          break;
+
+        default:
+          mMap.getUiSettings().setAllGesturesEnabled(true);
+          break;
+      }
+    }
+
+    /**
+     * a callback function when user clicks on bottom sheet. param bottomSheet
+     */
+    @Override
+    public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+    }
+  }
+
+  private class TourLocationManagerSideSheetListener extends DrawerLayout.SimpleDrawerListener {
+    @Override
+    public void onDrawerOpened(View drawerView) {
+      super.onDrawerOpened(drawerView);
+      // to update the visited time in real-time.
+      mAdapter.notifyDataSetChanged();
+    }
+  }
 }

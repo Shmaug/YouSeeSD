@@ -2,7 +2,6 @@ package com.beep.youseesd.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.Nullable;
@@ -10,32 +9,26 @@ import androidx.core.content.ContextCompat;
 import com.beep.youseesd.R;
 import com.beep.youseesd.application.App;
 import com.beep.youseesd.fragment.TourListFragment;
+import com.beep.youseesd.handler.WeatherHandler;
 import com.beep.youseesd.model.TourSet;
+import com.beep.youseesd.model.Weather;
 import com.beep.youseesd.util.WLog;
+import com.beep.youseesd.view.WeatherTextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
-import com.kwabenaberko.openweathermaplib.constants.Lang;
-import com.kwabenaberko.openweathermaplib.constants.Units;
-import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
-import com.kwabenaberko.openweathermaplib.implementation.callbacks.CurrentWeatherCallback;
-import com.kwabenaberko.openweathermaplib.models.currentweather.CurrentWeather;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsTextView;
 
 /**
  * The main screen of our app
  */
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements View.OnClickListener, WeatherHandler.WeatherCallback {
 
   private FloatingActionButton mCreateTourButton;
-  private IconicsTextView weatherTextView;
+  private WeatherTextView weatherTextView;
   private BottomAppBar appBar;
-  private OpenWeatherMapHelper helper;
 
-  private boolean fahrenheit;
-  private CurrentWeather currentWeather;
+  private WeatherHandler mWeatherHandler;
 
   /**
    * Handles the back button behavior If fragment stack is 0, renders bottom components again
@@ -54,11 +47,7 @@ public class HomeActivity extends BaseActivity {
       getFAB().setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add_24dp));
 
       // The tour button
-      mCreateTourButton.setOnClickListener(v -> {
-        Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
-        startActivity(intent);
-      });
-      return;
+      mCreateTourButton.setOnClickListener(this);
     }
   }
 
@@ -72,34 +61,14 @@ public class HomeActivity extends BaseActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    WLog.i("home launched");
 
     // retrieve tours and locations from database
     TourSet.setUpTours();
     TourSet.setUpLocations();
 
-    // create weather object
-    helper = new OpenWeatherMapHelper("4c3866391f6138c27bfb9d71a837631e");
-    helper.setLang(Lang.ENGLISH);
-
-    SharedPreferences settings = getSharedPreferences("Temperature", 0);
-    String preferredUnits = settings.getString("Units", "");
-    WLog.i(preferredUnits);
-
-    // setup display with initial preferences
-    if (preferredUnits.equals("Celsius")) {
-      fahrenheit = false;
-      helper.setUnits(Units.METRIC);
-    } else {
-      fahrenheit = true;
-      helper.setUnits(Units.IMPERIAL);
-    }
-
     // setup the UI and display the list of tours saved under the user's account
     setupUI();
-    TourListFragment tourListFragment = new TourListFragment();
-    updateFragment(tourListFragment, null);
-    WLog.i("home launched");
-    WLog.i("check user session..");
 
     // log in the user
     handleUserLogin();
@@ -109,6 +78,7 @@ public class HomeActivity extends BaseActivity {
    * Handles the user's login by tying in their device to an account on firebase
    */
   private void handleUserLogin() {
+    WLog.i("check user session..");
     FirebaseUser currentUser = App.getUser();
     WLog.i(currentUser != null ? "uid: " + currentUser.getUid() : "currentUser is null");
 
@@ -120,6 +90,8 @@ public class HomeActivity extends BaseActivity {
       finish();
     } else {
       WLog.i("user not null: " + currentUser.getUid());
+      // create weather object
+      setupWeather();
     }
   }
 
@@ -128,119 +100,25 @@ public class HomeActivity extends BaseActivity {
    */
   private void setupUI() {
     appBar = findViewById(R.id.bottom_app_bar);
-
-    // set up weather information
-    setupWeather();
-
-    // set up click listener for weather text
-    weatherTextView.setOnClickListener(v -> {
-      SharedPreferences settings = getSharedPreferences("Temperature", 0);
-      SharedPreferences.Editor editor = settings.edit();
-
-      // flip units
-      if (fahrenheit) {
-        helper.setUnits(Units.METRIC);
-        fahrenheit = false;
-        editor.putString("Units", "Celsius");
-        editor.commit();
-      } else {
-        helper.setUnits(Units.IMPERIAL);
-        fahrenheit = true;
-        editor.putString("Units", "Fahrenheit");
-        editor.commit();
-      }
-
-      // get updated weather information in new units
-      setupWeather();
-
-      // set weather temperature text
-      String temperature = ((int) currentWeather.getMain().getTemp()) + "";
-      if (fahrenheit) {
-        temperature += "°F";
-      } else {
-        temperature += "°C";
-      }
-      weatherTextView.setText(temperature);
-    });
-
-    // sets up click listener for the button to create a tour
+    weatherTextView = findViewById(R.id.weather_text);
     mCreateTourButton = findViewById(R.id.fab);
-    mCreateTourButton.setOnClickListener(v -> {
-      Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
-      startActivity(intent);
-    });
+    weatherTextView.setOnClickListener(this);
+    mCreateTourButton.setOnClickListener(this);
+
+    updateFragment(new TourListFragment(), null);
   }
 
   /**
    * Set up the weather information in the bottom right hand corner of the screen
    */
   private void setupWeather() {
-    HomeActivity activity = this;
-    weatherTextView = findViewById(R.id.weather_text);
+    if (mWeatherHandler == null) {
+      SharedPreferences settings = getSharedPreferences("Temperature", 0);
+      mWeatherHandler = new WeatherHandler(settings);
+    }
 
     // get the current weather information
-    helper.getCurrentWeatherByZipCode("92093", new CurrentWeatherCallback() {
-
-      /**
-       * Displays the temperature and weather icon if the API call was successful
-       *
-       * @param currWeather holds info about the current weather
-       */
-      @Override
-      public void onSuccess(CurrentWeather currWeather) {
-        currentWeather = currWeather;
-
-        // set weather temperature text
-        String temperature = ((int) currWeather.getMain().getTemp()) + "";
-        if (fahrenheit) {
-          temperature += "°F";
-        } else {
-          temperature += "°C";
-        }
-        weatherTextView.setText(temperature);
-
-        String weather = currWeather.getWeather().get(0).getMain();
-        FontAwesome.Icon weatherIcon;
-
-        // decide which icon to load based on weather
-        switch (weather) {
-          case "Clouds":
-            weatherIcon = FontAwesome.Icon.faw_cloud;
-            break;
-          case "Clear":
-            weatherIcon = FontAwesome.Icon.faw_sun;
-            break;
-          case "Snow":
-            weatherIcon = FontAwesome.Icon.faw_snowflake;
-            break;
-          case "Rain":
-            weatherIcon = FontAwesome.Icon.faw_umbrella;
-            break;
-          // default case includes Mist, Smoke, Haze, Dust, Fog, Sand, Dust, Ash, Squall, Tornado
-          default:
-            weatherIcon = FontAwesome.Icon.faw_cloud;
-            break;
-        }
-
-        weatherTextView.setDrawableStart(new IconicsDrawable(activity)
-            .icon(weatherIcon)
-            .color(Color.WHITE)
-            .paddingDp(4)
-            .sizeDp(24));
-        weatherTextView.setVisibility(View.VISIBLE);
-      }
-
-      /**
-       * Called when API call fails. Displays default temperature of 70°F (in preferred units)
-       * and cloudy
-       *
-       * @param throwable
-       */
-      @Override
-      public void onFailure(Throwable throwable) {
-        weatherTextView.setVisibility(View.GONE);
-      }
-    });
+    mWeatherHandler.requestCurrentWeather(this);
   }
 
   /**
@@ -268,5 +146,33 @@ public class HomeActivity extends BaseActivity {
    */
   public BottomAppBar getAppBar() {
     return appBar;
+  }
+
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.weather_text:
+        if (mWeatherHandler.flipUnits()) {
+          // get updated weather information in new units
+          setupWeather();
+        }
+        break;
+
+      case R.id.fab:
+        Intent intent = new Intent(v.getContext(), CreateTourActivity.class);
+        startActivity(intent);
+        break;
+    }
+  }
+
+  /**
+   * Displays the temperature and weather icon if the API call was successful
+   *
+   * @param weather holds info about the current weather
+   */
+  @Override
+  public void onWeatherRequestCallback(Weather weather) {
+    // decide which icon to load based on weather
+    weatherTextView.updateWeatherText(weather);
   }
 }
