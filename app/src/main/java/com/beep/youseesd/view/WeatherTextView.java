@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import com.beep.youseesd.handler.WeatherHandler;
 import com.beep.youseesd.model.Weather;
 import com.beep.youseesd.util.WLog;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -45,7 +46,7 @@ public class WeatherTextView extends IconicsTextView {
    */
   public void updateWeatherText(Weather weather) {
     WLog.i("weather updated!");
-    String displayUnit = weather.getUnit().equals("celcius") ? "°C" : "°F";
+    String displayUnit = weather.getUnit().equals(WeatherHandler.CELSIUS) ? "°C" : "°F";
     setText(weather.getTemperature() + displayUnit);
     setDrawableStart(new IconicsDrawable(getContext())
         .icon(getWeatherIcon(weather.getWeather()))

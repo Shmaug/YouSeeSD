@@ -22,9 +22,9 @@ public class WeatherHandler {
   }
 
   public static final String FAHRENHEIT = "fahrenheit";
-  public static final String CELCIUS = "celcius";
+  public static final String CELSIUS = "celsius";
 
-  private static final String UNIT_CELCIUS = Units.METRIC;
+  private static final String UNIT_CELSIUS = Units.METRIC;
   private static final String UNIT_FAHRENHEIT = Units.IMPERIAL;
 
   private static final String API_KEY = "4c3866391f6138c27bfb9d71a837631e";
@@ -47,8 +47,8 @@ public class WeatherHandler {
    * A helper method to setup initial preferences.
    */
   private void setupInitialUnits() {
-    boolean isCelcius = getCurrentPreferredUnits(mPreferenceSettings).equals(CELCIUS);
-    mHelper.setUnits(isCelcius ? UNIT_CELCIUS : UNIT_FAHRENHEIT);
+    boolean isCelcius = getCurrentPreferredUnits(mPreferenceSettings).equals(CELSIUS);
+    mHelper.setUnits(isCelcius ? UNIT_CELSIUS : UNIT_FAHRENHEIT);
   }
 
   /**
@@ -69,9 +69,9 @@ public class WeatherHandler {
     SharedPreferences.Editor editor = mPreferenceSettings.edit();
 
     // flip units
-    boolean wasCelcius = getCurrentPreferredUnits(mPreferenceSettings).equals(CELCIUS);
-    mHelper.setUnits(wasCelcius ? UNIT_FAHRENHEIT : UNIT_CELCIUS);
-    editor.putString(UNITS, wasCelcius ? FAHRENHEIT : CELCIUS);
+    boolean wasCelcius = getCurrentPreferredUnits(mPreferenceSettings).equals(CELSIUS);
+    mHelper.setUnits(wasCelcius ? UNIT_FAHRENHEIT : UNIT_CELSIUS);
+    editor.putString(UNITS, wasCelcius ? FAHRENHEIT : CELSIUS);
     return editor.commit();
   }
 
@@ -81,8 +81,8 @@ public class WeatherHandler {
    * @param callback a callback function when the weather is successfully loaded.
    */
   public void requestCurrentWeather(WeatherCallback callback) {
-    boolean isCelcius = getCurrentPreferredUnits(mPreferenceSettings).equals(CELCIUS);
-    CurrentWeatherListener listener = new CurrentWeatherListener(callback, mHelper, isCelcius ? CELCIUS : FAHRENHEIT);
+    boolean isCelcius = getCurrentPreferredUnits(mPreferenceSettings).equals(CELSIUS);
+    CurrentWeatherListener listener = new CurrentWeatherListener(callback, mHelper, isCelcius ? CELSIUS : FAHRENHEIT);
     listener.request();
   }
 
