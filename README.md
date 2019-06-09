@@ -1,20 +1,39 @@
 # YouSeeSD
 
-> Short blurb about what your product does.
+![logo](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/app/src/main/res/drawable/ic_launcher.png)
 
-## Usecase Diagram
+> Tour guide Android app targeting all ages of people.
 
-![UsecaseDiagram](https://raw.githubusercontent.com/Shmaug/YouSeeSD/master/screenshots/usecase_diagram.jpeg)
+The app `YouSeeSD` can auto-generate a high quality tour by just selecting a
+list of keywords (a.k.a. tags). Then, you can start the tour any time as the app
+stores your tour in your device. Our app does not require an email to sign in as
+it recognizes a user as an unique device. On tour mode, you can view the full map
+around the campus and you are able to mark visited for places along the tour.
 
-## Shared Documents
+## Sample screens
 
-> [Shared Team Folder](https://drive.google.com/drive/u/2/folders/1oPU8XP1Roqrq_Mw1K2Q1nAPO6X8Ggnh6)
+![samplescreens](https://firebasestorage.googleapis.com/v0/b/youseesd-9ab46.appspot.com/o/sample.png?alt=media&token=5906b57a-558d-4c0e-80ab-d43c157f1212)
 
-* [Requirements](https://drive.google.com/drive/u/2/folders/1oPU8XP1Roqrq_Mw1K2Q1nAPO6X8Ggnh6)
-* [Use cases](https://docs.google.com/document/d/1z8ji4NFVDm0iHea319vruY-p7nbdJgUSOLFyklI361o/edit?usp=sharing)
-* [User story](https://docs.google.com/document/d/119KrlIXgkzI2CvsMbKuN--wdjRUIS0i8g_sWcm4_NP0/edit?usp=sharing)
+## Installation
+
+- `Java 1.8` is used.
+- Android Studio is required.
+- `compileSDKVersion` is 28.
+
+## Development setup
+
+To fully test the functionalities at `OnTourActivity`, you have to register your
+`SHA1` from your debug keystore, or, you are required to replace the Google Maps API key
+with your own API key. Please go to this [file](https://github.com/Shmaug/YouSeeSD/blob/master/app/src/debug/res/values/google_maps_api.xml#L23) and replace.
+
+Also, you will lose the ability to read/write data into the `Firebase` real-time database since
+we do not recognize your `SHA1` from your debug keystore in our Firebase account. Either you ask us
+to manually register your `SHA1` key, or you can just download the file `youseesd_firebase.json` in the root directory
+in our project repo to set up your own firebase database. Then, also you have to replace the firebase API key by yourself.
 
 ## Getting Started
+
+After you figured out the API keys for Google Maps and Firebase, then you are ready to run our project.
 
 ### Firebase: Register keystore
 

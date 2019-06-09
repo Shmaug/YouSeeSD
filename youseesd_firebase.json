@@ -1,0 +1,680 @@
+{
+  "locations" : {
+    "64 Degrees" : {
+      "builtin" : "1966",
+      "description" : "64 Degrees specializes in burgers, stir-fry, and tacos and is located near Mandeville center and York Hall. It derives its name from 1) the average temperature of La Jolla, 2) the year Revelle College was founded (1964), and 3) the height of the college’s namesake, Roger Revelle (6’4”).",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/64-degree-sign.jpg",
+      "latitude" : 32.8747395,
+      "longitude" : -117.2418213,
+      "subtitle" : "burgerrsssssss",
+      "title" : "64 Degrees",
+      "totalSeats" : "100-200"
+    },
+    "Applied Physics and Mathematics Building" : {
+      "builtin" : "1969",
+      "courses" : "PHYS, MATH",
+      "description" : "The Applied Physics and Mathematics building located in Muir by the Pines Dining Hall and is the home to all math and physics majors on campus. You can usually find students in office hours, attending discussions, or finishing up last minute homework in the various floors of the building.",
+      "imageUrl" : "https://studyabroad.ucsd.edu/_images/majors-maps/major-modules/math-apm-building.jpg",
+      "latitude" : 32.8788441,
+      "longitude" : -117.2410857,
+      "subtitle" : "a prison",
+      "title" : "Applied Physics and Mathematics Building"
+    },
+    "Biomedical Library" : {
+      "builtin" : "1969",
+      "description" : "The Biomedical Library has two stories, spacious, designated quiet areas, study rooms, clean restrooms, and plenty of tables and outlets! It is also a way quieter location than geisel if you are looking for a quiet place to study.",
+      "imageUrl" : "https://library.ucsd.edu/news-events/wp-content/uploads/2019/01/biomed.jpg",
+      "latitude" : 32.875662,
+      "longitude" : -117.236724,
+      "seats" : "1500-1700",
+      "subtitle" : "Near Revelle",
+      "tags" : "revelle, library",
+      "title" : "Biomedical Library"
+    },
+    "Canyonview Aquatic Center" : {
+      "builtin" : "1983",
+      "description" : "Canyonview Aquatic Center is the main aquatic center at the University of California San Diego, comprising two Olympic-size swimming pools, bleacher seating, and associated fitness facilities. It is located on the Warren College campus and serves as the home stadium of the Triton men's and women's water polo, swimming and diving teams. It also has a weight room which features lifting equipment chosen specifically for aquatic training. The southern part of the building houses the Outback Climbing Center.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/canyonview-pool.jpg",
+      "latitude" : 32.880482,
+      "longitude" : -117.2316172,
+      "subtitle" : "welcome to warren's tiny gym",
+      "title" : "Canyonview Aquatic Center"
+    },
+    "Center Hall" : {
+      "builtin" : "1995",
+      "courses" : "CSE, MAE, ECE",
+      "description" : "Located by the end of Library walk across the steet from the medical school, Center Hall houses a variety of lectures hall that cover a plethora of majors. There is also a coffe stall outside and some stone spheres.",
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/6/65/Center_Hall_Front%2C_UCSD.JPG",
+      "latitude" : 32.8780351,
+      "longitude" : -117.2373407,
+      "seats" : "2000-2100",
+      "subtitle" : "lecture hall in the center of campus",
+      "title" : "Center Hall"
+    },
+    "Computer Science and Engineering Building" : {
+      "builtin" : "2005",
+      "description" : "The upper floors of the CSE building mainly serve as offices for the CSE department faculty. On the other hand the subterraen floor often called the Dungeon is where you will find many sleepless cse student coding any time of the day as they try and finish their weekly PA's",
+      "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+      "latitude" : 32.8818769,
+      "longitude" : -117.2337425,
+      "seats" : "500-600",
+      "subtitle" : "smelly cs majors beware!!!!",
+      "title" : "Computer Science and Engineering Building"
+    },
+    "Conrad Prebys Music Center" : {
+      "builtin" : "2008",
+      "description" : "The Conrad Prebys Performing Arts Center is the new heart of cultural, arts education, and community event activity in La Jolla.  The Conrad is the permanent home of La Jolla Music Society and hosts world-class performances presented by LJMS as well as other San Diego arts presenters.  Additionally, The Conrad will see a wide range of conferences, corporate meetings, and private events.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/conrad-prebys-music-center-interior-empty.jpg",
+      "latitude" : 32.8780464,
+      "longitude" : -117.2342954,
+      "seats" : "400-500",
+      "subtitle" : "for music",
+      "title" : "Conrad Prebys Music Center"
+    },
+    "Foodworx" : {
+      "builtin" : "1980",
+      "description" : "Famous for their personal pizzas, Foodworx also carries fresh salads, sandwiches, and grill specials. Soak up the sun on the patio, or get your food to-go.",
+      "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/foodworx/facility-Foodworx.jpg",
+      "latitude" : 32.8787535,
+      "longitude" : -117.230311,
+      "seats" : "50-100",
+      "subtitle" : "good sandwiches",
+      "title" : "Foodworx"
+    },
+    "Galbraith Hall" : {
+      "builtin" : "1965",
+      "courses" : "ECE, PHYS, CHEM",
+      "description" : "Formerly a campus library, Galbraith Hall was renovated and is now the center of operations for the Department of Theatre & Dance. Galbraith Hall houses faculty and graduate student offices, four large rehearsal rooms, a 99-seat theatre (Arthur Wagner Theatre) with dressing rooms and a stage management booth, and lab facilities for our undergraduate and graduate designers.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/galbraith-hall-entrance.jpg",
+      "latitude" : 32.874242,
+      "longitude" : -117.2408403,
+      "seats" : "700-800",
+      "subtitle" : "one of the biggest lecture halls on campus",
+      "title" : "Galbraith Hall"
+    },
+    "Geisel Library" : {
+      "builtin" : "1970",
+      "description" : "Geisel Library is the main library building of the University of California San Diego Library. It is named in honor of Audrey and Theodor Seuss Geisel. Theodor is better known as children's author Dr. Seuss. The building's distinctive Brutalist architecture has resulted in its being featured in the UC San Diego logo and becoming the most recognizable building on campus.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/geisel-dusk.jpg",
+      "latitude" : 32.880779,
+      "longitude" : -117.2375285,
+      "seats" : "2000-3000",
+      "subtitle" : "where students suffer",
+      "title" : "Geisel Library"
+    },
+    "Goody's Place" : {
+      "builtin" : "1975",
+      "description" : "Serving signature burritos and bowls all day long, Goody’s offers a variety of proteins to choose from. Whether you’re getting a breakfast burrito to-go, or fully customizing a burrito bowl and enjoying it on their spacious patio, Goody’s has you covered.",
+      "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/goodys/facility-Goodys.jpg",
+      "latitude" : 32.882862,
+      "longitude" : -117.2404728,
+      "seats" : "30-40",
+      "subtitle" : "burritosssss",
+      "title" : "Goody's Place"
+    },
+    "La Jolla Project" : {
+      "builtin" : "1984",
+      "description" : "The La Jolla Project is a piece of art composed of 71 granite blocks. It was completed by Richard Fleischner in 1984 and is the third piece in the Stuart Collection. Students have nicknamed the art \"Stonehenge\" and commonly visit the area to study, relax, and spend time with friends.",
+      "imageUrl" : "https://stuartcollection.ucsd.edu/_images/artists/fleischner-lajolla/Main_fleischner-01.jpg",
+      "latitude" : 32.8728019,
+      "longitude" : -117.2403186,
+      "subtitle" : "stonehenge",
+      "title" : "La Jolla Project"
+    },
+    "Library Walk" : {
+      "builtin" : "1995",
+      "description" : "Library Walks is a pedestrian spine that runs through the heart of the student-services buildings and terminates at Geisel Library. The walk provides much needed structure as well as a key pedestrian link to a loosely planned and sprawling campus.",
+      "imageUrl" : "http://www.pwpla.com/sites/pwp/images/2506/pUCSDLibraryWalk_00426.jpg",
+      "latitude" : 32.8790544,
+      "longitude" : -117.2375583,
+      "subtitle" : "spine of ucsd",
+      "title" : "Library Walk"
+    },
+    "Main Gym" : {
+      "builtin" : "1968",
+      "description" : "As one of UCSD's gym facilities, the Main Gym is a popular location among students. It not only holds several basketball courts but also exercise equipment and machines. The Main Gym also hosts recreation classes, which range from aerial silks to badminton.",
+      "imageUrl" : "https://recreation.ucsd.edu/wp-content/uploads/2018/03/Main-Gym.jpg",
+      "latitude" : 32.8771057,
+      "longitude" : -117.2409583,
+      "subtitle" : "be healthy with smaller groups of people",
+      "title" : "Main Gym"
+    },
+    "Marshall Field" : {
+      "builtin" : "1984",
+      "description" : "Located near OceanView and Goody's, Marshall Field hosts a variety of sports games, not limited to soccer, flag football, ultimate frisbee, and rugby. UCSD sports teams often hold their practices here, and students are able to use the field whenever it is available.",
+      "imageUrl" : "https://library.ucsd.edu/dc/embed/bb8260677x/0",
+      "latitude" : 32.8823792,
+      "longitude" : -117.2415886,
+      "subtitle" : "a place to play sports with friends",
+      "title" : "Marshall Field"
+    },
+    "Oceanview Terrace" : {
+      "builtin" : "1981",
+      "description" : "This restaurant features stone hearth pizzas, salads, fresh baked desserts, Certified Kosher options, as well as, a coffee and gelato bar. It is also a frequent late night destination for students who are staying up and studying.",
+      "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/oceanview/facility-OceanView.jpg",
+      "latitude" : 32.8829589,
+      "longitude" : -117.2425261,
+      "seats" : "100-120",
+      "subtitle" : "pizzas",
+      "title" : "Oceanview Terrace"
+    },
+    "Pepper Canyon Hall" : {
+      "builtin" : "2004",
+      "courses" : "CSE, MAE, ECE, MATH",
+      "description" : "Pepper Canyon Hall was originally contructed as in interim building for Rady School of Management while it was under construction, and now hosts a variety of classes and offices for faculty members. It is located near the Prebsy Music Hall and Center Hall.",
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/4/4e/Pepper_Canyon_Hall%2C_UCSD.JPG",
+      "latitude" : 32.8783336,
+      "longitude" : -117.2339796,
+      "seats" : "500-600",
+      "subtitle" : "one of the few lecture halls near Sixth college",
+      "title" : "Pepper Canyon Hall"
+    },
+    "Peterson Hall" : {
+      "builtin" : "1983",
+      "courses" : "CSE, MAE, ECE, COGS, BILD",
+      "description" : "eterson Hall consists of two high-capacity lecture forums as well as a few smaller classrooms. It has the Chical Legacy Mural painted across the east wall of the building.",
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/1/1d/Peterson_Hall%2C_UCSD.JPG",
+      "latitude" : 32.880114,
+      "longitude" : -117.2399726,
+      "seats" : "900-1000",
+      "subtitle" : "bio is held here and i don't like bio",
+      "title" : "Peterson Hall"
+    },
+    "Price Center" : {
+      "builtin" : "1989",
+      "description" : "Price Center is a student center located in the center of campus, just south of Geisel Library. As one of the largest student centers in the country, Price Center serves more than 30,000 visitors a day. Price Center offers a variety of services, places, and spaces geared to the needs of students including fast food restaurants, the campus bookstore, a movie theater, and offices for various student organizations.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/Price-Center-East.jpg",
+      "latitude" : 32.8798465,
+      "longitude" : -117.2368143,
+      "seats" : "1000-1100",
+      "subtitle" : "center of campus!",
+      "title" : "Price Center"
+    },
+    "RIMAC" : {
+      "builtin" : "1995",
+      "description" : "The Recreation, Intramural, and Athletic Complex is a sports complex comprising an arena, a weight room and various other event and athletic facilities. It is one of the largest college athletic facilities in the country. RIMAC Arena is the home arena of the UC San Diego Tritons men's and women's basketball and volleyball teams, and Triton Soccer Stadium on the adjacent RIMAC Field hosts Triton men's and women's soccer matches.",
+      "imageUrl" : "https://recreation.ucsd.edu/wp-content/uploads/2018/03/RIMAC.jpg",
+      "latitude" : 32.8852671,
+      "longitude" : -117.2403518,
+      "subtitle" : "be fit!",
+      "title" : "RIMAC"
+    },
+    "Rady School of Management" : {
+      "builtin" : "2001",
+      "courses" : "MGT",
+      "description" : "he Rady School of Management at the University of California San Diego is a graduate-level business school offering full-time and part-time Master of Business Administration programs, a full-time Master of Finance degree and a full-time Master of Science in Business Analytics degree. It also is constantly playing host to various business events.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/Rady-School-of-Management.jpg",
+      "latitude" : 32.886574,
+      "longitude" : -117.2408246,
+      "seats" : "100-150",
+      "subtitle" : "business sneks alert",
+      "title" : "Rady School of Management"
+    },
+    "Revelle Fountain" : {
+      "builtin" : "1965",
+      "description" : "In 1965, Pacific Southwest Airlines donated the Revelle Fountain to UCSD. It is in the heart of Revelle at the Revelle College Plaza and is a popular spot to sit and relax between classes.",
+      "imageUrl" : "https://library.ucsd.edu/dc/object/bb0035302c/_3.jpg",
+      "latitude" : 32.8745109,
+      "longitude" : -117.2408205,
+      "subtitle" : "in Revelle",
+      "title" : "Revelle Fountain"
+    },
+    "Structural and Materials Engineering Building" : {
+      "builtin" : "2012",
+      "courses" : "ECE,MAE",
+      "description" : "The Structural and Materials Engineering building (SME) opened to the public on September 14, 2012. The 183,000 square foot building houses a community of artists and engineers which includes 12 visual arts studios, a gallery and performance space, and distinct visual arts research initiatives, and a state of the art paint booth. The SME building is situated on the corner of Voigt Drive and Matthews Lane near the Visual Arts Facility.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/structural-materials-and-engineering-bldg-at-dusk.jpg",
+      "latitude" : 32.880025,
+      "longitude" : -117.2330143,
+      "subtitle" : "professional legos",
+      "title" : "Structural and Materials Engineering Building"
+    },
+    "Student Services Center" : {
+      "builtin" : "2007",
+      "description" : "The Student Services Center is a one-stop resource located in the heart of campus. Most student business offices are located here, so students can conveniently access multiple services in one location. The SSC also serves as the gateway to UC San Diego, with over 40,000 visitors annually passing through. Students visit the SSC with their families as prospective students, and continue to visit as they make the transition to admitted, then current UC San Diego Tritons.",
+      "imageUrl" : "http://istaucsd.org/wp-content/uploads/2014/12/Student_Services_Center_UCSD.jpg",
+      "latitude" : 32.8787568,
+      "longitude" : -117.2357146,
+      "seats" : "400-500",
+      "subtitle" : "resources for students",
+      "title" : "Student Services Center"
+    },
+    "Sun God Statue" : {
+      "builtin" : "1983",
+      "description" : "Sun God is a monumental statue by French-American sculptor Niki de Saint Phalle. The figurative sculpture is a 14-foot (4.3 m) multicolored bird-like creature, perched atop a 15-foot (4.6 m) tall arch-shaped, vine-covered concrete pedestal. It was Erected in February 1983 as the first of the Stuart Collection of public art projects.",
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/sun-god-looking-up.jpg",
+      "latitude" : 32.878542,
+      "longitude" : -117.239718,
+      "subtitle" : "ugly bird",
+      "title" : "Sun God Statue"
+    },
+    "Tata Hall" : {
+      "builtin" : "2018",
+      "description" : "Recently opened in February 2019, Tata Hall is the site of laboratories for those involved in classes and research related to biology and the physical sciences. With its seven floors, this building has become the hub of biological and physical science laboratories, fostering collaboration with its open layout.",
+      "imageUrl" : "https://plandesignbuild.ucsd.edu/_images/projects/featured/TataHall.jpg",
+      "latitude" : 32.8761244,
+      "longitude" : -117.2408594,
+      "seats" : "900-1000",
+      "subtitle" : "named after an Indian philosopher!",
+      "title" : "Tata Hall"
+    },
+    "The Bistro" : {
+      "description" : "A modern eatery featuring an open kitchen, sushi bar, and an exciting Pacific Rim-inspired menu. The chefs draw from various Asian cultures to serve up the freshest seafood, crisp greens, local produce inspired vegetarian fare, and noodle dishes. The ideal experience focuses on tasting a variety of flavors and sharing plates with friends. ",
+      "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thebistro/outsideLarge.png",
+      "latitude" : 32.8881437,
+      "longitude" : -117.2420403,
+      "seats" : "40-50",
+      "subtitle" : "dine in food",
+      "title" : "The Bistro"
+    },
+    "The Village Market" : {
+      "description" : "The Village Market is the biggest market on campus, offering snacks and fresh produce to small kitchen appliances. Open until 1 am daily, the market is a popular place for students to get their midnight hand-crafted coffee, snack, and meal.",
+      "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+      "latitude" : 32.8877078,
+      "longitude" : -117.2420859,
+      "subtitle" : "the largest market on campus",
+      "title" : "The Village Market"
+    },
+    "Visual Arts Facilities" : {
+      "builtin" : "1993",
+      "courses" : "VIS",
+      "description" : "The Visual Arts Facilities building (VAF) hosts visual arts faculty and graduate student studios, a seminar room, the graduate photo lab, a computer lab, the graduate wood, metal, and machine shop, three galleries, a performance space, a sound lab and a screening room. The VAF is situated on the corner of Russell Drive and Lyman Avenue near the Gilman parking structure.",
+      "imageUrl" : "https://library.ucsd.edu/dc/object/bb0379142m/_3.jpg",
+      "latitude" : 32.8790747,
+      "longitude" : -117.2343279,
+      "subtitle" : "ads and spray paint",
+      "title" : "Visual Arts Facilities"
+    },
+    "Warren Lecture Hall" : {
+      "builtin" : "1990",
+      "courses" : "MAE, ECE",
+      "description" : "Warren Lecture hall is located in Marshell college near the CSE building and the Jacobs School of Engineering. It has lecture halls and research facilities inside. It also conveniantly has a coffee and snack cart right in front of the building if your feeling sleepy on your way to class in the morning.",
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/6/66/Warren_Lecture_Hall%2C_UCSD.JPG",
+      "latitude" : 32.8808886,
+      "longitude" : -117.2343189,
+      "seats" : "1100-1200",
+      "subtitle" : "cs classes :\")",
+      "title" : "Warren Lecture Hall"
+    }
+  },
+  "tours" : {
+    "Tour1" : {
+      "estimatedTime" : 70,
+      "imageUrl" : "https://library.ucsd.edu/news-events/wp-content/uploads/2019/01/biomed.jpg",
+      "locations" : [ "Biomedical Library", "Library Walk", "Geisel Library", "Sun God Statue", "Revelle Fountain", "La Jolla Project" ],
+      "subtitle" : "Take a stroll through the West side of campus.",
+      "themeVector" : [ 0, 0, 0, 0, 0, 0, 0, 10, 0, 2, 10, 2, 2 ],
+      "title" : "The Casual Tour"
+    },
+    "Tour2" : {
+      "estimatedTime" : 60,
+      "imageUrl" : "https://recreation.ucsd.edu/wp-content/uploads/2018/03/RIMAC.jpg",
+      "locations" : [ "RIMAC", "Marshall Field", "Main Gym", "Price Center", "Canyonview Aquatic Center" ],
+      "subtitle" : "Interested in hitting the gym? This tour takes you to three of the gyms available on campus!",
+      "themeVector" : [ 3, 4, 4, 3, 3, 0, 10, 8, 0, 5, 5, 0, 0 ],
+      "title" : "The Extra Healthy Tour"
+    },
+    "Tour3" : {
+      "estimatedTime" : 45,
+      "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/galbraith-hall-entrance.jpg",
+      "locations" : [ "Galbraith Hall", "64 Degrees", "Tata Hall", "Applied Physics and Mathematics Building", "Peterson Hall", "Price Center" ],
+      "subtitle" : "Got accepted into Revelle? Tour the area and the newly built Tata Hall!",
+      "themeVector" : [ 0, 0, 0, 1, 6, 10, 0, 2, 4, 0, 3, 7, 2 ],
+      "title" : "The Corner of Campus Tour"
+    },
+    "Tour4" : {
+      "estimatedTime" : 65,
+      "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+      "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+      "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+      "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+      "title" : "The Uphill Tour"
+    },
+    "Tour5" : {
+      "estimatedTime" : 75,
+      "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+      "locations" : [ "Computer Science and Engineering Building", "Structural and Materials Engineering Building", "Canyonview Aquatic Center", "Foodworx", "Applied Physics and Mathematics Building" ],
+      "subtitle" : "Explore the home of the raccoons in Warren and Sixth!",
+      "themeVector" : [ 9, 0, 8, 0, 7, 0, 4, 0, 9, 3, 2, 0, 0 ],
+      "title" : "The Raccoon Tour"
+    },
+    "Tour6" : {
+      "estimatedTime" : 70,
+      "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+      "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+      "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+      "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+      "title" : "The North Tour"
+    },
+    "Tour7" : {
+      "estimatedTime" : 55,
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/6/65/Center_Hall_Front%2C_UCSD.JPG",
+      "locations" : [ "Center Hall", "Student Services Center", "Visual Arts Facilities", "Conrad Prebys Music Center", "Pepper Canyon Hall" ],
+      "subtitle" : "An Art major lost in an ocean of Computer Science majors? Don't worry! We'll help you find your way!",
+      "themeVector" : [ 0, 0, 10, 0, 0, 0, 0, 5, 1, 0, 7, 3, 10 ],
+      "title" : "The Artsy Tour"
+    }
+  },
+  "users" : {
+    "1gmR9GGiZ8WBLauwyDJghy1bpWh1" : {
+      "tours" : {
+        "-LgTjiK3NuQfVnuEfZGR" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "ERC", "Fitness", "Food and Living" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgTjiK3NuQfVnuEfZGR"
+        }
+      }
+    },
+    "1uK27jptPCOOvSfQU7qFGFKrB6H2" : {
+      "tours" : {
+        "-LgjyIjx_gxgCYpOQku6" : {
+          "estimatedTime" : 75,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Structural and Materials Engineering Building", "Canyonview Aquatic Center", "Foodworx", "Applied Physics and Mathematics Building" ],
+          "selectedTags" : [ "Muir" ],
+          "subtitle" : "Explore the home of the raccoons in Warren and Sixth!",
+          "themeVector" : [ 9, 0, 8, 0, 7, 0, 4, 0, 9, 3, 2, 0, 0 ],
+          "title" : "The Raccoon Tour",
+          "tourId" : "-LgjyIjx_gxgCYpOQku6"
+        },
+        "-LgjyJoFtnWwkHQC7s-r" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Engineering", "Popular" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgjyJoFtnWwkHQC7s-r"
+        }
+      }
+    },
+    "5bZoNbAdXxadib6krC9Ubvdv1ys1" : {
+      "tours" : {
+        "-LgirF07cACh5ri9byYl" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://library.ucsd.edu/news-events/wp-content/uploads/2019/01/biomed.jpg",
+          "locations" : [ "Biomedical Library", "Library Walk", "Geisel Library", "Sun God Statue", "Revelle Fountain", "La Jolla Project" ],
+          "selectedTags" : [ "Social" ],
+          "subtitle" : "Take a stroll through the West side of campus.",
+          "themeVector" : [ 0, 0, 0, 0, 0, 0, 0, 10, 0, 2, 10, 2, 2 ],
+          "title" : "The Casual Tour",
+          "tourId" : "-LgirF07cACh5ri9byYl"
+        }
+      }
+    },
+    "G5PGMKwRh4PWUbfYJJzadXDbtBD3" : {
+      "tours" : {
+        "-LgjsBjKlbMrOSXWoQJy" : {
+          "estimatedTime" : 60,
+          "imageUrl" : "https://recreation.ucsd.edu/wp-content/uploads/2018/03/RIMAC.jpg",
+          "locations" : [ "RIMAC", "Marshall Field", "Main Gym", "Price Center", "Canyonview Aquatic Center" ],
+          "selectedTags" : [ "Sixth", "Fitness", "Food and Living" ],
+          "subtitle" : "Interested in hitting the gym? This tour takes you to three of the gyms available on campus!",
+          "themeVector" : [ 3, 4, 4, 3, 3, 0, 10, 8, 0, 5, 5, 0, 0 ],
+          "title" : "The Extra Healthy Tour",
+          "tourId" : "-LgjsBjKlbMrOSXWoQJy"
+        }
+      }
+    },
+    "G7cSHeUoqTOVrN6O2HuakNtNlim2" : {
+      "tours" : {
+        "-LgulB4sZW4mm06Qv0HI" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "ERC", "Social", "Food and Living" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgulB4sZW4mm06Qv0HI"
+        },
+        "-Lgulaft3QbuUA7c-4Sw" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "Food and Living" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-Lgulaft3QbuUA7c-4Sw"
+        }
+      }
+    },
+    "JMLcFVZc8jVMdOPXnCQBT3vuX5V2" : {
+      "tours" : {
+        "-LgZeMUaFQlceIgIXlo6" : {
+          "estimatedTime" : 55,
+          "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/6/65/Center_Hall_Front%2C_UCSD.JPG",
+          "locations" : [ "Center Hall", "Student Services Center", "Visual Arts Facilities", "Conrad Prebys Music Center", "Pepper Canyon Hall" ],
+          "selectedTags" : [ "Sixth", "Social", "Humanities" ],
+          "subtitle" : "An Art major lost in an ocean of Computer Science majors? Don't worry! We'll help you find your way!",
+          "themeVector" : [ 0, 0, 10, 0, 0, 0, 0, 5, 1, 0, 7, 3, 10 ],
+          "title" : "The Artsy Tour",
+          "tourId" : "-LgZeMUaFQlceIgIXlo6"
+        },
+        "-LgfB7qD9b8_ewyBK0yJ" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "Marshall", "Fitness", "Humanities", "Popular", "Natural Sciences" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgfB7qD9b8_ewyBK0yJ"
+        },
+        "-LgfBNhc2DuSxfBrapNK" : {
+          "estimatedTime" : 45,
+          "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/galbraith-hall-entrance.jpg",
+          "locations" : [ "Galbraith Hall", "64 Degrees", "Tata Hall", "Applied Physics and Mathematics Building", "Peterson Hall", "Price Center" ],
+          "selectedTags" : [ "Marshall", "Revelle", "Engineering", "Food and Living", "Natural Sciences" ],
+          "subtitle" : "Got accepted into Revelle? Tour the area and the newly built Tata Hall!",
+          "themeVector" : [ 0, 0, 0, 1, 6, 10, 0, 2, 4, 0, 3, 7, 2 ],
+          "title" : "The Corner of Campus Tour",
+          "tourId" : "-LgfBNhc2DuSxfBrapNK"
+        }
+      }
+    },
+    "MARaAysWYshMezd8KGZk47xlqaj2" : {
+      "tours" : {
+        "-Lgk3M9Vosh8UYkK058e" : {
+          "estimatedTime" : 55,
+          "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/6/65/Center_Hall_Front%2C_UCSD.JPG",
+          "locations" : [ "Center Hall", "Student Services Center", "Visual Arts Facilities", "Conrad Prebys Music Center", "Pepper Canyon Hall" ],
+          "selectedTags" : [ "Social", "Humanities" ],
+          "subtitle" : "An Art major lost in an ocean of Computer Science majors? Don't worry! We'll help you find your way!",
+          "themeVector" : [ 0, 0, 10, 0, 0, 0, 0, 5, 1, 0, 7, 3, 10 ],
+          "title" : "The Artsy Tour",
+          "tourId" : "-Lgk3M9Vosh8UYkK058e"
+        },
+        "-Lgk3v0p3o8bYLmyq-Bz" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "ERC", "Humanities" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-Lgk3v0p3o8bYLmyq-Bz"
+        }
+      }
+    },
+    "TJRde9xf2Oge9cxULdUu2rdzsNK2" : {
+      "tours" : {
+        "-LgvJFA0EP9lJIodWVRC" : {
+          "estimatedTime" : 60,
+          "imageUrl" : "https://recreation.ucsd.edu/wp-content/uploads/2018/03/RIMAC.jpg",
+          "locations" : [ "RIMAC", "Marshall Field", "Main Gym", "Price Center", "Canyonview Aquatic Center" ],
+          "selectedTags" : [ "Sixth", "Fitness", "Social" ],
+          "subtitle" : "Interested in hitting the gym? This tour takes you to three of the gyms available on campus!",
+          "themeVector" : [ 3, 4, 4, 3, 3, 0, 10, 8, 0, 5, 5, 0, 0 ],
+          "title" : "The Extra Healthy Tour",
+          "tourId" : "-LgvJFA0EP9lJIodWVRC"
+        }
+      }
+    },
+    "dKXtM6QyStZmYhmPDBXciNEn3Yl1" : {
+      "tours" : {
+        "-LgkzBnw17JkUtih1pid" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "Revelle", "Food and Living" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgkzBnw17JkUtih1pid"
+        }
+      }
+    },
+    "izxmJXaF60YD0ZAnmCUPPdbXXDs1" : {
+      "tours" : {
+        "-LgkXD44_1qirOVlPdNM" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "Revelle", "Food and Living" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgkXD44_1qirOVlPdNM"
+        }
+      }
+    },
+    "rjXn26ue9qPCmO652aJqVSQwbIk2" : {
+      "tours" : {
+        "-LgexXFwaM6gTfoPCs1Y" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "Engineering" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgexXFwaM6gTfoPCs1Y"
+        },
+        "-LgexnF6d7uNzl99gsCK" : {
+          "estimatedTime" : 75,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Structural and Materials Engineering Building", "Canyonview Aquatic Center", "Foodworx", "Applied Physics and Mathematics Building" ],
+          "selectedTags" : [ "Warren", "Fitness", "Engineering", "Food and Living" ],
+          "subtitle" : "Explore the home of the raccoons in Warren and Sixth!",
+          "themeVector" : [ 9, 0, 8, 0, 7, 0, 4, 0, 9, 3, 2, 0, 0 ],
+          "title" : "The Raccoon Tour",
+          "tourId" : "-LgexnF6d7uNzl99gsCK"
+        },
+        "-LgeyeBy2lX6moRDO3eW" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "Fitness", "Food and Living" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgeyeBy2lX6moRDO3eW"
+        }
+      }
+    },
+    "s7HFCtJ1geVvVVHOGJqOBVIGnM73" : {
+      "tours" : {
+        "-LgUnSikuykijQlSdkHZ" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "Engineering", "Food and Living" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgUnSikuykijQlSdkHZ"
+        }
+      }
+    },
+    "tWZEHEU6gjXzAaP1ur3rNG7PJwo1" : {
+      "tours" : {
+        "-LgfECdcx9zKA3h_ATTy" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "ERC", "Revelle", "Fitness", "Food and Living", "Popular" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgfECdcx9zKA3h_ATTy"
+        }
+      }
+    },
+    "xmTHEGafZEU5t751KCbPP1nVo0j2" : {
+      "tours" : {
+        "-LgjxrIkcjb0MdJ6d39N" : {
+          "estimatedTime" : 75,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Structural and Materials Engineering Building", "Canyonview Aquatic Center", "Foodworx", "Applied Physics and Mathematics Building" ],
+          "selectedTags" : [ "Muir" ],
+          "subtitle" : "Explore the home of the raccoons in Warren and Sixth!",
+          "themeVector" : [ 9, 0, 8, 0, 7, 0, 4, 0, 9, 3, 2, 0, 0 ],
+          "title" : "The Raccoon Tour",
+          "tourId" : "-LgjxrIkcjb0MdJ6d39N"
+        }
+      }
+    },
+    "yuyVYXDtH6fAFoJNlNIbI3KbtLP2" : {
+      "tours" : {
+        "-LgTK2d_G6cKTGHIVDgA" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "ERC", "Food and Living" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgTK2d_G6cKTGHIVDgA"
+        },
+        "-LgiteNho5owqxzfAjVR" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "Warren", "Social", "Food and Living" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgiteNho5owqxzfAjVR"
+        },
+        "-LgiteVc4F91NkAs6E-q" : {
+          "estimatedTime" : 70,
+          "imageUrl" : "https://hdh-web.ucsd.edu/images/Dining/thevillagemarket/facility-Village.jpg",
+          "locations" : [ "The Village Market", "The Bistro", "Rady School of Management", "RIMAC", "Oceanview Terrace" ],
+          "selectedTags" : [ "Warren", "Social", "Food and Living" ],
+          "subtitle" : "Recently transferred to UCSD? The Village is where all transfer students live on campus!",
+          "themeVector" : [ 0, 10, 0, 8, 0, 0, 6, 7, 0, 10, 8, 1, 0 ],
+          "title" : "The North Tour",
+          "tourId" : "-LgiteVc4F91NkAs6E-q"
+        },
+        "-LgiuEWjDfgLKShlVlMt" : {
+          "estimatedTime" : 45,
+          "imageUrl" : "https://ucpa.ucsd.edu/images/image_library/galbraith-hall-entrance.jpg",
+          "locations" : [ "Galbraith Hall", "64 Degrees", "Tata Hall", "Applied Physics and Mathematics Building", "Peterson Hall", "Price Center" ],
+          "selectedTags" : [ "Marshall", "Muir", "Revelle" ],
+          "subtitle" : "Got accepted into Revelle? Tour the area and the newly built Tata Hall!",
+          "themeVector" : [ 0, 0, 0, 1, 6, 10, 0, 2, 4, 0, 3, 7, 2 ],
+          "title" : "The Corner of Campus Tour",
+          "tourId" : "-LgiuEWjDfgLKShlVlMt"
+        },
+        "-LgiuR_BaNLvAqNltHSL" : {
+          "estimatedTime" : 65,
+          "imageUrl" : "https://cse.ucsd.edu/sites/cse.ucsd.edu/files/2018-07/DSC_5872.jpg",
+          "locations" : [ "Computer Science and Engineering Building", "Warren Lecture Hall", "Price Center", "Geisel Library", "Goody's Place", "Rady School of Management" ],
+          "selectedTags" : [ "Warren", "ERC", "Sixth" ],
+          "subtitle" : "Explore a little bit of the entire campus, stopping by Warren, through Library walk, and towards the West side of campus!",
+          "themeVector" : [ 10, 9, 0, 4, 0, 0, 0, 1, 8, 5, 4, 0, 0 ],
+          "title" : "The Uphill Tour",
+          "tourId" : "-LgiuR_BaNLvAqNltHSL"
+        }
+      }
+    }
+  }
+}
