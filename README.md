@@ -10,6 +10,10 @@ stores your tour in your device. Our ap does not require an email to sign in as
 it recognizes a user as an unique device. On tour mode, you can view the full map
 around the campus and you are able to mark visited for places along the tour.
 
+## Sample screens
+
+![samplescreens](https://firebasestorage.googleapis.com/v0/b/youseesd-9ab46.appspot.com/o/sample.png?alt=media&token=5906b57a-558d-4c0e-80ab-d43c157f1212)
+
 ## Installation
 
 - `Java 1.8` is used.
