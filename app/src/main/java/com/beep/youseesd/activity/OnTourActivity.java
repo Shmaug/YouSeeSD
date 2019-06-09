@@ -215,6 +215,7 @@ public class OnTourActivity extends AppCompatActivity
       }
       updateBottomSheetCollapsed(
           TourSet.getAllLocations().get(mTour.getLocations().get(mSelectedTour)));
+      showPlaceDetails(mSelectedTour);
       return true;
     });
   }
