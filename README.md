@@ -6,7 +6,7 @@
 
 The app `YouSeeSD` can auto-generate a high quality tour by just selecting a
 list of keywords (a.k.a. tags). Then, you can start the tour any time as the app
-stores your tour in your device. Our ap does not require an email to sign in as
+stores your tour in your device. Our app does not require an email to sign in as
 it recognizes a user as an unique device. On tour mode, you can view the full map
 around the campus and you are able to mark visited for places along the tour.
 
@@ -24,7 +24,7 @@ around the campus and you are able to mark visited for places along the tour.
 
 To fully test the functionalities at `OnTourActivity`, you have to register your
 `SHA1` from your debug keystore, or, you are required to replace the Google Maps API key
-with your own API key. Please go to this [file](https://github.com/Shmaug/YouSeeSD/blob/master/app/src/debug/res/values/google_maps_api.xml#L23) and replace:
+with your own API key. Please go to this [file](https://github.com/Shmaug/YouSeeSD/blob/master/app/src/debug/res/values/google_maps_api.xml#L23) and replace.
 
 Also, you will lose the ability to read/write data into the `Firebase` real-time database since
 we do not recognize your `SHA1` from your debug keystore in our Firebase account. Either you ask us
